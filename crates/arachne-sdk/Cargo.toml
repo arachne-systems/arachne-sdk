@@ -1,0 +1,11 @@
+[package]
+name = "arachne-sdk"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+description = "Adopter-facing Rust API for the Arachne fabric"
+repository = "https://github.com/arachne-systems/arachne-sdk"
+publish = false
+
+[dependencies]
+arachne-runtime = { path = "../../core/crates/arachne-runtime" }
