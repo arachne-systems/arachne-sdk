@@ -25,6 +25,7 @@ pub use arachne_runtime::{
     PeerRoute,
     Presence,
     Publication,
+    PublicationCandidate,
     RecoveredPublication,
     RouteHint,
     RouteKind,
