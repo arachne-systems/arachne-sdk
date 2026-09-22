@@ -21,14 +21,15 @@ crate stays `publish = false` until core has a released Cargo package.
 
 ## Boundary
 
-- `arachne-sdk` exposes the typed client, workspace, invitation, connectivity,
-  publication and native-storage operations needed by native adopters.
+- `arachne-sdk` exposes the typed client, join and admission flow, workspace,
+  invitation, connectivity, publication and native-storage operations needed
+  by native adopters.
 - Core implementation remains in `arachne-core` and retains its MPL-2.0 terms.
 - ATAK/Android adapters, feed-specific payloads, relay services and platform
   bindings are outside this initial extraction.
-- An admitted service endpoint marks each session with a signed service
-  profile; its stable endpoint credential is not an API key and does not
-  bypass workspace policy.
+- An admitted service endpoint calls `Client::use_service_profile` after each
+  open or restore; its stable endpoint credential is not an API key and does
+  not bypass workspace policy.
 - For durable workspaces, enable record storage, save the exact staged snapshot
   before adoption, and use `restore_record_storage` after restart.
 

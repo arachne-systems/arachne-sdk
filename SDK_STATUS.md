@@ -3,7 +3,8 @@
 ## Current
 
 - `arachne-sdk` exposes the typed `arachne-runtime::Client` seam explicitly,
-  with a smoke test and a native endpoint example.
+  including typed join/admission operations, with a smoke test and native
+  endpoint example.
 - Core is pinned as a source submodule. The GitHub source release depends on
   that exact checkout; the Rust crate remains `publish = false`.
 - The typed client exposes protected publication plus native record storage,
@@ -24,6 +25,11 @@
 - GitHub currently reports both `arachne-sdk` and its pinned `arachne-core`
   repository as private, with no release tags. A public source release must
   make the pinned core commit publicly readable as well.
+- The current core tree has focused public guides, but older reachable commits
+  and surviving remote branches still contain private development guidance,
+  including user-specific paths and publication authorization notes. Keep the
+  repositories private until a sanitized publication history or fresh public
+  source repository is prepared.
 - The GitHub description still calls this a private future home for bindings
   and examples; update it to the narrower Rust SDK boundary before opening it.
 - A crates.io release remains blocked until core provides compatible released
