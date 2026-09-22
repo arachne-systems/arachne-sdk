@@ -32,8 +32,10 @@
   local branch `public-source-candidate` at `83dc95f`; the SDK snapshot is on
   the same-named local branch at `d16f017` and omits this internal status file.
   Fresh local bare remotes and a recursive clone were verified; the clone
-  passes the SDK all-target compile. Publish only to fresh repositories, core
-  first, then update the SDK submodule URL if its public destination differs.
+  passes the locked SDK all-target compile and package tests (2/2), plus the
+  serialized core workspace suite with no failures and its declared ignored
+  cases. Publish only to fresh repositories, core first, then update the SDK
+  submodule URL if its public destination differs.
 - The GitHub description still calls this a private future home for bindings
   and examples; update it to the narrower Rust SDK boundary before opening it.
 - A crates.io release remains blocked until core provides compatible released
