@@ -87,10 +87,12 @@ For replaceable current values, call `enable_object_delivery` first, then use
 a selector, replacement key, expiry, and tombstone flag. Use the basic method
 for ordinary protected publications.
 
-`publish` and `poll` are a separate basic transport path; they do not provide
-MLS-protected group messaging. For protected live reception, call
-`poll_protected`. It stages the incoming message and returns a
-`ProtectedReceptionCandidate` containing the workspace and exact snapshot;
+`publish` and `poll` are a separate, unprotected transport path. The runtime
+rejects both while a client has an admitted workspace; use the protected
+publication and reception methods above for workspace traffic. For protected
+live reception, call `poll_protected`. It stages the incoming message and
+returns a `ProtectedReceptionCandidate` containing the workspace and exact
+snapshot;
 the payload remains unavailable until `adopt_protected_reception`. For a
 durable workspace, save that exact snapshot with `save_candidate` before
 adoption. The resulting `ReceivedProtectedPublication` contains the

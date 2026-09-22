@@ -1,0 +1,4 @@
+module CArachneSDK [system] {
+    header "include/arachne_sdk.h"
+    export *
+}

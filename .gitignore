@@ -1,2 +1,7 @@
 /target/
 /.cache/
+**/.build/
+**/__pycache__/
+**/*.py[cod]
+/bindings/python/build/
+/bindings/python/*.egg-info/
