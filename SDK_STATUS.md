@@ -34,10 +34,11 @@
   Fresh local bare remotes and a recursive clone were verified; the clone
   passes the locked SDK all-target compile and package tests (2/2), plus the
   serialized core workspace suite with no failures and its declared ignored
-  cases. Publish only to fresh repositories named `arachne-core-source` and
-  `arachne-sdk-source`, in that order; the SDK candidate pins the first URL.
-  If the names change, update the SDK submodule, README, and crate repository
-  URLs before publishing.
+  cases. The candidate currently uses the proposed `arachne-core-source` and
+  `arachne-sdk-source` URLs. Before publishing SDK, align its core submodule
+  URL and pinned commit with the final core release, then repeat the recursive
+  clone and feed binary check. If the SDK destination name changes, also
+  update the clone command and crate repository URL.
 - An isolated clone of feed HEAD `1b8b264` passes
   `cargo +1.98.0 check --locked --offline --bin arachne-feed` against the SDK
   candidate. The feed worktree and its intentional RED catalog test were left
