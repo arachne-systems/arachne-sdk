@@ -47,6 +47,8 @@ jobs:
           swift-version: "6.1.3"
 
       - name: Build and test Rust SDK
+        env:
+          RUSTFLAGS: ${{ matrix.os == 'ubuntu-latest' && '-C link-arg=-fuse-ld=bfd' || '' }}
         run: |
           cargo +1.98.0 fmt --package arachne-sdk --check
           cargo +1.98.0 test --locked -p arachne-sdk --all-targets
