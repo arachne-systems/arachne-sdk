@@ -27,6 +27,7 @@ Clone with the Core submodule and build the SDK library:
 ```sh
 git clone --recurse-submodules https://github.com/arachne-systems/arachne-sdk.git
 cd arachne-sdk
+rustup toolchain install 1.98.0 --profile minimal
 cargo +1.98.0 build --locked -p arachne-sdk
 ```
 
