@@ -28,8 +28,11 @@
 - The current core tree has focused public guides, but older reachable commits
   and surviving remote branches still contain private development guidance,
   including user-specific paths and publication authorization notes. Keep the
-  repositories private until a sanitized publication history or fresh public
-  source repository is prepared.
+  existing repositories private. A single-root core snapshot is prepared on
+  local branch `public-source-candidate` at `ce80d63`; the SDK snapshot is on
+  the same-named local branch at `5e8638a` and omits this internal status file.
+  Publish those snapshots only to fresh repositories, core first, then update
+  the SDK submodule URL if its public destination differs.
 - The GitHub description still calls this a private future home for bindings
   and examples; update it to the narrower Rust SDK boundary before opening it.
 - A crates.io release remains blocked until core provides compatible released
