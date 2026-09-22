@@ -3,7 +3,7 @@ name = "arachne-sdk"
 version = "0.1.0"
 edition = "2024"
 license = "Apache-2.0"
-description = "Adopter-facing Rust API for the Arachne fabric"
+description = "Typed Rust client for Arachne's secure peer-to-peer workspaces"
 repository = "https://github.com/arachne-systems/arachne-sdk"
 publish = false
 

@@ -2,52 +2,32 @@
 
 ## Current
 
-- `arachne-sdk` exposes the typed `arachne-runtime::Client` seam explicitly,
-  including typed join/admission operations, with a smoke test and native
-  endpoint example.
-- Core is pinned as a source submodule. The GitHub source release depends on
-  that exact checkout; the Rust crate remains `publish = false`.
-- The typed client exposes protected publication plus native record storage,
-  so durable callers can save the staged snapshot before adoption and restore
-  after restart.
-- The client can mark a signed service profile; admission and workspace policy
-  still control access and publication.
-
-## Not included
-
-- ATAK, Android, JNI and CoT adapters.
-- Feed-specific payload models.
-- Relay or hosted-service code.
-- Language bindings beyond the native Rust boundary.
-
-## Release boundary
-
-- GitHub currently reports both `arachne-sdk` and its pinned `arachne-core`
-  repository as private, with no release tags. A public source release must
-  make the pinned core commit publicly readable as well.
-- Core cleanup and release are being handled separately. Its single-root
-  snapshot is prepared on local branch `public-source-candidate` at `83dc95f`;
-  the SDK snapshot is on the same-named local branch at `bf20f40` and omits
-  this internal status file.
-  Fresh local bare remotes and a recursive clone were verified; the clone
-  passes the locked SDK all-target compile and package tests (2/2), plus the
-  serialized core workspace suite with no failures and its declared ignored
-  cases. The candidate uses the canonical `arachne-core` URL and proposed
-  `arachne-sdk-source` URL; its core commit pin remains provisional. Before
-  publishing SDK, align the pin with the final core release, then repeat the
-  recursive clone and feed binary check. If the SDK destination name changes,
-  also update the clone command and crate repository URL.
-- An isolated clone of feed HEAD `1b8b264` passes
-  `cargo +1.98.0 check --locked --offline --bin arachne-feed` against the SDK
-  candidate. The feed worktree and its intentional RED catalog test were left
-  untouched.
-- The existing GitHub SDK description is stale. Suggested description for the
-  fresh SDK repository:
+- `arachne-sdk` is a pre-release Rust source SDK; its crate remains
+  `publish = false`.
+- The GitHub repository description is now:
   `Typed Rust SDK for Arachne's secure peer-to-peer workspaces.`
-- A crates.io release remains blocked until core provides compatible released
-  Cargo packages; its current crates use workspace paths and are unpublished.
-- External contributions remain closed until the contributor process and
-  terms described in [CONTRIBUTING.md](CONTRIBUTING.md) are approved.
-- The SDK checkout's exact Cargo dependency versions are in `Cargo.lock`; the
-  core submodule retains its MPL-2.0 and
-  [vendored source inventory](core/THIRD_PARTY_NOTICES.md).
+- The README, workflow guide, and examples cover endpoint setup, invitation and
+  admission, protected publication and reception, and local record storage.
+- The local `core` submodule pin is `fa6ef24`, based on public core `main`
+  `feaed56`. It adds the typed protected-receive and storage methods required
+  by the SDK, but those three core commits are not on the public remote yet.
+
+## Verified locally
+
+- `cargo +1.98.0 test --locked --offline -p arachne-sdk` passes (2 integration
+  tests).
+- All SDK examples compile and run, including protected receive over a local
+  direct peer connection.
+- The feed binary builds against this SDK in a disposable checkout after
+  dropping two stale `iroh-blobs` and `iroh-gossip` root patches. The feed
+  worktree's uncommitted README and status edits were left untouched; its
+  manifest still needs that follow-on adjustment.
+
+## Public-source release gate
+
+- Merge or publish the three local core API commits, then pin the SDK to the
+  reachable public core commit and repeat the recursive-clone and feed checks.
+- Prepare the SDK's public branch as a parentless source snapshot and omit this
+  internal status file.
+- Keep the SDK crate unpublished until the source and package release plans are
+  aligned.

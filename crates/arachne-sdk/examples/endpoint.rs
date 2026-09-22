@@ -6,8 +6,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         secret: None,
     })?;
     let endpoint = client.endpoint()?;
+    let workspace = client.create_workspace("SDK example", None)?;
 
     println!("endpoint: {}", hex(&endpoint.endpoint_key));
+    println!("workspace: {}", hex(&workspace.workspace));
     client.close()?;
     Ok(())
 }
