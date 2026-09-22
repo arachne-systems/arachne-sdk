@@ -36,6 +36,10 @@
   serialized core workspace suite with no failures and its declared ignored
   cases. Publish only to fresh repositories, core first, then update the SDK
   submodule URL if its public destination differs.
+- An isolated clone of feed HEAD `1b8b264` passes
+  `cargo +1.98.0 check --locked --offline --bin arachne-feed` against the SDK
+  candidate. The feed worktree and its intentional RED catalog test were left
+  untouched.
 - The GitHub description still calls this a private future home for bindings
   and examples; update it to the narrower Rust SDK boundary before opening it.
 - A crates.io release remains blocked until core provides compatible released
