@@ -3,7 +3,7 @@ use arachne_sdk::{Client, ClientConfig, Network};
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut client = Client::open(ClientConfig {
         network: Network::Direct,
-        secret: Some([7; 32]),
+        secret: None,
     })?;
     let endpoint = client.endpoint()?;
 
