@@ -47,7 +47,7 @@ Run an example from the repository root with `cargo +1.98.0 run --example <name>
 Any fixed credentials in these samples are demo values; replace them with
 private, unique random credentials in an application.
 
-See the [workflow guide](docs/workflows.md) for credentials, admission,
-protected publication and reception, persistence ordering, and example limits.
+See the [workflow guide](docs/workflows.md) for credentials, service startup,
+admission, current-value publication, persistence ordering, and example limits.
 Client calls are synchronous; run them on a blocking worker rather than an
 async executor or UI thread.

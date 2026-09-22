@@ -44,9 +44,10 @@ storage policy:
 
 1. The workspace owner calls `issue_invitation` and gives the joining client
 the invitation, checkpoint, and route information it needs to reach the owner.
-2. The joining client calls `begin_join`, producing a join request and its
-endpoint ID. With `Network::Direct`, it may need to add the invitation's peer
-and address with `add_address_hint` first.
+2. The joining client calls `begin_join`, producing a typed join request and
+endpoint ID. `begin_join_with_peers` also records known peer identities for
+the join lifecycle. With `Network::Direct`, add the invitation's peer and
+address with `add_address_hint` when discovery has not supplied a route.
 3. The owner calls `stage_admission` with the peer-authenticated endpoint ID
 and request. After deciding to admit it, the owner calls `adopt_admission`; it
 can then obtain the matching reply with `retained_admission`.
@@ -65,6 +66,11 @@ the exact candidate snapshot with `save_candidate` before the matching adopt
 call. Keep the invitation and admission exchange tied to the intended
 workspace and endpoint.
 
+For a transport-driven join, enable record storage before `begin_join_with_peers`
+and call `drive_join` to advance the persisted admission exchange. After a
+restart, `restore_record_storage` returns the join state so a pending join can
+resume with `drive_join`.
+
 ## Publish and receive protected data
 
 Install policy derived from the accepted workspace state. `install_policy`
@@ -75,6 +81,11 @@ For the protected send path, call `stage_protected_publication` with the
 workspace, policy revision, topic, record ID, and opaque payload. If the
 workspace is durable, persist the exact returned snapshot before calling
 `adopt_protected_publication`.
+
+For replaceable current values, call `enable_object_delivery` first, then use
+`stage_protected_publication_with_current` with `PublicationCurrent` metadata:
+a selector, replacement key, expiry, and tombstone flag. Use the basic method
+for ordinary protected publications.
 
 `publish` and `poll` are a separate basic transport path; they do not provide
 MLS-protected group messaging. For protected live reception, call
@@ -108,13 +119,15 @@ publication rights.
 
 ## Other client operations
 
-- Session control: `workspace_state`, `cancel`, `wait_for_work`,
+- Session control: `workspace_state`, `cancel`, `wait_for_work`, `drive_join`,
   `poll_control`, `network_change`, and `close`.
 - Membership and diagnostics: `member_roster`, `connectivity`, and `metrics`.
 - Topic routing: `add_address_hint`, `set_interest`, and `poll_interest`.
 - Protected messaging: `stage_protected_publication`,
+  `stage_protected_publication_with_current`,
   `adopt_protected_publication`, `poll_protected`, and
   `adopt_protected_reception`.
+- Current-value inbox: `enable_object_delivery`.
 - Basic transport: `publish` and `poll`; these do not provide MLS protection.
 - Recovery: `fetch_recovery_range`, `poll_recovery_range`,
   `cancel_recovery_range`, `stage_recovery_range`, `adopt_recovery`, and

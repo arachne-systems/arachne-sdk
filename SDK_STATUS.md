@@ -4,30 +4,30 @@
 
 - `arachne-sdk` is a pre-release Rust source SDK; its crate remains
   `publish = false`.
-- The GitHub repository description is now:
-  `Typed Rust SDK for Arachne's secure peer-to-peer workspaces.`
-- The README, workflow guide, and examples cover endpoint setup, invitation and
-  admission, protected publication and reception, and local record storage.
-- The local `core` submodule pin is `fa6ef24`, based on public core `main`
-  `feaed56`. It adds the typed protected-receive and storage methods required
-  by the SDK, but those three core commits are not on the public remote yet.
+- The GitHub repository description is `Typed Rust SDK for Arachne's secure
+  peer-to-peer workspaces.` The repository remains private.
+- The README and workflow guide cover client setup, admission, durable joins,
+  protected send/receive, current-value publication, and example limits.
+- The SDK's local `core` pin is `0808e26`, based on public core `main`
+  `21f071a`. Six local core API commits are not published yet.
 
 ## Verified locally
 
 - `cargo +1.98.0 test --locked --offline -p arachne-sdk` passes (2 integration
   tests).
-- All SDK examples compile and run, including protected receive over a local
-  direct peer connection.
-- The feed binary builds against this SDK in a disposable checkout after
-  dropping two stale `iroh-blobs` and `iroh-gossip` root patches. The feed
-  worktree's uncommitted README and status edits were left untouched; its
-  manifest still needs that follow-on adjustment.
+- `cargo +1.98.0 check --locked --offline -p arachne-sdk --examples` and the
+  SDK package format check pass. All four examples run; protected receive
+  completes between two direct peers.
+- A disposable copy of the current feed worktree builds with the SDK after
+  migrating its join call to `begin_join_with_peers` and removing the two
+  obsolete `iroh-gossip` and `iroh-blobs` root patches. The live feed worktree
+  was left untouched; it still needs those follow-on edits.
 
 ## Public-source release gate
 
-- Merge or publish the three local core API commits, then pin the SDK to the
-  reachable public core commit and repeat the recursive-clone and feed checks.
-- Prepare the SDK's public branch as a parentless source snapshot and omit this
-  internal status file.
-- Keep the SDK crate unpublished until the source and package release plans are
-  aligned.
+- Publish the six core API commits, then pin the SDK to the reachable core
+  commit and repeat the recursive-clone and feed checks.
+- The local `public-release-candidate` branch is a parentless source snapshot
+  and omits this internal status file.
+- Keep the SDK crate unpublished until its separate package release plan is
+  ready.
