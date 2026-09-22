@@ -25,20 +25,18 @@
 - GitHub currently reports both `arachne-sdk` and its pinned `arachne-core`
   repository as private, with no release tags. A public source release must
   make the pinned core commit publicly readable as well.
-- The current core tree has focused public guides, but older reachable commits
-  and surviving remote branches still contain private development guidance,
-  including user-specific paths and publication authorization notes. Keep the
-  existing repositories private. A single-root core snapshot is prepared on
-  local branch `public-source-candidate` at `83dc95f`; the SDK snapshot is on
-  the same-named local branch at `e248efe` and omits this internal status file.
+- Core cleanup and release are being handled separately. Its single-root
+  snapshot is prepared on local branch `public-source-candidate` at `83dc95f`;
+  the SDK snapshot is on the same-named local branch at `bf20f40` and omits
+  this internal status file.
   Fresh local bare remotes and a recursive clone were verified; the clone
   passes the locked SDK all-target compile and package tests (2/2), plus the
   serialized core workspace suite with no failures and its declared ignored
-  cases. The candidate currently uses the proposed `arachne-core-source` and
-  `arachne-sdk-source` URLs. Before publishing SDK, align its core submodule
-  URL and pinned commit with the final core release, then repeat the recursive
-  clone and feed binary check. If the SDK destination name changes, also
-  update the clone command and crate repository URL.
+  cases. The candidate uses the canonical `arachne-core` URL and proposed
+  `arachne-sdk-source` URL; its core commit pin remains provisional. Before
+  publishing SDK, align the pin with the final core release, then repeat the
+  recursive clone and feed binary check. If the SDK destination name changes,
+  also update the clone command and crate repository URL.
 - An isolated clone of feed HEAD `1b8b264` passes
   `cargo +1.98.0 check --locked --offline --bin arachne-feed` against the SDK
   candidate. The feed worktree and its intentional RED catalog test were left
