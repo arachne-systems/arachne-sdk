@@ -40,8 +40,9 @@
   `cargo +1.98.0 check --locked --offline --bin arachne-feed` against the SDK
   candidate. The feed worktree and its intentional RED catalog test were left
   untouched.
-- The GitHub description still calls this a private future home for bindings
-  and examples; update it to the narrower Rust SDK boundary before opening it.
+- The existing GitHub SDK description is stale. Suggested description for the
+  fresh SDK repository:
+  `Typed Rust SDK for Arachne's secure peer-to-peer workspaces.`
 - A crates.io release remains blocked until core provides compatible released
   Cargo packages; its current crates use workspace paths and are unpublished.
 - External contributions remain closed until the contributor process and
