@@ -8,8 +8,8 @@
   peer-to-peer workspaces.` The repository remains private.
 - The README and workflow guide cover client setup, admission, durable joins,
   protected send/receive, current-value publication, and example limits.
-- The SDK's local `core` pin is `0808e26`, based on public core `main`
-  `21f071a`. Six local core API commits are not published yet.
+- The SDK's local `core` pin is `ca0fca4`, based on public core `main`
+  `21f071a`. One local core API commit is not published yet.
 
 ## Verified locally
 
