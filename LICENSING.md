@@ -10,6 +10,8 @@ Arachne trademarks or imply official ATAK compatibility or signing.
 The `core/` submodule resolves to `arachne-core`, whose Arachne-owned core
 source is licensed under MPL-2.0. That dependency and its notices retain their
 own terms; this repository does not copy or relicense core implementation.
+The core source tree has a [third-party source and license
+inventory](core/THIRD_PARTY_NOTICES.md) for its vendored components.
 ATAK SDK inputs, Android/ATAK material, vendored dependencies and third-party
 assets are not licensed by this file and retain their controlling terms.
 
