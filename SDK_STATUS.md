@@ -30,12 +30,14 @@
   including user-specific paths and publication authorization notes. Keep the
   existing repositories private. A single-root core snapshot is prepared on
   local branch `public-source-candidate` at `83dc95f`; the SDK snapshot is on
-  the same-named local branch at `d16f017` and omits this internal status file.
+  the same-named local branch at `e248efe` and omits this internal status file.
   Fresh local bare remotes and a recursive clone were verified; the clone
   passes the locked SDK all-target compile and package tests (2/2), plus the
   serialized core workspace suite with no failures and its declared ignored
-  cases. Publish only to fresh repositories, core first, then update the SDK
-  submodule URL if its public destination differs.
+  cases. Publish only to fresh repositories named `arachne-core-source` and
+  `arachne-sdk-source`, in that order; the SDK candidate pins the first URL.
+  If the names change, update the SDK submodule, README, and crate repository
+  URLs before publishing.
 - An isolated clone of feed HEAD `1b8b264` passes
   `cargo +1.98.0 check --locked --offline --bin arachne-feed` against the SDK
   candidate. The feed worktree and its intentional RED catalog test were left
