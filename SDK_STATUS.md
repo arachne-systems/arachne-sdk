@@ -29,10 +29,11 @@
   and surviving remote branches still contain private development guidance,
   including user-specific paths and publication authorization notes. Keep the
   existing repositories private. A single-root core snapshot is prepared on
-  local branch `public-source-candidate` at `ce80d63`; the SDK snapshot is on
-  the same-named local branch at `5e8638a` and omits this internal status file.
-  Publish those snapshots only to fresh repositories, core first, then update
-  the SDK submodule URL if its public destination differs.
+  local branch `public-source-candidate` at `83dc95f`; the SDK snapshot is on
+  the same-named local branch at `d16f017` and omits this internal status file.
+  Fresh local bare remotes and a recursive clone were verified; the clone
+  passes the SDK all-target compile. Publish only to fresh repositories, core
+  first, then update the SDK submodule URL if its public destination differs.
 - The GitHub description still calls this a private future home for bindings
   and examples; update it to the narrower Rust SDK boundary before opening it.
 - A crates.io release remains blocked until core provides compatible released
@@ -40,4 +41,5 @@
 - External contributions remain closed until the contributor process and
   terms described in [CONTRIBUTING.md](CONTRIBUTING.md) are approved.
 - The SDK checkout's exact Cargo dependency versions are in `Cargo.lock`; the
-  core submodule retains its MPL-2.0 and vendored dependency notices.
+  core submodule retains its MPL-2.0 and
+  [vendored source inventory](core/THIRD_PARTY_NOTICES.md).
