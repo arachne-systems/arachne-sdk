@@ -17,6 +17,8 @@ jobs:
   sdk:
     name: ${{ matrix.os }} SDK and bindings
     runs-on: ${{ matrix.os }}
+    env:
+      CARGO_BUILD_JOBS: 2
     strategy:
       fail-fast: false
       matrix:
@@ -40,6 +42,7 @@ jobs:
           python-version: "3.12"
 
       - uses: swift-actions/setup-swift@v2
+        if: runner.os == 'Linux'
         with:
           swift-version: "6.1.3"
 
