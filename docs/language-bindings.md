@@ -1,12 +1,15 @@
 # Go, Python, Swift, and Kotlin SDKs
 
-Go, Python, Swift, and Kotlin expose clients over the Rust runtime. Each package
-uses the same small C ABI and requires a native library built for the host
-operating system and architecture. Linux x86_64 is the qualified target today;
-the repository does not distribute prebuilt libraries. The SDK pins the public
-Core source revision it builds against. The package commands below use the
-repository root as the Go module and Swift package, with Python installed from
-its local package directory.
+Go, Python, Swift, and Kotlin expose clients over the Rust runtime through the
+same small C ABI. JVM clients use a native library built for the host operating
+system and architecture. The Android Gradle build compiles and packages the
+Rust library for `arm64-v8a` and `x86_64`. Linux and macOS JVM suites run in CI;
+Android runtime coverage runs on an API 35 x86_64 16 KB emulator. The arm64
+library is built and alignment-checked, but physical arm64 and ATAK host-app
+runtime integration are not verified. The repository does not distribute
+prebuilt SDK binaries. The SDK pins the public Core source revision it builds
+against. The package commands below use the repository root as the Go module
+and Swift package, with Python installed from its local package directory.
 
 ## Build the native library
 
@@ -210,7 +213,7 @@ plaintext is released only by `adopt_protected_reception`. If record storage is
 enabled, save the exact returned snapshot with `save_candidate` before
 adoption. Do not edit, serialize, or reconstruct candidate snapshot bytes.
 
-The receive methods have matching typed names in all three languages:
+The receive methods have matching typed names in all four bindings:
 
 ```go
 candidate, err := client.PollProtected()
@@ -229,18 +232,22 @@ if candidate != nil {
 
 Python uses `poll_protected()`, `save_candidate(...)`, and
 `adopt_protected_reception(...)`; Swift uses `pollProtected()`,
-`saveCandidate(...)`, and `adoptProtectedReception(snapshot:)`.
+`saveCandidate(...)`, and `adoptProtectedReception(snapshot:)`; Kotlin uses
+`pollProtected()`, `saveCandidate(...)`, and
+`adoptProtectedReception(snapshot)`.
 
-Go, Python, and Swift `enable_object_delivery` complete the inbox-enable
-transition and save its exact snapshot first when record storage is enabled.
-These bindings can publish current values, but do not expose pending-object
-polling or acknowledgement/rejection methods yet.
+`enable_object_delivery` completes the inbox-enable transition and saves its
+exact snapshot first when record storage is enabled. All four typed clients can
+publish current values, but do not yet provide typed pending-object polling or
+acknowledgement/rejection methods. Kotlin's raw dispatcher exposes the
+remaining runtime operations.
 
 The generic dispatcher remains available for less common runtime operations:
-`RawCall` / `RawCallStored` in Go, `raw_call` / `raw_call_stored` in Python, and
-`rawCall` / `rawCallStored` in Swift. Byte-vector fields use arrays of unsigned
-integers at the C boundary; the language adapters map these to Go byte slices,
-Python `bytes`, and Swift `Data`.
+`RawCall` / `RawCallStored` in Go, `raw_call` / `raw_call_stored` in Python,
+`rawCall` / `rawCallStored` in Swift, and `rawCall` / `rawCallStored` in Kotlin.
+Byte-vector fields use arrays of unsigned integers at the C boundary; the
+language adapters map these to Go byte slices, Python `bytes`, Swift `Data`, and
+Kotlin `ByteArray`.
 
 Client calls block and are serialized per client. Call them from a blocking
 worker instead of an async executor or UI thread. Use a unique 32-byte endpoint
