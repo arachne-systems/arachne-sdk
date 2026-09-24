@@ -179,6 +179,10 @@ publication, and persistence methods. `rawCall` and `rawCallStored` expose the
 remaining runtime operations; snapshot bytes remain separate from JSON. Calls
 are serialized per client, so use a worker thread instead of a UI thread.
 
+For Android, use the AAR and native build instructions in
+[`bindings/kotlin-android`](../bindings/kotlin-android/README.md). Its smoke
+test runs the same client against the Rust library on an Android emulator.
+
 ```kotlin
 import org.arachne.sdk.Client
 

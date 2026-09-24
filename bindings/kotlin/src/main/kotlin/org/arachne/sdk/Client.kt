@@ -125,7 +125,8 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
     }
 
     fun stageProtectedPublication(workspace: ID, revision: ULong, topic: String, id: RecordID,
-                                 payload: ByteArray, current: PublicationCurrent? = null): PublicationCandidate {
+                                 payload: ByteArray, current: PublicationCurrent? = null): PublicationCandidate = synchronized(lock) {
+        checkOpen()
         require(workspace.size == 32) { "workspace ID must be exactly 32 bytes" }
         require(id.size == 16) { "record ID must be exactly 16 bytes" }
         val activeWorkspace = workspaceState().workspace
@@ -136,7 +137,7 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
             "current" to current))
         val value = model(result.value, RawWorkspaceCandidate::class.java)
         if (!value.workspace.contentEquals(workspace)) throw ArachneException(2, "publication candidate workspace mismatch")
-        return PublicationCandidate(value.workspace, result.snapshot)
+        PublicationCandidate(value.workspace, result.snapshot)
     }
 
     fun adoptProtectedPublication(snapshot: ByteArray): DeliveryReport {
@@ -341,13 +342,6 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
         return value
     }
 
-    private fun take(buffer: NativeSdk.Buffer): ByteArray {
-        buffer.read()
-        val bytes = buffer.data?.getByteArray(0, buffer.len.toInt()) ?: byteArrayOf()
-        Native.sdk.arachne_sdk_buffer_free(buffer.data, buffer.len)
-        return bytes
-    }
-
     companion object {
         private val JSON: ObjectMapper = jacksonObjectMapper()
             .registerModule(SimpleModule().addSerializer(ByteArray::class.java,
@@ -366,15 +360,25 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
             val memory = Native.bytes(config.secret)
             val result = Native.sdk.arachne_sdk_open(config.network.nativeValue, memory, config.secret.size.toLong())
             result.read()
-            val value = result.value
-            value.read()
-            val bytes = value.data?.getByteArray(0, value.len.toInt()) ?: byteArrayOf()
-            Native.sdk.arachne_sdk_buffer_free(value.data, value.len)
+            val bytes = take(result.value)
             if (result.status != 0) throw ArachneException(result.status, bytes.toString(Charsets.UTF_8))
             val handle = bytes.toString(Charsets.US_ASCII).toLongOrNull()
                 ?: throw ArachneException(2, "native SDK returned an invalid client handle")
             return Client(handle)
         }
+    }
+}
+
+private fun take(buffer: NativeSdk.Buffer): ByteArray {
+    buffer.read()
+    try {
+        val length = buffer.len
+        if (length < 0L || length > Int.MAX_VALUE) throw ArachneException(2, "native SDK returned an invalid buffer length")
+        val pointer = buffer.data
+        if (pointer == null && length > 0) throw ArachneException(2, "native SDK returned a missing buffer")
+        return pointer?.getByteArray(0, length.toInt()) ?: byteArrayOf()
+    } finally {
+        Native.sdk.arachne_sdk_buffer_free(buffer.data, buffer.len)
     }
 }
 
