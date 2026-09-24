@@ -196,8 +196,8 @@ state; workspace creation and invitations; join and admission staging/adoption;
 encrypted record storage; roster, policy, and service profiles; protected
 publication and reception; topic interest and basic unprotected pub/sub;
 connectivity and metrics; and recovery-range workflows. Kotlin provides typed
-endpoint/workspace, protected publication, and persistence methods, with
-`rawCall` / `rawCallStored` for the complete runtime API. See the
+methods and models for those workflows, with `rawCall` / `rawCallStored` for
+the complete runtime API. See the
 [workflow guide](workflows.md) for ordering and security details.
 
 Protected reception follows the same save-before-adopt rule as protected
