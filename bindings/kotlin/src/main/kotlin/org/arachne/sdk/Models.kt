@@ -27,7 +27,6 @@ enum class Presence {
 }
 
 data class RestoredMember(val id: ID, val displayName: String?)
-data class WorkspaceCandidate(val workspace: ID, val snapshot: ByteArray)
 data class RestoreResult(
     val workspace: ID,
     val workspaceName: String? = null,
@@ -106,8 +105,27 @@ data class WorkspaceMetrics(
 data class DeliveryFailure(val peer: ID, val error: String)
 data class PublicationCurrent(val selector: ID, val replacementKey: ID, val expiresAt: ULong,
                               val tombstone: Boolean = false)
-data class PublicationCandidate(val workspace: ID, val snapshot: ByteArray)
-data class ProtectedReceptionCandidate(val workspace: ID, val snapshot: ByteArray)
+sealed class StagedCandidate(workspace: ID, snapshot: ByteArray, internal val owner: Any) {
+    private val workspaceBytes = workspace.copyOf()
+    internal val snapshot = snapshot.copyOf()
+    init {
+        require(workspaceBytes.size == 32) { "candidate workspace ID must be exactly 32 bytes" }
+        require(this.snapshot.isNotEmpty()) { "candidate snapshot must not be empty" }
+    }
+    val workspace: ID get() = workspaceBytes.copyOf()
+}
+
+class AdmissionCandidate internal constructor(workspace: ID, snapshot: ByteArray, owner: Any) :
+    StagedCandidate(workspace, snapshot, owner)
+
+class JoinCandidate internal constructor(workspace: ID, snapshot: ByteArray, owner: Any) :
+    StagedCandidate(workspace, snapshot, owner)
+
+class PublicationCandidate internal constructor(workspace: ID, snapshot: ByteArray, owner: Any) :
+    StagedCandidate(workspace, snapshot, owner)
+
+class ProtectedReceptionCandidate internal constructor(workspace: ID, snapshot: ByteArray, owner: Any) :
+    StagedCandidate(workspace, snapshot, owner)
 data class ReceivedProtectedPublication(
     val workspace: ID,
     val revision: ULong,
@@ -145,7 +163,8 @@ sealed interface RecoveryStage {
     data object AlreadyCovered : RecoveryStage
     data object NoNewObjects : RecoveryStage
 }
-data class RecoveryCandidate(val workspace: ID, val snapshot: ByteArray, val publicationCount: Int,
-                             val alreadyReceived: Int, val durable: Boolean)
+class RecoveryCandidate internal constructor(workspace: ID, snapshot: ByteArray, val publicationCount: Int,
+                                             val alreadyReceived: Int, val durable: Boolean, owner: Any) :
+    StagedCandidate(workspace, snapshot, owner)
 data class RecoveryAdoption(val workspace: ID, val epoch: ULong, val memberCount: Int, val durable: Boolean,
                             val recoveredPublications: Int, val missingPublications: Int)

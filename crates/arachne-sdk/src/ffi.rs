@@ -1,4 +1,4 @@
-//! Small C ABI shared by the Go, Python, and Swift adapters.
+//! Small C ABI shared by the Go, Python, Swift, and Kotlin adapters.
 //!
 //! The foreign API carries bounded JSON requests to the runtime. Staged
 //! snapshots use a separate byte buffer so their exact bytes survive every

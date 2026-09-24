@@ -18,8 +18,19 @@ cd bindings/kotlin-android
 ```
 
 The Gradle task builds `libarachne_sdk.so` for both ABIs and places the generated
-libraries in the AAR. Applications can depend on the `:sdk` project or publish
-the AAR. The library client is blocking; call it from a worker thread.
+libraries in the AAR. To consume a local AAR, add it and its runtime dependencies
+to the app:
+
+```kotlin
+dependencies {
+    implementation(files("libs/sdk-release.aar"))
+    implementation("net.java.dev.jna:jna:5.17.0@aar")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.0")
+}
+```
+
+The `:sdk` project declares those dependencies when included as a Gradle
+subproject. The library client is blocking; call it from a worker thread.
 
 For example, set `ndk { abiFilters += setOf("arm64-v8a", "x86_64") }` in the
 app's `defaultConfig`.

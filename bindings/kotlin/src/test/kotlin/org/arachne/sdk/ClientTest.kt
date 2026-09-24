@@ -1,6 +1,9 @@
 package org.arachne.sdk
 
 import java.nio.file.Files
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
@@ -24,6 +27,46 @@ class ClientTest {
             Client.open(ClientConfig(secret = byteArrayOf(1)))
         }
         assertTrue(error.message!!.contains("32 bytes"))
+        assertFailsWith<IllegalArgumentException> {
+            Client.open(ClientConfig(network = Network.RELAY_ONLY))
+        }
+    }
+
+    @Test fun validatesTypedIdsBeforeEnteringNativeCode() {
+        Client.open().use { client ->
+            assertFailsWith<IllegalArgumentException> {
+                client.addAddressHint(byteArrayOf(1), "127.0.0.1:1")
+            }
+            assertFailsWith<IllegalArgumentException> {
+                client.fetchRecoveryRange(RecoveryRangeRequest(peer = byteArrayOf(1), revision = 0u, topics = emptyList()))
+            }
+        }
+    }
+
+    @Test fun closeUnblocksWaitForWork() {
+        val client = Client.open()
+        val waiting = CountDownLatch(1)
+        val waitFinished = CountDownLatch(1)
+        val waitResult = AtomicReference<Result<Boolean>?>()
+        Thread({
+            waiting.countDown()
+            waitResult.set(runCatching { client.waitForWork() })
+            waitFinished.countDown()
+        }, "kotlin-sdk-work-wait").apply { isDaemon = true; start() }
+
+        assertTrue(waiting.await(1, TimeUnit.SECONDS))
+        Thread.sleep(100)
+        val closeFinished = CountDownLatch(1)
+        val closeResult = AtomicReference<Result<Unit>?>()
+        Thread({
+            closeResult.set(runCatching { client.close() })
+            closeFinished.countDown()
+        }, "kotlin-sdk-close").apply { isDaemon = true; start() }
+
+        assertTrue(closeFinished.await(2, TimeUnit.SECONDS), "close blocked behind waitForWork")
+        closeResult.get()!!.getOrThrow()
+        assertTrue(waitFinished.await(2, TimeUnit.SECONDS), "close did not wake waitForWork")
+        assertEquals(false, waitResult.get()!!.getOrThrow())
     }
 
     @Test fun typedPersistenceAndProtectedPublication() {
@@ -47,15 +90,16 @@ class ClientTest {
             val staged = client.stageProtectedPublication(workspace.workspace, workspace.epoch + 1u,
                 "sdk/kotlin/smoke", ByteArray(16) { 1 }, "kotlin binding".toByteArray())
             assertTrue(staged.snapshot.isNotEmpty())
-            client.saveCandidate(staged.snapshot)
-            client.adoptProtectedPublication(staged.snapshot)
+            Client.open().use { other ->
+                assertFailsWith<IllegalArgumentException> { other.adoptProtectedPublication(staged) }
+            }
+            client.adoptProtectedPublication(staged)
             client.enableObjectDelivery()
             client.enableObjectDelivery()
             val current = client.stageProtectedPublication(workspace.workspace, workspace.epoch + 1u,
                 "sdk/kotlin/current", ByteArray(16) { 2 }, "current value".toByteArray(),
                 PublicationCurrent(ByteArray(32) { 7 }, ByteArray(32) { 8 }, ULong.MAX_VALUE))
-            client.saveCandidate(current.snapshot)
-            client.adoptProtectedPublication(current.snapshot)
+            client.adoptProtectedPublication(current)
         } finally {
             client.close()
         }
@@ -82,11 +126,11 @@ class ClientTest {
             receiver.addAddressHint(invitation.peer, loopback(invitation.address))
             val join = receiver.beginJoin(invitation.invitation, invitation.checkpoint, "Receiver")
             val admission = owner.stageAdmission(join.endpoint, join.admissionRequest)
-            val admittedOwner = owner.adoptAdmission(admission.snapshot)
+            val admittedOwner = owner.adoptAdmission(admission)
             val reply = owner.retainedAdmission(join.endpoint, join.admissionRequest)
             val joined = receiver.stageJoin(reply.welcome,
                 listOf(JoinAdmissionStep(reply.commit, reply.authorization)))
-            val admittedReceiver = receiver.adoptJoin(joined.snapshot)
+            val admittedReceiver = receiver.adoptJoin(joined)
             assertEquals(admittedOwner.epoch, admittedReceiver.epoch)
             assertEquals(2, owner.memberRoster().members.size)
             assertEquals(workspace.workspace.toList(), owner.metrics().workspace.toList())
@@ -105,9 +149,9 @@ class ClientTest {
             val payload = "protected Kotlin receive".toByteArray()
             val publication = owner.stageProtectedPublication(workspace.workspace, revision, topic,
                 ByteArray(16) { 1 }, payload)
-            assertTrue(owner.adoptProtectedPublication(publication.snapshot).failed.isEmpty())
+            assertTrue(owner.adoptProtectedPublication(publication).failed.isEmpty())
             val reception = awaitValue { receiver.pollProtected() }
-            val message = receiver.adoptProtectedReception(reception.snapshot)
+            val message = receiver.adoptProtectedReception(reception)
             assertEquals(workspace.workspace.toList(), message.workspace.toList())
             assertEquals(topic, message.topic)
             assertContentEquals(payload, message.payload)

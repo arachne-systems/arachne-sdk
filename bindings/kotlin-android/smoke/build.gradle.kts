@@ -23,8 +23,14 @@ android {
 
 kotlin.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
 
+val sdkAar = rootProject.project(":sdk").layout.buildDirectory.file("outputs/aar/sdk-release.aar")
+
 dependencies {
-    implementation(project(":sdk"))
+    implementation(files(sdkAar))
+    implementation("net.java.dev.jna:jna:5.17.0@aar")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.20.0")
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
 }
+
+tasks.named("preBuild") { dependsOn(":sdk:assembleRelease") }

@@ -29,10 +29,11 @@ data class DeliveryReport(val admitted: List<ID>, val queued: Boolean, val faile
 
 class ArachneException(val status: Int, message: String) : RuntimeException(message)
 
-/** Blocking, serialized Kotlin access to the shared Rust SDK. */
+/** Blocking Kotlin client; stateful requests are serialized per client. */
 class Client private constructor(private val handle: Long) : AutoCloseable {
     private val lock = Any()
-    private var closed = false
+    private val candidateOwner = Any()
+    @Volatile private var closed = false
     private val mapper = JSON
 
     fun rawCall(op: String, params: Map<String, Any?> = emptyMap()): Any? = synchronized(lock) {
@@ -63,13 +64,14 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
 
     fun endpoint(): EndpointInfo = synchronized(lock) {
         checkOpen()
-        mapper.readValue(checked(Native.sdk.arachne_sdk_describe(handle)))
+        mapper.readValue<EndpointInfo>(checked(Native.sdk.arachne_sdk_describe(handle)))
+            .let { it.copy(endpointKey = checkId(it.endpointKey)) }
     }
 
     fun workspaceState(): WorkspaceState = synchronized(lock) {
         checkOpen()
         val raw = model(rawCall("workspace_state"), RawWorkspaceState::class.java)
-        WorkspaceState(endpoint().endpointKey, raw.workspace, raw.workspaceReady,
+        WorkspaceState(endpoint().endpointKey, raw.workspace?.let(::checkId), raw.workspaceReady,
             raw.durable, raw.activity.phase, raw.activity.reason)
     }
 
@@ -81,33 +83,44 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
     fun beginJoin(invitation: ByteArray, checkpoint: ByteArray, displayName: String,
                   peers: List<ID> = emptyList()): JoinRequest {
         val raw = model(rawCall("begin_join", mapOf("invitation" to invitation, "checkpoint" to checkpoint,
-            "display_name" to displayName, "peers" to peers)), RawJoinRequest::class.java)
+            "display_name" to displayName, "peers" to peers.map { requireId(it, "peer ID") })), RawJoinRequest::class.java)
         val admission = raw.admissionRequest ?: throw ArachneException(1, "invitation has no admission request")
         return JoinRequest(checkId(raw.workspace), checkId(raw.member.id), checkId(raw.endpoint), admission)
     }
 
     fun driveJoin(): Any? = rawCall("drive_join")
 
-    fun stageAdmission(authenticatedEndpoint: ID, request: ByteArray): WorkspaceCandidate {
-        val result = rawCallStored("stage_admission", mapOf("authenticated_endpoint" to checkId(authenticatedEndpoint),
+    fun stageAdmission(authenticatedEndpoint: ID, request: ByteArray): AdmissionCandidate {
+        val result = rawCallStored("stage_admission", mapOf("authenticated_endpoint" to requireId(authenticatedEndpoint, "authenticated endpoint ID"),
             "request" to request))
-        return WorkspaceCandidate(checkId(model(result.value, RawWorkspaceCandidate::class.java).workspace), result.snapshot)
+        return AdmissionCandidate(checkId(model(result.value, RawWorkspaceCandidate::class.java).workspace),
+            result.snapshot, candidateOwner)
     }
 
-    fun adoptAdmission(snapshot: ByteArray): WorkspaceInfo =
-        workspaceInfo(rawCallStored("adopt_admission", snapshot = snapshot).value)
+    fun adoptAdmission(candidate: AdmissionCandidate): WorkspaceInfo = synchronized(lock) {
+        workspaceInfo(rawCallStored("adopt_admission", snapshot = candidateSnapshot(candidate)).value)
+    }
 
     fun retainedAdmission(authenticatedEndpoint: ID, request: ByteArray): AdmissionReply =
-        model(rawCall("retained_admission", mapOf("authenticated_endpoint" to checkId(authenticatedEndpoint),
+        model(rawCall("retained_admission", mapOf("authenticated_endpoint" to requireId(authenticatedEndpoint, "authenticated endpoint ID"),
             "request" to request)), AdmissionReply::class.java)
 
-    fun stageJoin(welcome: ByteArray, commits: List<JoinAdmissionStep>): WorkspaceCandidate {
-        val result = rawCallStored("stage_join", mapOf("commits" to commits), welcome)
-        return WorkspaceCandidate(checkId(model(result.value, RawWorkspaceCandidate::class.java).workspace), result.snapshot)
+    fun stageJoin(welcome: ByteArray, commits: List<JoinAdmissionStep>): JoinCandidate {
+        val checkedCommits = commits.map { step ->
+            val authorization = step.authorization.copy(
+                invitationKey = requireId(step.authorization.invitationKey, "invitation key"),
+                grantSignature = requireSize(step.authorization.grantSignature, 64, "grant signature"),
+                redemptionSignature = requireSize(step.authorization.redemptionSignature, 64, "redemption signature"))
+            step.copy(authorization = authorization)
+        }
+        val result = rawCallStored("stage_join", mapOf("commits" to checkedCommits), welcome)
+        return JoinCandidate(checkId(model(result.value, RawWorkspaceCandidate::class.java).workspace),
+            result.snapshot, candidateOwner)
     }
 
-    fun adoptJoin(snapshot: ByteArray): WorkspaceInfo =
-        workspaceInfo(rawCallStored("adopt_join", snapshot = snapshot).value)
+    fun adoptJoin(candidate: JoinCandidate): WorkspaceInfo = synchronized(lock) {
+        workspaceInfo(rawCallStored("adopt_join", snapshot = candidateSnapshot(candidate)).value)
+    }
 
     fun installWorkspacePolicy(revision: ULong) { rawCall("install_workspace_policy", mapOf("revision" to revision)) }
 
@@ -127,23 +140,27 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
     fun stageProtectedPublication(workspace: ID, revision: ULong, topic: String, id: RecordID,
                                  payload: ByteArray, current: PublicationCurrent? = null): PublicationCandidate = synchronized(lock) {
         checkOpen()
-        require(workspace.size == 32) { "workspace ID must be exactly 32 bytes" }
-        require(id.size == 16) { "record ID must be exactly 16 bytes" }
+        requireId(workspace, "workspace ID")
+        require(topic.isNotBlank()) { "topic is required" }
+        requireSize(id, 16, "record ID")
+        val checkedCurrent = current?.copy(selector = requireId(current.selector, "current selector"),
+            replacementKey = requireId(current.replacementKey, "current replacement key"))
         val activeWorkspace = workspaceState().workspace
             ?: throw ArachneException(1, "no active workspace for protected publication")
         if (!activeWorkspace.contentEquals(workspace)) throw ArachneException(1, "publication candidate workspace mismatch")
         val result = rawCallStored("stage_network_publication", mapOf(
             "revision" to revision, "topic" to topic, "id" to id, "payload" to payload,
-            "current" to current))
+            "current" to checkedCurrent))
         val value = model(result.value, RawWorkspaceCandidate::class.java)
         if (!value.workspace.contentEquals(workspace)) throw ArachneException(2, "publication candidate workspace mismatch")
-        PublicationCandidate(value.workspace, result.snapshot)
+        PublicationCandidate(value.workspace, result.snapshot, candidateOwner)
     }
 
-    fun adoptProtectedPublication(snapshot: ByteArray): DeliveryReport {
+    fun adoptProtectedPublication(candidate: PublicationCandidate): DeliveryReport = synchronized(lock) {
+        val snapshot = candidateSnapshot(candidate)
         val result = model(rawCallStored("adopt_publication", snapshot = snapshot).value, RawAdoptPublication::class.java)
         if (result.networkError != null) throw ArachneException(1, result.networkError)
-        return result.admission
+        result.admission
     }
 
     fun pollProtected(): ProtectedReceptionCandidate? {
@@ -156,14 +173,17 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
         if (raw.state != "awaiting_reception_save" || result.snapshot.isEmpty()) {
             throw ArachneException(2, "protected reception has no adoptable snapshot")
         }
-        return ProtectedReceptionCandidate(checkId(raw.workspace), result.snapshot)
+        return ProtectedReceptionCandidate(checkId(raw.workspace), result.snapshot, candidateOwner)
     }
 
-    fun adoptProtectedReception(snapshot: ByteArray): ReceivedProtectedPublication =
-        model(rawCallStored("adopt_reception", snapshot = snapshot).value, ReceivedProtectedPublication::class.java)
+    fun adoptProtectedReception(candidate: ProtectedReceptionCandidate): ReceivedProtectedPublication = synchronized(lock) {
+        model(rawCallStored("adopt_reception", snapshot = candidateSnapshot(candidate)).value,
+            ReceivedProtectedPublication::class.java)
+    }
 
     fun setInterest(workspace: ID, revision: ULong, topic: String, subscribed: Boolean) {
-        rawCall("set_interest", mapOf("workspace" to checkId(workspace), "revision" to revision,
+        require(topic.isNotBlank()) { "topic is required" }
+        rawCall("set_interest", mapOf("workspace" to requireId(workspace, "workspace ID"), "revision" to revision,
             "topic" to topic, "subscribed" to subscribed))
     }
 
@@ -178,7 +198,7 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
     }
 
     fun publish(workspace: ID, revision: ULong, topic: String, payload: ByteArray): DeliveryReport =
-        model(rawCall("publish", mapOf("workspace" to checkId(workspace), "revision" to revision,
+        model(rawCall("publish", mapOf("workspace" to requireId(workspace, "workspace ID"), "revision" to revision,
             "topic" to topic, "payload" to payload)), DeliveryReport::class.java)
 
     fun poll(): Publication? = rawCall("poll")?.let { model(it, Publication::class.java) }
@@ -186,7 +206,9 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
         rawCall("poll_recovered_publication")?.let { model(it, RecoveredPublication::class.java) }
 
     fun fetchRecoveryRange(request: RecoveryRangeRequest): RecoveryRangeStatus =
-        recoveryRange(rawCall("fetch_recovery_range", mapOf("peer" to request.peer, "author" to request.author,
+        recoveryRange(rawCall("fetch_recovery_range", mapOf(
+            "peer" to request.peer?.let { requireId(it, "peer ID") },
+            "author" to request.author?.let { requireId(it, "author ID") },
             "revision" to request.revision, "topics" to request.topics,
             "after" to request.after, "through" to request.through)))
 
@@ -203,21 +225,23 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
         return when (raw.state) {
             "awaiting_recovery_save" -> RecoveryStage.Candidate(RecoveryCandidate(
                 checkId(raw.workspace ?: throw ArachneException(2, "recovery candidate has no workspace")),
-                staged.snapshot, raw.publicationCount ?: 0, raw.alreadyReceived ?: 0, raw.durable ?: false))
+                staged.snapshot, raw.publicationCount ?: 0, raw.alreadyReceived ?: 0, raw.durable ?: false,
+                candidateOwner))
             "recovery_already_covered" -> RecoveryStage.AlreadyCovered
             "recovery_no_new_objects" -> RecoveryStage.NoNewObjects
             else -> throw ArachneException(2, "unknown recovery stage: ${raw.state}")
         }
     }
 
-    fun adoptRecovery(snapshot: ByteArray): RecoveryAdoption {
-        val raw = model(rawCallStored("adopt_recovery", snapshot = snapshot).value, RawRecoveryAdoption::class.java)
+    fun adoptRecovery(candidate: RecoveryCandidate): RecoveryAdoption = synchronized(lock) {
+        val raw = model(rawCallStored("adopt_recovery", snapshot = candidateSnapshot(candidate)).value,
+            RawRecoveryAdoption::class.java)
         val (recovered, missing) = when (raw.state) {
             "recovery_adopted" -> (raw.publicationCount ?: 0) to 0
             "direct_miss_adopted" -> 0 to (raw.missingCount ?: 0)
             else -> throw ArachneException(2, "unknown recovery adoption state: ${raw.state}")
         }
-        return RecoveryAdoption(checkId(raw.workspace), raw.epoch, raw.members, raw.durable, recovered, missing)
+        RecoveryAdoption(checkId(raw.workspace), raw.epoch, raw.members, raw.durable, recovered, missing)
     }
 
     fun saveCandidate(snapshot: ByteArray) = synchronized(lock) {
@@ -272,16 +296,28 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
     fun networkChange() { rawCall("network_change") }
     fun pollControl(): Boolean = rawCall("poll_admission") != null
     fun addAddressHint(peer: ID, address: String) {
-        rawCall("add_address_hint", mapOf("peer" to checkId(peer), "address" to address))
+        rawCall("add_address_hint", mapOf("peer" to requireId(peer, "peer ID"), "address" to address))
     }
     fun installPolicy(workspace: ID, revision: ULong, endpoints: List<PeerPolicy>) {
-        rawCall("install_verified_policy", mapOf("workspace" to checkId(workspace),
-            "revision" to revision, "endpoints" to endpoints))
+        rawCall("install_verified_policy", mapOf("workspace" to requireId(workspace, "workspace ID"),
+            "revision" to revision, "endpoints" to endpoints.map {
+                it.copy(peer = requireId(it.peer, "policy peer ID"))
+            }))
     }
 
-    fun cancel() = synchronized(lock) { checkOpen(); checked(Native.sdk.arachne_sdk_cancel(handle)) }
-    fun waitForWork(): Boolean = synchronized(lock) {
-        checkOpen(); checked(Native.sdk.arachne_sdk_wait_for_work(handle)).toString(Charsets.US_ASCII) == "1"
+    fun cancel() {
+        checkOpen()
+        checked(Native.sdk.arachne_sdk_cancel(handle))
+    }
+
+    /** Wait independently of serialized requests; [close] wakes this call. */
+    fun waitForWork(): Boolean {
+        checkOpen()
+        return when (checked(Native.sdk.arachne_sdk_wait_for_work(handle)).toString(Charsets.US_ASCII)) {
+            "0" -> false
+            "1" -> true
+            else -> throw ArachneException(2, "native SDK returned an invalid wait result")
+        }
     }
 
     override fun close() = synchronized(lock) {
@@ -289,6 +325,13 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
     }
 
     private fun checkOpen() { if (closed) throw ArachneException(1, "Arachne client is closed") }
+    private fun candidateSnapshot(candidate: StagedCandidate): ByteArray {
+        checkOpen()
+        require(candidate.owner === candidateOwner) { "candidate belongs to another client" }
+        if (workspaceState().durable) saveCandidate(candidate.snapshot)
+        return candidate.snapshot
+    }
+
     private fun request(op: String, params: Map<String, Any?>): ByteArray {
         require(op.isNotBlank()) { "operation name is required" }
         require("op" !in params) { "params must not contain op" }
@@ -301,13 +344,6 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
         is Iterable<*> -> value.map(::normalize)
         else -> value
     }
-    private fun byteVector(value: Any?): ByteArray = (value as? List<*>)
-        ?.map {
-            val byte = (it as? Number)?.toInt() ?: throw ArachneException(2, "invalid byte vector value")
-            if (byte !in 0..255) throw ArachneException(2, "invalid byte vector value")
-            byte.toByte()
-        }?.toByteArray()
-        ?: throw ArachneException(2, "native SDK returned an invalid byte vector")
     private fun decode(bytes: ByteArray): Any? = mapper.readValue(bytes, Any::class.java)
     private fun <T> model(value: Any?, type: Class<T>): T = mapper.convertValue(value, type)
 
@@ -335,6 +371,11 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
         if (it.size != 32) throw ArachneException(2, "native SDK returned an invalid ID")
     }
 
+    private fun requireId(value: ID, name: String): ID = requireSize(value, 32, name)
+    private fun requireSize(value: ByteArray, size: Int, name: String): ByteArray = value.also {
+        require(it.size == size) { "$name must be exactly $size bytes" }
+    }
+
     private fun checked(result: NativeSdk.Result): ByteArray {
         result.read()
         val value = take(result.value)
@@ -357,6 +398,9 @@ class Client private constructor(private val handle: Long) : AutoCloseable {
 
         @JvmStatic fun open(config: ClientConfig = ClientConfig()): Client {
             require(config.secret.isEmpty() || config.secret.size == 32) { "endpoint secret must be exactly 32 bytes" }
+            require(config.network == Network.DIRECT || config.secret.size == 32) {
+                "${config.network} requires a 32-byte endpoint secret"
+            }
             val memory = Native.bytes(config.secret)
             val result = Native.sdk.arachne_sdk_open(config.network.nativeValue, memory, config.secret.size.toLong())
             result.read()
