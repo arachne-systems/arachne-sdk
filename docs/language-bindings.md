@@ -1,6 +1,6 @@
-# Go, Python, and Swift SDKs
+# Go, Python, Swift, and Kotlin SDKs
 
-Go, Python, and Swift expose typed clients over the Rust runtime. Each package
+Go, Python, Swift, and Kotlin expose clients over the Rust runtime. Each package
 uses the same small C ABI and requires a native library built for the host
 operating system and architecture. Linux x86_64 is the qualified target today;
 the repository does not distribute prebuilt libraries. The SDK pins the public
@@ -161,13 +161,43 @@ LD_LIBRARY_PATH="$PWD/target/debug" swift test
 
 On macOS use `DYLD_LIBRARY_PATH` for runtime lookup.
 
+## Kotlin/JVM
+
+The Kotlin package is a Gradle project under `bindings/kotlin`. It uses JNA to
+call the same C ABI. Build the native library first, then run:
+
+```sh
+export ARACHNE_SDK_LIBRARY="$PWD/target/debug/libarachne_sdk.so"
+export LD_LIBRARY_PATH="$PWD/target/debug${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+cd bindings/kotlin
+./gradlew test
+```
+
+Use `libarachne_sdk.dylib` and `DYLD_LIBRARY_PATH` on macOS. `Client.open()`
+returns a blocking client with typed endpoint, workspace, policy, protected
+publication, and persistence methods. `rawCall` and `rawCallStored` expose the
+remaining runtime operations; snapshot bytes remain separate from JSON. Calls
+are serialized per client, so use a worker thread instead of a UI thread.
+
+```kotlin
+import org.arachne.sdk.Client
+
+Client.open().use { client ->
+    val workspace = client.createWorkspace("Feed owner", "Field feeds")
+    client.installWorkspacePolicy(workspace.epoch + 1)
+    println(workspace.workspace.contentToString())
+}
+```
+
 ## Typed client coverage
 
-Each language provides typed methods and models for endpoint and workspace
+Go, Python, and Swift provide typed methods and models for endpoint and workspace
 state; workspace creation and invitations; join and admission staging/adoption;
 encrypted record storage; roster, policy, and service profiles; protected
 publication and reception; topic interest and basic unprotected pub/sub;
-connectivity and metrics; and recovery-range workflows. See the
+connectivity and metrics; and recovery-range workflows. Kotlin provides typed
+endpoint/workspace, protected publication, and persistence methods, with
+`rawCall` / `rawCallStored` for the complete runtime API. See the
 [workflow guide](workflows.md) for ordering and security details.
 
 Protected reception follows the same save-before-adopt rule as protected

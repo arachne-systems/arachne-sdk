@@ -44,6 +44,7 @@ verified target; other targets are not release-qualified yet.
 | Go | [`bindings/go`](bindings/go) | Import `github.com/arachne-systems/arachne-sdk/bindings/go`; requires cgo and the native library. |
 | Python | [`bindings/python`](bindings/python) | Install the local package, set `ARACHNE_SDK_LIBRARY`, then use its typed `Client`. |
 | Swift | `ArachneSDK` SwiftPM product | Add this repository as a package dependency; build the native library separately. |
+| Kotlin/JVM | [`bindings/kotlin`](bindings/kotlin) | Add the Gradle project; build the native library separately. |
 
 See [language bindings](docs/language-bindings.md) for setup and language
 examples, and the [workflow guide](docs/workflows.md) for persistence rules.
