@@ -1,6 +1,9 @@
 /target/
 /.cache/
 **/.build/
+**/.gradle/
+**/.kotlin/
+**/build/
 **/__pycache__/
 **/*.py[cod]
 /bindings/python/build/

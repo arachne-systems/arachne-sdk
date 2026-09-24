@@ -1,0 +1,4 @@
+-dontwarn java.awt.**
+-keep class com.sun.jna.** { *; }
+-keep interface org.arachne.sdk.NativeSdk { *; }
+-keep class org.arachne.sdk.NativeSdk$* { *; }

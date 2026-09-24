@@ -1,12 +1,15 @@
-# Go, Python, and Swift SDKs
+# Go, Python, Swift, and Kotlin SDKs
 
-Go, Python, and Swift expose typed clients over the Rust runtime. Each package
-uses the same small C ABI and requires a native library built for the host
-operating system and architecture. Linux x86_64 is the qualified target today;
-the repository does not distribute prebuilt libraries. The SDK pins the public
-Core source revision it builds against. The package commands below use the
-repository root as the Go module and Swift package, with Python installed from
-its local package directory.
+Go, Python, Swift, and Kotlin expose clients over the Rust runtime through the
+same small C ABI. JVM clients use a native library built for the host operating
+system and architecture. The Android Gradle build compiles and packages the
+Rust library for `arm64-v8a` and `x86_64`. Linux and macOS JVM suites run in CI;
+Android runtime coverage runs on an API 35 x86_64 16 KB emulator. The arm64
+library is built and alignment-checked, but physical arm64 and ATAK host-app
+runtime integration are not verified. The repository does not distribute
+prebuilt SDK binaries. The SDK pins the public Core source revision it builds
+against. The package commands below use the repository root as the Go module
+and Swift package, with Python installed from its local package directory.
 
 ## Build the native library
 
@@ -161,22 +164,63 @@ LD_LIBRARY_PATH="$PWD/target/debug" swift test
 
 On macOS use `DYLD_LIBRARY_PATH` for runtime lookup.
 
+## Kotlin/JVM
+
+The Kotlin package is a Gradle project under `bindings/kotlin`. It uses JNA to
+call the same C ABI. Build the native library first, then run:
+
+```sh
+export ARACHNE_SDK_LIBRARY="$PWD/target/debug/libarachne_sdk.so"
+export LD_LIBRARY_PATH="$PWD/target/debug${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+cd bindings/kotlin
+./gradlew test
+```
+
+Use `libarachne_sdk.dylib` and `DYLD_LIBRARY_PATH` on macOS. `Client.open()`
+returns a blocking client with typed endpoint, workspace, policy, protected
+publication, and persistence methods. `rawCall` and `rawCallStored` expose the
+remaining runtime operations; snapshot bytes remain separate from JSON. Calls
+are serialized per client, so use a worker thread instead of a UI thread.
+
+For Android, use the AAR and native build instructions in
+[`bindings/kotlin-android`](../bindings/kotlin-android/README.md). Its smoke
+app consumes the generated release AAR as a local artifact and runs the client
+against the Rust library on an Android emulator.
+
+```kotlin
+import org.arachne.sdk.Client
+
+Client.open().use { client ->
+    val workspace = client.createWorkspace("Feed owner", "Field feeds")
+    client.installWorkspacePolicy(workspace.epoch + 1)
+    println(workspace.workspace.contentToString())
+}
+```
+
 ## Typed client coverage
 
-Each language provides typed methods and models for endpoint and workspace
+Go, Python, and Swift provide typed methods and models for endpoint and workspace
 state; workspace creation and invitations; join and admission staging/adoption;
 encrypted record storage; roster, policy, and service profiles; protected
 publication and reception; topic interest and basic unprotected pub/sub;
-connectivity and metrics; and recovery-range workflows. See the
+connectivity and metrics; and recovery-range workflows. Kotlin provides typed
+methods and models for those workflows, with `rawCall` / `rawCallStored` for
+the remaining runtime operations. Those raw methods are an advanced escape
+hatch; typed Kotlin stage/adopt methods use operation-specific candidates,
+bound to their creating client, and persist them automatically when native
+record storage is enabled. See the
 [workflow guide](workflows.md) for ordering and security details.
 
 Protected reception follows the same save-before-adopt rule as protected
 publication. `poll_protected` returns an opaque candidate, and the authenticated
 plaintext is released only by `adopt_protected_reception`. If record storage is
-enabled, save the exact returned snapshot with `save_candidate` before
-adoption. Do not edit, serialize, or reconstruct candidate snapshot bytes.
+enabled, the Go, Python, Swift, and Rust APIs require saving the exact candidate
+snapshot with `save_candidate` before adoption. Kotlin's typed API returns
+client-bound candidate objects and saves their exact snapshot inside the
+matching adoption method. Do not edit, serialize, or reconstruct candidate
+snapshot bytes.
 
-The receive methods have matching typed names in all three languages:
+The receive methods have matching typed names in all four bindings:
 
 ```go
 candidate, err := client.PollProtected()
@@ -195,21 +239,29 @@ if candidate != nil {
 
 Python uses `poll_protected()`, `save_candidate(...)`, and
 `adopt_protected_reception(...)`; Swift uses `pollProtected()`,
-`saveCandidate(...)`, and `adoptProtectedReception(snapshot:)`.
+`saveCandidate(...)`, and `adoptProtectedReception(snapshot:)`; Kotlin passes
+the returned value from `pollProtected()` to `adoptProtectedReception(...)`.
+Admission, join, publication, and recovery candidates use the same typed,
+client-bound adoption pattern in Kotlin. Low-level `rawCallStored` callers
+still own the exact save-before-adopt ordering.
 
-Go, Python, and Swift `enable_object_delivery` complete the inbox-enable
-transition and save its exact snapshot first when record storage is enabled.
-These bindings can publish current values, but do not expose pending-object
-polling or acknowledgement/rejection methods yet.
+`enable_object_delivery` completes the inbox-enable transition and saves its
+exact snapshot first when record storage is enabled. All four typed clients can
+publish current values, but do not yet provide typed pending-object polling or
+acknowledgement/rejection methods. Kotlin's raw dispatcher exposes the
+remaining runtime operations.
 
 The generic dispatcher remains available for less common runtime operations:
-`RawCall` / `RawCallStored` in Go, `raw_call` / `raw_call_stored` in Python, and
-`rawCall` / `rawCallStored` in Swift. Byte-vector fields use arrays of unsigned
-integers at the C boundary; the language adapters map these to Go byte slices,
-Python `bytes`, and Swift `Data`.
+`RawCall` / `RawCallStored` in Go, `raw_call` / `raw_call_stored` in Python,
+`rawCall` / `rawCallStored` in Swift, and `rawCall` / `rawCallStored` in Kotlin.
+Byte-vector fields use arrays of unsigned integers at the C boundary; the
+language adapters map these to Go byte slices, Python `bytes`, Swift `Data`, and
+Kotlin `ByteArray`.
 
-Client calls block and are serialized per client. Call them from a blocking
-worker instead of an async executor or UI thread. Use a unique 32-byte endpoint
-secret for a persistent identity. Only the Direct profile accepts an empty
-secret for an ephemeral endpoint. The record-storage root is separate from the
+Stateful client calls block and are serialized per client. `cancel()` and
+`waitForWork()` may run alongside a blocking request; `close()` wakes a waiting
+`waitForWork()`. Call blocking methods from a worker instead of an async
+executor or UI thread. Use a unique 32-byte endpoint secret for a persistent
+identity. Only the Direct profile accepts an empty secret for an ephemeral
+endpoint. The record-storage root is separate from the
 endpoint secret and remains under application control.

@@ -1,7 +1,7 @@
 # Arachne SDK
 
-Rust SDK with Go, Python, and Swift bindings for Arachne's secure peer-to-peer
-workspaces.
+Rust SDK with Go, Python, Swift, and Kotlin bindings for Arachne's secure
+peer-to-peer workspaces.
 
 Use it to open peer endpoints, create or join workspaces through invitations,
 apply workspace policy, send and receive protected application data, and
@@ -11,9 +11,9 @@ application.
 ## Status
 
 **Pre-release alpha source.** The Rust crate is not published to crates.io.
-Go, Python, and Swift call the same Rust runtime through a small C ABI. Build
-the native library for your target before using those bindings; this repository
-does not distribute prebuilt libraries.
+Go, Python, Swift, and Kotlin/JVM use the same Rust runtime through a small C
+ABI. The Android Gradle build compiles and packages the Rust library for its
+supported ABIs. This repository does not distribute prebuilt SDK binaries.
 
 The SDK source is Apache-2.0. The separate core source remains MPL-2.0; see
 [LICENSING.md](LICENSING.md) and [core/LICENSING.md](core/LICENSING.md).
@@ -33,8 +33,10 @@ cargo +1.98.0 build --locked -p arachne-sdk
 
 The library is written to `target/debug` (`libarachne_sdk.so` on Linux,
 `libarachne_sdk.dylib` on macOS). Build it for the same operating system and
-architecture as the language application. Linux x86_64 is the currently
-verified target; other targets are not release-qualified yet.
+architecture as the language application. Linux and macOS JVM bindings run in
+CI. Android's AAR builds `arm64-v8a` and `x86_64`; CI runs the x86_64 binding on
+an API 35 16 KB emulator. Physical arm64 and ATAK host-app integration have not
+been runtime-tested.
 
 ## Language bindings
 
@@ -44,6 +46,7 @@ verified target; other targets are not release-qualified yet.
 | Go | [`bindings/go`](bindings/go) | Import `github.com/arachne-systems/arachne-sdk/bindings/go`; requires cgo and the native library. |
 | Python | [`bindings/python`](bindings/python) | Install the local package, set `ARACHNE_SDK_LIBRARY`, then use its typed `Client`. |
 | Swift | `ArachneSDK` SwiftPM product | Add this repository as a package dependency; build the native library separately. |
+| Kotlin/JVM and Android | [`bindings/kotlin`](bindings/kotlin) and [`bindings/kotlin-android`](bindings/kotlin-android) | Use the JVM Gradle project or build the Android AAR for `arm64-v8a` and `x86_64`. |
 
 See [language bindings](docs/language-bindings.md) for setup and language
 examples, and the [workflow guide](docs/workflows.md) for persistence rules.
