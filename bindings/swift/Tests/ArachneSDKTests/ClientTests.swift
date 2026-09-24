@@ -2,7 +2,54 @@ import XCTest
 import Foundation
 @testable import ArachneSDK
 
+private final class ErrorBox: @unchecked Sendable {
+    private let lock = NSLock()
+    private var error: Error?
+
+    func set(_ value: Error) {
+        lock.lock()
+        defer { lock.unlock() }
+        error = value
+    }
+
+    func get() -> Error? {
+        lock.lock()
+        defer { lock.unlock() }
+        return error
+    }
+}
+
 final class ClientTests: XCTestCase {
+    func testCloseWakesParkedWaiter() throws {
+        let client = try Client.open()
+        let waiterDone = DispatchSemaphore(value: 0)
+        Thread.detachNewThread {
+            while (try? client.waitForWork()) == true {}
+            waiterDone.signal()
+        }
+        Thread.sleep(forTimeInterval: 0.2)
+
+        let callsDone = DispatchSemaphore(value: 0)
+        let failure = ErrorBox()
+        Thread.detachNewThread {
+            do {
+                _ = try client.endpoint()
+                try client.cancel()
+                try client.close()
+            } catch {
+                failure.set(error)
+            }
+            callsDone.signal()
+        }
+        guard callsDone.wait(timeout: .now() + 10) == .success else {
+            return XCTFail("endpoint/cancel/close blocked behind a parked waitForWork")
+        }
+        XCTAssertNil(failure.get())
+        XCTAssertEqual(waiterDone.wait(timeout: .now() + 10), .success,
+                       "close did not wake the parked waitForWork")
+        XCTAssertThrowsError(try client.waitForWork())
+    }
+
     func testOpenStateAndClose() throws {
         let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)

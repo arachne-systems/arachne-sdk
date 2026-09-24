@@ -9,6 +9,53 @@ import (
 	"time"
 )
 
+func TestCloseWakesParkedWaiter(t *testing.T) {
+	client, err := Open(Direct, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	waiter := make(chan error, 1)
+	go func() {
+		for {
+			ready, err := client.WaitForWork()
+			if err != nil || !ready {
+				waiter <- err
+				return
+			}
+		}
+	}()
+	time.Sleep(200 * time.Millisecond)
+
+	calls := make(chan error, 1)
+	go func() {
+		if _, err := client.Endpoint(); err != nil {
+			calls <- err
+			return
+		}
+		if err := client.Cancel(); err != nil {
+			calls <- err
+			return
+		}
+		calls <- client.Close()
+	}()
+	select {
+	case err := <-calls:
+		if err != nil {
+			t.Fatal(err)
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("Endpoint/Cancel/Close blocked behind a parked WaitForWork")
+	}
+	select {
+	case <-waiter:
+	case <-time.After(10 * time.Second):
+		t.Fatal("Close did not wake the parked WaitForWork")
+	}
+	if _, err := client.WaitForWork(); err == nil {
+		t.Fatal("WaitForWork after Close returned no error")
+	}
+}
+
 func TestOpenWorkspaceAndClose(t *testing.T) {
 	client, err := Open(Direct, bytes.Repeat([]byte{7}, 32))
 	if err != nil {

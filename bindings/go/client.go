@@ -761,12 +761,18 @@ func (c *Client) Metrics() (WorkspaceMetrics, error) {
 }
 
 func (c *Client) NetworkChange() error { return c.callOK("network_change", nil) }
+
+// Cancel interrupts outbound control exchanges without waiting for serialized calls.
 func (c *Client) Cancel() error {
-	_, err := c.nativeCall(func() C.ArachneResult { return C.arachne_sdk_cancel(C.int64_t(c.handle)) })
+	_, err := c.unlockedNativeCall(func(handle int64) C.ArachneResult { return C.arachne_sdk_cancel(C.int64_t(handle)) })
 	return err
 }
+
+// WaitForWork parks independently of serialized calls; Close wakes it and it returns false.
 func (c *Client) WaitForWork() (bool, error) {
-	value, err := c.nativeCall(func() C.ArachneResult { return C.arachne_sdk_wait_for_work(C.int64_t(c.handle)) })
+	value, err := c.unlockedNativeCall(func(handle int64) C.ArachneResult {
+		return C.arachne_sdk_wait_for_work(C.int64_t(handle))
+	})
 	if err != nil {
 		return false, err
 	}
@@ -1074,6 +1080,23 @@ func (c *Client) nativeCall(call func() C.ArachneResult) ([]byte, error) {
 		return nil, errors.New("Arachne client is closed")
 	}
 	result := call()
+	value := takeBuffer(result.value)
+	if result.status != 0 {
+		return nil, errors.New(string(value))
+	}
+	return value, nil
+}
+
+// unlockedNativeCall checks the client under the lock, then calls without it.
+// Native handles are never reused, so a call racing with Close gets a closed-handle error.
+func (c *Client) unlockedNativeCall(call func(handle int64) C.ArachneResult) ([]byte, error) {
+	c.mu.Lock()
+	handle, closed := c.handle, c.closed
+	c.mu.Unlock()
+	if closed {
+		return nil, errors.New("Arachne client is closed")
+	}
+	result := call(handle)
 	value := takeBuffer(result.value)
 	if result.status != 0 {
 		return nil, errors.New(string(value))

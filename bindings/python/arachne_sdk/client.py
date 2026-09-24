@@ -820,10 +820,12 @@ class Client:
         self.raw_call("network_change")
 
     def cancel(self) -> None:
-        self._native_call(self._library.arachne_sdk_cancel, self._handle)
+        """Interrupt outbound control exchanges without waiting for serialized calls."""
+        self._unlocked_native_call(self._library.arachne_sdk_cancel)
 
     def wait_for_work(self) -> bool:
-        value = self._native_call(self._library.arachne_sdk_wait_for_work, self._handle)
+        """Park independently of serialized calls; close() wakes it and it returns False."""
+        value = self._unlocked_native_call(self._library.arachne_sdk_wait_for_work)
         if value not in (b"0", b"1"):
             raise ArachneError("native SDK returned an invalid wait result")
         return value == b"1"
@@ -982,6 +984,18 @@ class Client:
             if result.status:
                 raise ArachneError(value.decode("utf-8", errors="replace"))
             return value
+
+    def _unlocked_native_call(self, function: Any) -> bytes:
+        # Check under the lock, then call without it. Native handles are never
+        # reused, so a call racing with close() gets a closed-handle error.
+        with self._lock:
+            self._ensure_open()
+            handle = self._handle
+        result = function(handle)
+        value = _take_buffer(self._library, result.value)
+        if result.status:
+            raise ArachneError(value.decode("utf-8", errors="replace"))
+        return value
 
     @staticmethod
     def _request(op: str, params: dict[str, Any]) -> bytes:

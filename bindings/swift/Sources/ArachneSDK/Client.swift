@@ -671,15 +671,20 @@ public final class Client: @unchecked Sendable {
     }
 
     public func networkChange() throws { _ = try rawCall("network_change") }
-    public func cancel() throws { try withOpen { _ = try Self.checked(arachne_sdk_cancel(handle)) } }
+    /// Interrupts outbound control exchanges without waiting for serialized calls.
+    public func cancel() throws {
+        let handle = try openHandle()
+        _ = try Self.checked(arachne_sdk_cancel(handle))
+    }
+
+    /// Parks independently of serialized calls; `close()` wakes it and it returns false.
     public func waitForWork() throws -> Bool {
-        try withOpen {
-            let bytes = try Self.checked(arachne_sdk_wait_for_work(handle))
-            guard bytes == Data("0".utf8) || bytes == Data("1".utf8) else {
-                throw ArachneError(status: 2, message: "native SDK returned an invalid wait result")
-            }
-            return bytes == Data("1".utf8)
+        let handle = try openHandle()
+        let bytes = try Self.checked(arachne_sdk_wait_for_work(handle))
+        guard bytes == Data("0".utf8) || bytes == Data("1".utf8) else {
+            throw ArachneError(status: 2, message: "native SDK returned an invalid wait result")
         }
+        return bytes == Data("1".utf8)
     }
     public func pollControl() throws -> Bool { try rawCall("poll_admission") is NSNull == false }
     public func addAddressHint(peer: ID, address: String) throws {
@@ -848,6 +853,13 @@ public final class Client: @unchecked Sendable {
             throw ArachneError(status: 1, message: "Arachne client is closed")
         }
         return try operation()
+    }
+
+    /// Checks the client under the lock and returns the handle for a call made
+    /// without it. Native handles are never reused, so a call racing with
+    /// `close()` gets a closed-handle error.
+    private func openHandle() throws -> Int64 {
+        try withOpen { handle }
     }
 
     private static func request(_ op: String, params: [String: Any]) throws -> Data {

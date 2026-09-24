@@ -1,4 +1,5 @@
 import tempfile
+import threading
 import time
 import unittest
 from pathlib import Path
@@ -14,6 +15,43 @@ from arachne_sdk import (
 
 
 class ClientSmokeTests(unittest.TestCase):
+    def test_close_wakes_parked_waiter(self):
+        client = Client.open(Network.DIRECT)
+        waiter_result: list[BaseException | bool] = []
+
+        def wait() -> None:
+            try:
+                while client.wait_for_work():
+                    pass
+                waiter_result.append(False)
+            except BaseException as error:
+                waiter_result.append(error)
+
+        waiter = threading.Thread(target=wait, daemon=True)
+        waiter.start()
+        time.sleep(0.2)
+
+        call_result: list[BaseException | None] = []
+
+        def call() -> None:
+            try:
+                client.endpoint()
+                client.cancel()
+                client.close()
+                call_result.append(None)
+            except BaseException as error:
+                call_result.append(error)
+
+        caller = threading.Thread(target=call, daemon=True)
+        caller.start()
+        caller.join(10)
+        self.assertFalse(caller.is_alive(), "endpoint/cancel/close blocked behind a parked wait_for_work")
+        self.assertEqual(call_result, [None])
+        waiter.join(10)
+        self.assertFalse(waiter.is_alive(), "close did not wake the parked wait_for_work")
+        with self.assertRaises(RuntimeError):
+            client.wait_for_work()
+
     def test_open_state_and_close(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "records.db"
