@@ -25,3 +25,8 @@ pub use arachne_runtime::{
 };
 
 mod ffi;
+
+// Generated-bindings surface (ADR A1/A4 steps 7-8). Kept in its own module so
+// the Rust API above does not change. See docs/language-bindings.md.
+uniffi::setup_scaffolding!();
+pub mod uniffi_api;
