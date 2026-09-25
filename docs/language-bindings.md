@@ -8,18 +8,46 @@ steps 7-9). Both paths are in the repository during the move.
 
 ### What is generated
 
-One Rust module, `crates/arachne-sdk/src/uniffi_api.rs`, is the source of truth.
-It wraps core's typed `arachne_runtime::Client`. It sends no JSON and holds no lock
-while a call waits. The first slice has:
+One Rust module, `crates/arachne-sdk/src/uniffi_api/`, is the source of truth. The UniFFI
+export layer stays in the SDK crate; core stays free of FFI code. It wraps core's typed
+`arachne_runtime::Client`. It sends no JSON and holds no lock while a call waits.
 
-| Item | Kind | Notes |
-| --- | --- | --- |
-| `Client` | object | `open(ClientConfig)`, `describe()`, `state()`, `next_event(timeout_ms)`, `wait_for_work(timeout_ms)`, `wake()`, `close()` |
-| `ClientConfig` | record | `network`, optional 32-byte `secret`, optional `deadline_ms` |
-| `EndpointInfo`, `WorkspaceState` | records | IDs are lowercase hex strings |
-| `Network`, `Event`, `WorkspacePhase` | enums | `Network.Tor` always exists; this build gives `Unsupported` (103) |
-| `ApiError`, `ErrorCode` | error, enum | `ErrorCode` carries the stable numbers (1, 100, 101, ...) |
-| `api_error_code(error)`, `api_version()` | functions | Read the code with `api_error_code`, in every language |
+| Group | Exported (`Client` methods unless noted) |
+| --- | --- |
+| Lifecycle | `open(ClientConfig)`, `describe`, `state`, `next_event(timeout_ms)`, `wait_for_work(timeout_ms)`, `wake`, `close`, `set_deadline(ms)`, `poll_control`, `network_change`, `add_address_hint`; free `suspend`, `resume`, `is_suspended` (default context) |
+| Workspace | `create_workspace`, `member_roster`, `use_service_profile`, `metrics` |
+| Invitations, join, admission | `stage_invitation(expires_at, kind)` / `adopt_invitation`, `inspect_invitation`, `invitation_controls` (read only), `fetch_invitation_checkpoint`, `begin_join`, `stage_join` / `adopt_join`, `stage_admission`, `stage_invitation_approval`, `stage_invitation_decline` / `adopt_admission`, `retained_admission`, `admission_approvals`, `acknowledge_admission_approval`, `send_admission_reply` |
+| Policy, interest, publication | `install_workspace_policy`, `install_member_policy`, `set_interest`, `poll_interest`, `stage_protected_publication` / `adopt_protected_publication` |
+| Receive (inbox) | `poll_protected` / `adopt_protected_reception`, `poll_pending_object`, `stage_object_acknowledgement`, `stage_object_rejection` |
+| Recovery | `fetch_recovery_range(request, epoch)`, `poll_recovery_range`, `cancel_recovery_range`, `stage_recovery_range` (`Candidate`, `AlreadyCovered`, `NoNewObjects`, `AwaitingApplication`) / `adopt_recovery` (recovered and missing counts) |
+| Presence | `poll_presence(announce)` |
+| Errors | `ApiError`, `ErrorCode` (stable numbers), free `api_error_code(error)`, `api_version()` |
+
+Candidates are opaque objects (`InvitationCandidate`, `AdmissionCandidate`, `JoinCandidate`,
+`PublicationCandidate`, `ReceptionCandidate`, `RecoveryCandidate`). Foreign code never sees the
+snapshot bytes. Only the adopt call of the same kind on the same client accepts a candidate,
+and only once; otherwise it gives `WrongState` (102). IDs are lowercase hex strings
+(`EndpointId`, `MemberId`, `WorkspaceId`, `AttemptId`, `RecordId`, and `Key32` for other
+32-byte keys). Counts are `u64`.
+
+Not wrapped yet, on purpose (TODOs in `uniffi_api/ops.rs`):
+
+- Storage and candidate persistence (A5 replaces it): record storage, `save_candidate`,
+  seal/restore, `reset_workspace`, `discard_workspace_candidate`, `drive_join`,
+  `drive_workspace`. So a generated client is never durable today.
+- Management, leave and revocation (A2 changes commit ordering).
+- `request_admission` and `poll_membership_update` (they return untyped JSON), the
+  direct-recovery ops (not on the typed core `Client`), nearby, and the fixtures
+  `publish` / `poll` / `install_policy`.
+
+### Shims
+
+Core cannot yet be exported as it is (see the core step 6 list). The SDK carries shims,
+each marked `// SHIM: remove after core step 6 <reason>`: mirrors of the
+`#[non_exhaustive]` `ErrorCode`, `ApiError`, `Event`, `InvitationKind`; one `Network` with
+`Tor` always present (`Unsupported` in this build); hex custom types for the core IDs and
+`Key32`; `u64` for `usize`; record copies of the runtime structs; `RouteKind::Custom { name }`;
+and the candidate objects.
 
 Rules for foreign code:
 
@@ -38,7 +66,7 @@ Rules for foreign code:
 
 | Path | What |
 | --- | --- |
-| `crates/arachne-sdk/src/uniffi_api.rs` | Exported Rust surface (mirrors of the core contract types, see below) |
+| `crates/arachne-sdk/src/uniffi_api/` | Exported Rust surface: `mod.rs` (errors, lifecycle), `types.rs` (records), `candidates.rs`, `ops.rs` |
 | `crates/arachne-sdk/uniffi.toml` | Generator settings: package and module names, the Kotlin `close` rename |
 | `crates/uniffi-bindgen` | `uniffi-bindgen` at the exact scaffolding version (`=0.31.2`) for Kotlin, Swift, Python |
 | `patches/uniffi-bindgen-go-enum-discr.patch` | Fix for `uniffi-bindgen-go` v0.7.1 (provenance in `patches/README.md`) |
@@ -67,9 +95,13 @@ JNA_JAR=/path/to/jna-5.17.0.jar scripts/uniffi-smoke.sh   # kotlin swift python 
 ```
 
 The smoke tests need `kotlinc` and `java` 21, Swift 6.1.3, `uv` and Go with cgo.
-Each test opens a client, reads `describe` and `state`, waits in `next_event` with a
-timeout, checks that `wake` and a `close` from another thread release a parked
-`next_event`, and checks the error codes 100, 103 and 1 across the boundary. The
+Each smoke test opens a client, reads `describe` and `state`, waits in `next_event` with
+a timeout, checks that `wake` and a `close` from another thread release a parked
+`next_event`, and checks the error codes 100, 103 and 1 across the boundary. Each flow
+test (`Flow.kt`, `Flow.swift`, `test_flow.py`, `flow_test.go`) runs two clients on
+localhost: invitation, join, publish, recovery, acknowledge; then interest, live protected
+receive, reject; then presence, metrics, deadline, suspend and resume; and candidate misuse
+(another client, second adopt). The
 `generated-bindings` CI job runs the same steps on Linux.
 
 ### Versions
@@ -81,14 +113,16 @@ exists. The Go build moves the generator's own `uniffi` dependencies from 0.31.0
 
 ### Mirrors of the core contract
 
-Core has no `uniffi` feature yet. So `uniffi_api.rs` declares copies of
-`ErrorCode`, `ApiError`, `Event` and `Network` with `From` conversions. UniFFI `remote`
+Core stays free of FFI code; the export layer lives in the SDK. So `uniffi_api/`
+declares copies of `ErrorCode`, `ApiError`, `Event`, `Network` and `InvitationKind` with
+`From` conversions. UniFFI `remote`
 types cannot be used for them, because the core types are `#[non_exhaustive]`.
 Unit tests check the copies against core (`ErrorCode::ALL`, `Network::ALL`, and one
 `ApiError::new` for each code). `Event` has no `ALL` list, so a new core event gives
-`Internal` at run time until the mirror has it. The ID newtypes (`EndpointId`,
-`WorkspaceId`) and `WorkspacePhase` are exported directly as remote types. When core
-adds the derives behind its `uniffi` feature (ADR step 7), delete the mirrors.
+`Internal` at run time until the mirror has it. The core ID newtypes, `WorkspacePhase`, `MemberKind`, `Presence` and the metrics
+counters are exported directly as remote types. When core step 6 fixes the blockers
+(exhaustive-matchable or `ALL`-listed enums, ID newtypes and `u64` in the runtime
+structs, one `Network`), delete the matching shims.
 
 ### Migration plan from the hand bindings
 
@@ -97,11 +131,11 @@ adds the derives behind its `uniffi` feature (ADR step 7), delete the mirrors.
    Go, Python and Swift bindings call ops that core removed (A3, B1), so their CI steps
    are off (`if: false`, with a TODO). The Rust SDK API (`arachne_sdk::Client`,
    examples, `tests/client.rs`) is ported and tested.
-2. **Grow the surface with core (ADR steps 2-6).** Add each typed op to `uniffi_api.rs`
-   as one exported method. Candidates become objects bound to their client and kind
-   (the Kotlin PR's "candidate owner" check becomes a Rust-side session check, so no
-   language keeps a candidate map). When core exports its own types behind `uniffi`,
-   delete the mirrors.
+2. **Grow the surface with core (ADR steps 2-6).** Add each typed op to `uniffi_api/ops.rs`
+   as one exported method. Candidates are already objects bound to their client and kind
+   (the Kotlin PR's "candidate owner" check is now a Rust-side check, so no language
+   keeps a candidate map); A5 moves that check into core. After core step 6, delete the
+   shims.
 3. **Kotlin (ADR step 7).** Replace `Client.kt`, `Models.kt` and `Native.kt` in the Kotlin
    PR with the generated file. Rename the package to `org.arachne.sdk`. Keep
    `com.sun.jna` and the generated package in `consumer-rules.pro`. Run the AAR smoke test.
