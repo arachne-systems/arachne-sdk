@@ -21,30 +21,38 @@
 use std::sync::Arc;
 use std::time::Duration;
 
-use arachne_api::{EndpointId, WorkspaceId};
+use arachne_api::{AttemptId, EndpointId, MemberId, RecordId, WorkspaceId};
 use arachne_runtime::WorkspacePhase;
+
+mod candidates;
+mod ops;
+mod types;
+
+pub use candidates::*;
+pub use types::*;
 
 // ---------------------------------------------------------------------------
 // IDs: lowercase hex strings on the foreign side. A bad string fails in the
 // lift step with a typed `ApiError::InvalidId` (code 101).
 
-uniffi::custom_type!(EndpointId, String, {
-    remote,
-    lower: |id| id.to_string(),
-    try_lift: |text| Ok(EndpointId::from_hex(&text).map_err(ApiError::from)?),
-});
-
-uniffi::custom_type!(WorkspaceId, String, {
-    remote,
-    lower: |id| id.to_string(),
-    try_lift: |text| Ok(WorkspaceId::from_hex(&text).map_err(ApiError::from)?),
-});
+// SHIM: remove after core step 6 - core IDs get the uniffi custom_type behind its `uniffi` feature.
+macro_rules! hex_id {
+    ($($name:ident),*) => {$(
+        uniffi::custom_type!($name, String, {
+            remote,
+            lower: |id| id.to_string(),
+            try_lift: |text| Ok($name::from_hex(&text).map_err(ApiError::from)?),
+        });
+    )*};
+}
+hex_id!(EndpointId, WorkspaceId, MemberId, AttemptId, RecordId);
 
 // ---------------------------------------------------------------------------
 // Error model (mirror of `arachne_api::{ErrorCode, ApiError}`).
 
 /// A stable numeric error code. The discriminant is the number; see
 /// `arachne_api::ErrorCode` for the ranges and rules.
+// SHIM: remove after core step 6 - `arachne_api::ErrorCode` is non_exhaustive, so it cannot be a remote type (E0004).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, uniffi::Enum)]
 #[repr(u32)]
 pub enum ErrorCode {
@@ -124,6 +132,7 @@ impl From<arachne_api::ErrorCode> for ErrorCode {
 
 /// The error of every SDK call. Programs read `api_error_code(error)`; the
 /// text is for people and never holds secrets.
+// SHIM: remove after core step 6 - `arachne_api::ApiError` is non_exhaustive (E0004) and core ops return the `client::Error` struct.
 #[derive(Clone, Debug, PartialEq, Eq, thiserror::Error, uniffi::Error)]
 pub enum ApiError {
     #[error("closed")]
@@ -307,6 +316,8 @@ pub fn api_version() -> u32 {
 
 /// A network mode. `Tor` always exists, so the bindings are the same for
 /// every build; without Tor in the build, `Client.open` gives `Unsupported`.
+// SHIM: remove after core step 6 - the runtime has its own `Network` with `Tor` behind `cfg(feature = "tor")`;
+// this one always has `Tor` (ADR decision 6) and gives `Unsupported` in this build.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, uniffi::Enum)]
 pub enum Network {
     Direct,
@@ -341,6 +352,7 @@ impl Network {
 /// One event from `Client.next_event`. It names the queue or job that has
 /// work; the host then drains that queue. Keep a default branch: new
 /// variants can come in a later `api_version`.
+// SHIM: remove after core step 6 - `arachne_api::Event` is non_exhaustive and has no `ALL` list.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, uniffi::Enum)]
 pub enum Event {
     AdmissionRequest,
@@ -440,7 +452,9 @@ pub struct WorkspaceState {
 /// while another thread waits: no lock is held while a call waits.
 #[derive(uniffi::Object)]
 pub struct Client {
-    inner: arachne_runtime::Client,
+    pub(crate) inner: arachne_runtime::Client,
+    /// Binds candidates to the client that staged them.
+    pub(crate) token: u64,
 }
 
 #[uniffi::export]
@@ -467,7 +481,9 @@ impl Client {
             secret,
             transport,
         })?;
-        Ok(Arc::new(Self { inner }))
+        static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
+        let token = NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+        Ok(Arc::new(Self { inner, token }))
     }
 
     /// The bound endpoint.
