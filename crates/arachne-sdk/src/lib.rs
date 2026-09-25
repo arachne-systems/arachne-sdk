@@ -14,7 +14,7 @@ pub use arachne_runtime::{
     InvitationDetails, InvitationInfo, JoinAdmissionStep, JoinRequest, MemberInfo, MemberKind,
     MemberRoster, MembershipGossipMetrics, Network, PeerPolicy, PeerRoute, Presence,
     ProtectedReceptionCandidate, Publication, PublicationCandidate, PublicationCurrent,
-    ReceivedProtectedPublication, RecoveredPublication, RecoveryAdoption, RecoveryCandidate,
+    ReceivedProtectedPublication, RecoveryAdoption, RecoveryCandidate,
     RecoveryRangeReady, RecoveryRangeRequest, RecoveryRangeStatus, RecoveryStage, RouteHint,
     RouteKind, WorkspaceActivity, WorkspaceCandidate, WorkspaceInfo, WorkspaceMetrics,
     WorkspacePhase, WorkspaceState,

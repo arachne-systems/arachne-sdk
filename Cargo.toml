@@ -4,6 +4,5 @@ exclude = ["core"]
 resolver = "3"
 
 [patch.crates-io]
-bao-tree = { path = "core/vendor/bao-tree" }
 netlink-packet-core = { path = "core/vendor/netlink-packet-core" }
 hax-lib-macros = { path = "core/vendor/hax-lib-macros" }
