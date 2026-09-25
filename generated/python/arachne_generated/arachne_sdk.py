@@ -482,19 +482,135 @@ def _uniffi_check_api_checksums(lib):
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_sdk_checksum_func_api_version() != 5616:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_func_is_suspended() != 46233:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_func_resume() != 24835:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_func_suspend() != 29681:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_admissioncandidate_is_used() != 29219:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_admissioncandidate_workspace() != 31048:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_sdk_checksum_constructor_client_open() != 13811:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_acknowledge_admission_approval() != 60484:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_add_address_hint() != 41844:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_admission_approvals() != 61891:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_adopt_admission() != 23402:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_adopt_invitation() != 59068:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_adopt_join() != 4589:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_adopt_protected_publication() != 31539:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_adopt_protected_reception() != 34784:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_adopt_recovery() != 17776:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_begin_join() != 26002:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_cancel_recovery_range() != 58830:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_sdk_checksum_method_client_close() != 1634:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_create_workspace() != 41138:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_sdk_checksum_method_client_describe() != 64790:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_fetch_invitation_checkpoint() != 19639:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_fetch_recovery_range() != 27062:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_inspect_invitation() != 23746:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_install_member_policy() != 32558:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_install_workspace_policy() != 60122:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_invitation_controls() != 32555:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_member_roster() != 12780:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_metrics() != 43460:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_network_change() != 62595:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_sdk_checksum_method_client_next_event() != 920:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_poll_control() != 2049:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_poll_interest() != 24627:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_poll_pending_object() != 11998:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_poll_presence() != 7412:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_poll_protected() != 59576:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_poll_recovery_range() != 19239:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_retained_admission() != 45248:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_send_admission_reply() != 40754:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_set_deadline() != 32066:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_set_interest() != 63561:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_stage_admission() != 20793:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_stage_invitation() != 59519:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_stage_invitation_approval() != 54891:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_stage_invitation_decline() != 18391:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_stage_join() != 52062:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_stage_object_acknowledgement() != 39524:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_stage_object_rejection() != 8552:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_stage_protected_publication() != 7575:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_stage_recovery_range() != 14092:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_sdk_checksum_method_client_state() != 29322:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_client_use_service_profile() != 2127:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_sdk_checksum_method_client_wait_for_work() != 53847:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_sdk_checksum_method_client_wake() != 58561:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_invitationcandidate_is_used() != 47978:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_invitationcandidate_workspace() != 41200:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_joincandidate_is_used() != 40736:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_joincandidate_workspace() != 14471:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_publicationcandidate_is_used() != 5993:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_publicationcandidate_workspace() != 40684:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_receptioncandidate_is_used() != 22203:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_receptioncandidate_workspace() != 52165:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_recoverycandidate_durable() != 45684:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_recoverycandidate_is_used() != 42481:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_recoverycandidate_publication_count() != 42585:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_sdk_checksum_method_recoverycandidate_workspace() != 39319:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
 
 # A ctypes library to expose the extern-C FFI definitions.
@@ -759,6 +875,16 @@ _UniffiLib.ffi_arachne_sdk_rust_future_free_void.argtypes = (
     ctypes.c_uint64,
 )
 _UniffiLib.ffi_arachne_sdk_rust_future_free_void.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_clone_admissioncandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_clone_admissioncandidate.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_free_admissioncandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_free_admissioncandidate.restype = None
 _UniffiLib.uniffi_arachne_sdk_fn_clone_client.argtypes = (
     ctypes.c_uint64,
     ctypes.POINTER(_UniffiRustCallStatus),
@@ -769,6 +895,56 @@ _UniffiLib.uniffi_arachne_sdk_fn_free_client.argtypes = (
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_sdk_fn_free_client.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_clone_invitationcandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_clone_invitationcandidate.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_free_invitationcandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_free_invitationcandidate.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_clone_joincandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_clone_joincandidate.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_free_joincandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_free_joincandidate.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_clone_publicationcandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_clone_publicationcandidate.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_free_publicationcandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_free_publicationcandidate.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_clone_receptioncandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_clone_receptioncandidate.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_free_receptioncandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_free_receptioncandidate.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_clone_recoverycandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_clone_recoverycandidate.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_free_recoverycandidate.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_free_recoverycandidate.restype = None
 _UniffiLib.uniffi_arachne_sdk_fn_func_api_error_code.argtypes = (
     _UniffiRustBuffer,
     ctypes.POINTER(_UniffiRustCallStatus),
@@ -778,37 +954,317 @@ _UniffiLib.uniffi_arachne_sdk_fn_func_api_version.argtypes = (
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_sdk_fn_func_api_version.restype = ctypes.c_uint32
+_UniffiLib.uniffi_arachne_sdk_fn_func_is_suspended.argtypes = (
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_func_is_suspended.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_func_resume.argtypes = (
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_func_resume.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_func_suspend.argtypes = (
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_func_suspend.restype = None
 _UniffiLib.uniffi_arachne_sdk_fn_method_errorcode_number.argtypes = (
     _UniffiRustBuffer,
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_sdk_fn_method_errorcode_number.restype = ctypes.c_uint32
+_UniffiLib.uniffi_arachne_sdk_fn_method_admissioncandidate_is_used.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_admissioncandidate_is_used.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_method_admissioncandidate_workspace.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_admissioncandidate_workspace.restype = _UniffiRustBuffer
 _UniffiLib.uniffi_arachne_sdk_fn_constructor_client_open.argtypes = (
     _UniffiRustBuffer,
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_sdk_fn_constructor_client_open.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_acknowledge_admission_approval.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_acknowledge_admission_approval.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_add_address_hint.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_add_address_hint.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_admission_approvals.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_admission_approvals.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_admission.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_admission.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_invitation.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_invitation.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_join.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_join.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_protected_publication.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_protected_publication.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_protected_reception.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_protected_reception.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_recovery.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_recovery.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_begin_join.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_begin_join.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_cancel_recovery_range.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_cancel_recovery_range.restype = None
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_close.argtypes = (
     ctypes.c_uint64,
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_close.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_create_workspace.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_create_workspace.restype = _UniffiRustBuffer
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_describe.argtypes = (
     ctypes.c_uint64,
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_describe.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_fetch_invitation_checkpoint.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_fetch_invitation_checkpoint.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_fetch_recovery_range.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_fetch_recovery_range.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_inspect_invitation.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_inspect_invitation.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_install_member_policy.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_install_member_policy.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_install_workspace_policy.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_install_workspace_policy.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_invitation_controls.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_invitation_controls.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_member_roster.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_member_roster.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_metrics.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_metrics.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_network_change.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_network_change.restype = None
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_next_event.argtypes = (
     ctypes.c_uint64,
     ctypes.c_uint64,
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_next_event.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_control.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_control.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_interest.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_interest.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_pending_object.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_pending_object.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_presence.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_int8,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_presence.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_protected.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_protected.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_recovery_range.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_recovery_range.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_retained_admission.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_retained_admission.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_send_admission_reply.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_send_admission_reply.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_set_deadline.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_set_deadline.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_set_interest.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    ctypes.c_int8,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_set_interest.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_admission.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_admission.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_invitation.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_invitation.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_invitation_approval.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_invitation_approval.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_invitation_decline.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_invitation_decline.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_join.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_join.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_object_acknowledgement.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_object_acknowledgement.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_object_rejection.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_object_rejection.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_protected_publication.argtypes = (
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_protected_publication.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_recovery_range.argtypes = (
+    ctypes.c_uint64,
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_recovery_range.restype = _UniffiRustBuffer
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_state.argtypes = (
     ctypes.c_uint64,
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_state.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_use_service_profile.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_client_use_service_profile.restype = None
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_wait_for_work.argtypes = (
     ctypes.c_uint64,
     ctypes.c_uint64,
@@ -820,6 +1276,66 @@ _UniffiLib.uniffi_arachne_sdk_fn_method_client_wake.argtypes = (
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_sdk_fn_method_client_wake.restype = None
+_UniffiLib.uniffi_arachne_sdk_fn_method_invitationcandidate_is_used.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_invitationcandidate_is_used.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_method_invitationcandidate_workspace.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_invitationcandidate_workspace.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_joincandidate_is_used.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_joincandidate_is_used.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_method_joincandidate_workspace.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_joincandidate_workspace.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_publicationcandidate_is_used.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_publicationcandidate_is_used.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_method_publicationcandidate_workspace.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_publicationcandidate_workspace.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_receptioncandidate_is_used.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_receptioncandidate_is_used.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_method_receptioncandidate_workspace.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_receptioncandidate_workspace.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_durable.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_durable.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_is_used.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_is_used.restype = ctypes.c_int8
+_UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_publication_count.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_publication_count.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_workspace.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_workspace.restype = _UniffiRustBuffer
 _UniffiLib.ffi_arachne_sdk_uniffi_contract_version.argtypes = (
 )
 _UniffiLib.ffi_arachne_sdk_uniffi_contract_version.restype = ctypes.c_uint32
@@ -829,27 +1345,201 @@ _UniffiLib.uniffi_arachne_sdk_checksum_func_api_error_code.restype = ctypes.c_ui
 _UniffiLib.uniffi_arachne_sdk_checksum_func_api_version.argtypes = (
 )
 _UniffiLib.uniffi_arachne_sdk_checksum_func_api_version.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_func_is_suspended.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_func_is_suspended.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_func_resume.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_func_resume.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_func_suspend.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_func_suspend.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_admissioncandidate_is_used.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_admissioncandidate_is_used.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_admissioncandidate_workspace.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_admissioncandidate_workspace.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_sdk_checksum_constructor_client_open.argtypes = (
 )
 _UniffiLib.uniffi_arachne_sdk_checksum_constructor_client_open.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_acknowledge_admission_approval.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_acknowledge_admission_approval.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_add_address_hint.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_add_address_hint.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_admission_approvals.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_admission_approvals.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_admission.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_admission.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_invitation.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_invitation.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_join.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_join.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_protected_publication.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_protected_publication.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_protected_reception.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_protected_reception.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_recovery.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_adopt_recovery.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_begin_join.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_begin_join.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_cancel_recovery_range.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_cancel_recovery_range.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_close.argtypes = (
 )
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_close.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_create_workspace.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_create_workspace.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_describe.argtypes = (
 )
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_describe.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_fetch_invitation_checkpoint.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_fetch_invitation_checkpoint.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_fetch_recovery_range.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_fetch_recovery_range.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_inspect_invitation.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_inspect_invitation.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_install_member_policy.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_install_member_policy.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_install_workspace_policy.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_install_workspace_policy.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_invitation_controls.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_invitation_controls.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_member_roster.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_member_roster.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_metrics.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_metrics.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_network_change.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_network_change.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_next_event.argtypes = (
 )
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_next_event.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_control.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_control.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_interest.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_interest.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_pending_object.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_pending_object.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_presence.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_presence.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_protected.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_protected.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_recovery_range.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_poll_recovery_range.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_retained_admission.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_retained_admission.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_send_admission_reply.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_send_admission_reply.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_set_deadline.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_set_deadline.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_set_interest.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_set_interest.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_admission.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_admission.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_invitation.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_invitation.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_invitation_approval.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_invitation_approval.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_invitation_decline.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_invitation_decline.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_join.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_join.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_object_acknowledgement.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_object_acknowledgement.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_object_rejection.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_object_rejection.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_protected_publication.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_protected_publication.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_recovery_range.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_stage_recovery_range.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_state.argtypes = (
 )
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_state.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_use_service_profile.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_client_use_service_profile.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_wait_for_work.argtypes = (
 )
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_wait_for_work.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_wake.argtypes = (
 )
 _UniffiLib.uniffi_arachne_sdk_checksum_method_client_wake.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_invitationcandidate_is_used.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_invitationcandidate_is_used.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_invitationcandidate_workspace.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_invitationcandidate_workspace.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_joincandidate_is_used.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_joincandidate_is_used.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_joincandidate_workspace.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_joincandidate_workspace.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_publicationcandidate_is_used.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_publicationcandidate_is_used.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_publicationcandidate_workspace.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_publicationcandidate_workspace.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_receptioncandidate_is_used.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_receptioncandidate_is_used.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_receptioncandidate_workspace.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_receptioncandidate_workspace.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_recoverycandidate_durable.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_recoverycandidate_durable.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_recoverycandidate_is_used.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_recoverycandidate_is_used.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_recoverycandidate_publication_count.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_recoverycandidate_publication_count.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_sdk_checksum_method_recoverycandidate_workspace.argtypes = (
+)
+_UniffiLib.uniffi_arachne_sdk_checksum_method_recoverycandidate_workspace.restype = ctypes.c_uint16
 
 _uniffi_check_contract_api_version(_UniffiLib)
 # _uniffi_check_api_checksums(_UniffiLib)
@@ -858,6 +1548,479 @@ _uniffi_check_contract_api_version(_UniffiLib)
 
 # Public interface members begin here.
 
+
+class _UniffiFfiConverterString:
+    @staticmethod
+    def check_lower(value):
+        if not isinstance(value, str):
+            raise TypeError("argument must be str, not {}".format(type(value).__name__))
+        return value
+
+    @staticmethod
+    def read(buf):
+        size = buf.read_i32()
+        if size < 0:
+            raise InternalError("Unexpected negative string length")
+        utf8_bytes = buf.read(size)
+        return utf8_bytes.decode("utf-8")
+
+    @staticmethod
+    def write(value, buf):
+        utf8_bytes = value.encode("utf-8")
+        buf.write_i32(len(utf8_bytes))
+        buf.write(utf8_bytes)
+
+    @staticmethod
+    def lift(buf):
+        with buf.consume_with_stream() as stream:
+            return stream.read(stream.remaining()).decode("utf-8")
+
+    @staticmethod
+    def lower(value):
+        with _UniffiRustBuffer.alloc_with_builder() as builder:
+            builder.write(value.encode("utf-8"))
+            return builder.finalize()
+
+
+class _UniffiFfiConverterTypeAttemptId:
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterString.write(value, buf)
+
+    @staticmethod
+    def read(buf):
+        return _UniffiFfiConverterString.read(buf)
+
+    @staticmethod
+    def lift(value):
+        return _UniffiFfiConverterString.lift(value)
+
+    @staticmethod
+    def check_lower(value):
+        return _UniffiFfiConverterString.check_lower(value)
+
+    @staticmethod
+    def lower(value):
+        return _UniffiFfiConverterString.lower(value)
+
+
+AttemptId = str
+
+
+class _UniffiFfiConverterTypeEndpointId:
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterString.write(value, buf)
+
+    @staticmethod
+    def read(buf):
+        return _UniffiFfiConverterString.read(buf)
+
+    @staticmethod
+    def lift(value):
+        return _UniffiFfiConverterString.lift(value)
+
+    @staticmethod
+    def check_lower(value):
+        return _UniffiFfiConverterString.check_lower(value)
+
+    @staticmethod
+    def lower(value):
+        return _UniffiFfiConverterString.lower(value)
+
+
+EndpointId = str
+
+class _UniffiFfiConverterBytes(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        size = buf.read_i32()
+        if size < 0:
+            raise InternalError("Unexpected negative byte string length")
+        return buf.read(size)
+
+    @staticmethod
+    def check_lower(value):
+        try:
+            memoryview(value)
+        except TypeError:
+            raise TypeError("a bytes-like object is required, not {!r}".format(type(value).__name__))
+
+    @staticmethod
+    def write(value, buf):
+        buf.write_i32(len(value))
+        buf.write(value)
+
+class _UniffiFfiConverterOptionalString(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        if value is not None:
+            _UniffiFfiConverterString.check_lower(value)
+
+    @classmethod
+    def write(cls, value, buf):
+        if value is None:
+            buf.write_u8(0)
+            return
+
+        buf.write_u8(1)
+        _UniffiFfiConverterString.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        flag = buf.read_u8()
+        if flag == 0:
+            return None
+        elif flag == 1:
+            return _UniffiFfiConverterString.read(buf)
+        else:
+            raise InternalError("Unexpected flag byte for optional type")
+
+class _UniffiFfiConverterBoolean:
+    @classmethod
+    def check_lower(cls, value):
+        return not not value
+
+    @classmethod
+    def lower(cls, value):
+        return 1 if value else 0
+
+    @staticmethod
+    def lift(value):
+        return value != 0
+
+    @classmethod
+    def read(cls, buf):
+        return cls.lift(buf.read_u8())
+
+    @classmethod
+    def write(cls, value, buf):
+        buf.write_u8(value)
+
+@dataclass
+class AdmissionApproval:
+    """
+    One admission request that waits for an administrator.
+"""
+    def __init__(self, *, attempt_id:AttemptId, endpoint:EndpointId, request:bytes, display_name:typing.Optional[str], automatic:bool, delivered:bool, acknowledged:bool):
+        self.attempt_id = attempt_id
+        self.endpoint = endpoint
+        self.request = request
+        self.display_name = display_name
+        self.automatic = automatic
+        self.delivered = delivered
+        self.acknowledged = acknowledged
+        
+        
+
+    
+    def __str__(self):
+        return "AdmissionApproval(attempt_id={}, endpoint={}, request={}, display_name={}, automatic={}, delivered={}, acknowledged={})".format(self.attempt_id, self.endpoint, self.request, self.display_name, self.automatic, self.delivered, self.acknowledged)
+    def __eq__(self, other):
+        if self.attempt_id != other.attempt_id:
+            return False
+        if self.endpoint != other.endpoint:
+            return False
+        if self.request != other.request:
+            return False
+        if self.display_name != other.display_name:
+            return False
+        if self.automatic != other.automatic:
+            return False
+        if self.delivered != other.delivered:
+            return False
+        if self.acknowledged != other.acknowledged:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeAdmissionApproval(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return AdmissionApproval(
+            attempt_id=_UniffiFfiConverterTypeAttemptId.read(buf),
+            endpoint=_UniffiFfiConverterTypeEndpointId.read(buf),
+            request=_UniffiFfiConverterBytes.read(buf),
+            display_name=_UniffiFfiConverterOptionalString.read(buf),
+            automatic=_UniffiFfiConverterBoolean.read(buf),
+            delivered=_UniffiFfiConverterBoolean.read(buf),
+            acknowledged=_UniffiFfiConverterBoolean.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeAttemptId.check_lower(value.attempt_id)
+        _UniffiFfiConverterTypeEndpointId.check_lower(value.endpoint)
+        _UniffiFfiConverterBytes.check_lower(value.request)
+        _UniffiFfiConverterOptionalString.check_lower(value.display_name)
+        _UniffiFfiConverterBoolean.check_lower(value.automatic)
+        _UniffiFfiConverterBoolean.check_lower(value.delivered)
+        _UniffiFfiConverterBoolean.check_lower(value.acknowledged)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeAttemptId.write(value.attempt_id, buf)
+        _UniffiFfiConverterTypeEndpointId.write(value.endpoint, buf)
+        _UniffiFfiConverterBytes.write(value.request, buf)
+        _UniffiFfiConverterOptionalString.write(value.display_name, buf)
+        _UniffiFfiConverterBoolean.write(value.automatic, buf)
+        _UniffiFfiConverterBoolean.write(value.delivered, buf)
+        _UniffiFfiConverterBoolean.write(value.acknowledged, buf)
+
+class _UniffiFfiConverterSequenceTypeAdmissionApproval(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterTypeAdmissionApproval.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypeAdmissionApproval.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypeAdmissionApproval.read(buf) for i in range(count)
+        ]
+
+class _UniffiFfiConverterOptionalTypeAttemptId(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        if value is not None:
+            _UniffiFfiConverterTypeAttemptId.check_lower(value)
+
+    @classmethod
+    def write(cls, value, buf):
+        if value is None:
+            buf.write_u8(0)
+            return
+
+        buf.write_u8(1)
+        _UniffiFfiConverterTypeAttemptId.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        flag = buf.read_u8()
+        if flag == 0:
+            return None
+        elif flag == 1:
+            return _UniffiFfiConverterTypeAttemptId.read(buf)
+        else:
+            raise InternalError("Unexpected flag byte for optional type")
+
+@dataclass
+class AdmissionApprovalPage:
+    """
+    One page of pending approvals. Pass `next_after` for the next page.
+"""
+    def __init__(self, *, approvals:typing.List[AdmissionApproval], complete:bool, next_after:typing.Optional[AttemptId]):
+        self.approvals = approvals
+        self.complete = complete
+        self.next_after = next_after
+        
+        
+
+    
+    def __str__(self):
+        return "AdmissionApprovalPage(approvals={}, complete={}, next_after={})".format(self.approvals, self.complete, self.next_after)
+    def __eq__(self, other):
+        if self.approvals != other.approvals:
+            return False
+        if self.complete != other.complete:
+            return False
+        if self.next_after != other.next_after:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeAdmissionApprovalPage(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return AdmissionApprovalPage(
+            approvals=_UniffiFfiConverterSequenceTypeAdmissionApproval.read(buf),
+            complete=_UniffiFfiConverterBoolean.read(buf),
+            next_after=_UniffiFfiConverterOptionalTypeAttemptId.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterSequenceTypeAdmissionApproval.check_lower(value.approvals)
+        _UniffiFfiConverterBoolean.check_lower(value.complete)
+        _UniffiFfiConverterOptionalTypeAttemptId.check_lower(value.next_after)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterSequenceTypeAdmissionApproval.write(value.approvals, buf)
+        _UniffiFfiConverterBoolean.write(value.complete, buf)
+        _UniffiFfiConverterOptionalTypeAttemptId.write(value.next_after, buf)
+
+
+class _UniffiFfiConverterTypeKey32:
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterString.write(value, buf)
+
+    @staticmethod
+    def read(buf):
+        return _UniffiFfiConverterString.read(buf)
+
+    @staticmethod
+    def lift(value):
+        return _UniffiFfiConverterString.lift(value)
+
+    @staticmethod
+    def check_lower(value):
+        return _UniffiFfiConverterString.check_lower(value)
+
+    @staticmethod
+    def lower(value):
+        return _UniffiFfiConverterString.lower(value)
+
+
+Key32 = str
+
+@dataclass
+class AdmissionAuthorization:
+    def __init__(self, *, invitation_key:Key32, grant_signature:bytes, redemption_signature:bytes):
+        self.invitation_key = invitation_key
+        self.grant_signature = grant_signature
+        self.redemption_signature = redemption_signature
+        
+        
+
+    
+    def __str__(self):
+        return "AdmissionAuthorization(invitation_key={}, grant_signature={}, redemption_signature={})".format(self.invitation_key, self.grant_signature, self.redemption_signature)
+    def __eq__(self, other):
+        if self.invitation_key != other.invitation_key:
+            return False
+        if self.grant_signature != other.grant_signature:
+            return False
+        if self.redemption_signature != other.redemption_signature:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeAdmissionAuthorization(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return AdmissionAuthorization(
+            invitation_key=_UniffiFfiConverterTypeKey32.read(buf),
+            grant_signature=_UniffiFfiConverterBytes.read(buf),
+            redemption_signature=_UniffiFfiConverterBytes.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeKey32.check_lower(value.invitation_key)
+        _UniffiFfiConverterBytes.check_lower(value.grant_signature)
+        _UniffiFfiConverterBytes.check_lower(value.redemption_signature)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeKey32.write(value.invitation_key, buf)
+        _UniffiFfiConverterBytes.write(value.grant_signature, buf)
+        _UniffiFfiConverterBytes.write(value.redemption_signature, buf)
+
+
+class _UniffiFfiConverterTypeWorkspaceId:
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterString.write(value, buf)
+
+    @staticmethod
+    def read(buf):
+        return _UniffiFfiConverterString.read(buf)
+
+    @staticmethod
+    def lift(value):
+        return _UniffiFfiConverterString.lift(value)
+
+    @staticmethod
+    def check_lower(value):
+        return _UniffiFfiConverterString.check_lower(value)
+
+    @staticmethod
+    def lower(value):
+        return _UniffiFfiConverterString.lower(value)
+
+
+WorkspaceId = str
+
+class _UniffiFfiConverterUInt64(_UniffiConverterPrimitiveInt):
+    CLASS_NAME = "u64"
+    VALUE_MIN = 0
+    VALUE_MAX = 2**64
+
+    @staticmethod
+    def read(buf):
+        return buf.read_u64()
+
+    @staticmethod
+    def write(value, buf):
+        buf.write_u64(value)
+
+@dataclass
+class AdmissionReply:
+    """
+    The member's answer to a join request: pass `welcome` and a step made of
+    `commit` and `authorization` to `stage_join`.
+"""
+    def __init__(self, *, workspace:WorkspaceId, epoch:int, commit:bytes, welcome:bytes, authorization:AdmissionAuthorization):
+        self.workspace = workspace
+        self.epoch = epoch
+        self.commit = commit
+        self.welcome = welcome
+        self.authorization = authorization
+        
+        
+
+    
+    def __str__(self):
+        return "AdmissionReply(workspace={}, epoch={}, commit={}, welcome={}, authorization={})".format(self.workspace, self.epoch, self.commit, self.welcome, self.authorization)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.epoch != other.epoch:
+            return False
+        if self.commit != other.commit:
+            return False
+        if self.welcome != other.welcome:
+            return False
+        if self.authorization != other.authorization:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeAdmissionReply(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return AdmissionReply(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            epoch=_UniffiFfiConverterUInt64.read(buf),
+            commit=_UniffiFfiConverterBytes.read(buf),
+            welcome=_UniffiFfiConverterBytes.read(buf),
+            authorization=_UniffiFfiConverterTypeAdmissionAuthorization.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterUInt64.check_lower(value.epoch)
+        _UniffiFfiConverterBytes.check_lower(value.commit)
+        _UniffiFfiConverterBytes.check_lower(value.welcome)
+        _UniffiFfiConverterTypeAdmissionAuthorization.check_lower(value.authorization)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterUInt64.write(value.epoch, buf)
+        _UniffiFfiConverterBytes.write(value.commit, buf)
+        _UniffiFfiConverterBytes.write(value.welcome, buf)
+        _UniffiFfiConverterTypeAdmissionAuthorization.write(value.authorization, buf)
 
 
 
@@ -943,26 +2106,6 @@ class _UniffiFfiConverterTypeNetwork(_UniffiConverterRustBuffer):
 
 
 
-class _UniffiFfiConverterBytes(_UniffiConverterRustBuffer):
-    @staticmethod
-    def read(buf):
-        size = buf.read_i32()
-        if size < 0:
-            raise InternalError("Unexpected negative byte string length")
-        return buf.read(size)
-
-    @staticmethod
-    def check_lower(value):
-        try:
-            memoryview(value)
-        except TypeError:
-            raise TypeError("a bytes-like object is required, not {!r}".format(type(value).__name__))
-
-    @staticmethod
-    def write(value, buf):
-        buf.write_i32(len(value))
-        buf.write(value)
-
 class _UniffiFfiConverterOptionalBytes(_UniffiConverterRustBuffer):
     @classmethod
     def check_lower(cls, value):
@@ -987,19 +2130,6 @@ class _UniffiFfiConverterOptionalBytes(_UniffiConverterRustBuffer):
             return _UniffiFfiConverterBytes.read(buf)
         else:
             raise InternalError("Unexpected flag byte for optional type")
-
-class _UniffiFfiConverterUInt64(_UniffiConverterPrimitiveInt):
-    CLASS_NAME = "u64"
-    VALUE_MIN = 0
-    VALUE_MAX = 2**64
-
-    @staticmethod
-    def read(buf):
-        return buf.read_u64()
-
-    @staticmethod
-    def write(value, buf):
-        buf.write_u64(value)
 
 class _UniffiFfiConverterOptionalUInt64(_UniffiConverterRustBuffer):
     @classmethod
@@ -1077,83 +2207,252 @@ class _UniffiFfiConverterTypeClientConfig(_UniffiConverterRustBuffer):
         _UniffiFfiConverterOptionalBytes.write(value.secret, buf)
         _UniffiFfiConverterOptionalUInt64.write(value.deadline_ms, buf)
 
-class _UniffiFfiConverterString:
-    @staticmethod
-    def check_lower(value):
-        if not isinstance(value, str):
-            raise TypeError("argument must be str, not {}".format(type(value).__name__))
-        return value
+@dataclass
+class ConnectionCapacityMetrics:
+    def __init__(self, *, evicted:int, refused:int):
+        self.evicted = evicted
+        self.refused = refused
+        
+        
 
-    @staticmethod
-    def read(buf):
-        size = buf.read_i32()
-        if size < 0:
-            raise InternalError("Unexpected negative string length")
-        utf8_bytes = buf.read(size)
-        return utf8_bytes.decode("utf-8")
+    
+    def __str__(self):
+        return "ConnectionCapacityMetrics(evicted={}, refused={})".format(self.evicted, self.refused)
+    def __eq__(self, other):
+        if self.evicted != other.evicted:
+            return False
+        if self.refused != other.refused:
+            return False
+        return True
 
-    @staticmethod
-    def write(value, buf):
-        utf8_bytes = value.encode("utf-8")
-        buf.write_i32(len(utf8_bytes))
-        buf.write(utf8_bytes)
-
-    @staticmethod
-    def lift(buf):
-        with buf.consume_with_stream() as stream:
-            return stream.read(stream.remaining()).decode("utf-8")
-
-    @staticmethod
-    def lower(value):
-        with _UniffiRustBuffer.alloc_with_builder() as builder:
-            builder.write(value.encode("utf-8"))
-            return builder.finalize()
-
-
-class _UniffiFfiConverterTypeEndpointId:
-    @staticmethod
-    def write(value, buf):
-        _UniffiFfiConverterString.write(value, buf)
-
+class _UniffiFfiConverterTypeConnectionCapacityMetrics(_UniffiConverterRustBuffer):
     @staticmethod
     def read(buf):
-        return _UniffiFfiConverterString.read(buf)
-
-    @staticmethod
-    def lift(value):
-        return _UniffiFfiConverterString.lift(value)
+        return ConnectionCapacityMetrics(
+            evicted=_UniffiFfiConverterUInt64.read(buf),
+            refused=_UniffiFfiConverterUInt64.read(buf),
+        )
 
     @staticmethod
     def check_lower(value):
-        return _UniffiFfiConverterString.check_lower(value)
+        _UniffiFfiConverterUInt64.check_lower(value.evicted)
+        _UniffiFfiConverterUInt64.check_lower(value.refused)
 
     @staticmethod
-    def lower(value):
-        return _UniffiFfiConverterString.lower(value)
+    def write(value, buf):
+        _UniffiFfiConverterUInt64.write(value.evicted, buf)
+        _UniffiFfiConverterUInt64.write(value.refused, buf)
 
+@dataclass
+class DurationSummary:
+    def __init__(self, *, count:int, total_us:int, max_us:int):
+        self.count = count
+        self.total_us = total_us
+        self.max_us = max_us
+        
+        
 
-EndpointId = str
+    
+    def __str__(self):
+        return "DurationSummary(count={}, total_us={}, max_us={})".format(self.count, self.total_us, self.max_us)
+    def __eq__(self, other):
+        if self.count != other.count:
+            return False
+        if self.total_us != other.total_us:
+            return False
+        if self.max_us != other.max_us:
+            return False
+        return True
 
-class _UniffiFfiConverterBoolean:
+class _UniffiFfiConverterTypeDurationSummary(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return DurationSummary(
+            count=_UniffiFfiConverterUInt64.read(buf),
+            total_us=_UniffiFfiConverterUInt64.read(buf),
+            max_us=_UniffiFfiConverterUInt64.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterUInt64.check_lower(value.count)
+        _UniffiFfiConverterUInt64.check_lower(value.total_us)
+        _UniffiFfiConverterUInt64.check_lower(value.max_us)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterUInt64.write(value.count, buf)
+        _UniffiFfiConverterUInt64.write(value.total_us, buf)
+        _UniffiFfiConverterUInt64.write(value.max_us, buf)
+
+@dataclass
+class ControlTimingMetrics:
+    def __init__(self, *, inquiry:DurationSummary, host_wait:DurationSummary, host_service:DurationSummary):
+        self.inquiry = inquiry
+        self.host_wait = host_wait
+        self.host_service = host_service
+        
+        
+
+    
+    def __str__(self):
+        return "ControlTimingMetrics(inquiry={}, host_wait={}, host_service={})".format(self.inquiry, self.host_wait, self.host_service)
+    def __eq__(self, other):
+        if self.inquiry != other.inquiry:
+            return False
+        if self.host_wait != other.host_wait:
+            return False
+        if self.host_service != other.host_service:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeControlTimingMetrics(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return ControlTimingMetrics(
+            inquiry=_UniffiFfiConverterTypeDurationSummary.read(buf),
+            host_wait=_UniffiFfiConverterTypeDurationSummary.read(buf),
+            host_service=_UniffiFfiConverterTypeDurationSummary.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeDurationSummary.check_lower(value.inquiry)
+        _UniffiFfiConverterTypeDurationSummary.check_lower(value.host_wait)
+        _UniffiFfiConverterTypeDurationSummary.check_lower(value.host_service)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeDurationSummary.write(value.inquiry, buf)
+        _UniffiFfiConverterTypeDurationSummary.write(value.host_wait, buf)
+        _UniffiFfiConverterTypeDurationSummary.write(value.host_service, buf)
+
+@dataclass
+class DeliveryFailure:
+    def __init__(self, *, peer:EndpointId, error:str):
+        self.peer = peer
+        self.error = error
+        
+        
+
+    
+    def __str__(self):
+        return "DeliveryFailure(peer={}, error={})".format(self.peer, self.error)
+    def __eq__(self, other):
+        if self.peer != other.peer:
+            return False
+        if self.error != other.error:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeDeliveryFailure(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return DeliveryFailure(
+            peer=_UniffiFfiConverterTypeEndpointId.read(buf),
+            error=_UniffiFfiConverterString.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeEndpointId.check_lower(value.peer)
+        _UniffiFfiConverterString.check_lower(value.error)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeEndpointId.write(value.peer, buf)
+        _UniffiFfiConverterString.write(value.error, buf)
+
+class _UniffiFfiConverterSequenceTypeEndpointId(_UniffiConverterRustBuffer):
     @classmethod
     def check_lower(cls, value):
-        return not not value
-
-    @classmethod
-    def lower(cls, value):
-        return 1 if value else 0
-
-    @staticmethod
-    def lift(value):
-        return value != 0
-
-    @classmethod
-    def read(cls, buf):
-        return cls.lift(buf.read_u8())
+        for item in value:
+            _UniffiFfiConverterTypeEndpointId.check_lower(item)
 
     @classmethod
     def write(cls, value, buf):
-        buf.write_u8(value)
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypeEndpointId.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypeEndpointId.read(buf) for i in range(count)
+        ]
+
+class _UniffiFfiConverterSequenceTypeDeliveryFailure(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterTypeDeliveryFailure.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypeDeliveryFailure.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypeDeliveryFailure.read(buf) for i in range(count)
+        ]
+
+@dataclass
+class DeliveryReport:
+    """
+    Where a publication or interest change went.
+"""
+    def __init__(self, *, admitted:typing.List[EndpointId], queued:bool, failed:typing.List[DeliveryFailure]):
+        self.admitted = admitted
+        self.queued = queued
+        self.failed = failed
+        
+        
+
+    
+    def __str__(self):
+        return "DeliveryReport(admitted={}, queued={}, failed={})".format(self.admitted, self.queued, self.failed)
+    def __eq__(self, other):
+        if self.admitted != other.admitted:
+            return False
+        if self.queued != other.queued:
+            return False
+        if self.failed != other.failed:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeDeliveryReport(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return DeliveryReport(
+            admitted=_UniffiFfiConverterSequenceTypeEndpointId.read(buf),
+            queued=_UniffiFfiConverterBoolean.read(buf),
+            failed=_UniffiFfiConverterSequenceTypeDeliveryFailure.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterSequenceTypeEndpointId.check_lower(value.admitted)
+        _UniffiFfiConverterBoolean.check_lower(value.queued)
+        _UniffiFfiConverterSequenceTypeDeliveryFailure.check_lower(value.failed)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterSequenceTypeEndpointId.write(value.admitted, buf)
+        _UniffiFfiConverterBoolean.write(value.queued, buf)
+        _UniffiFfiConverterSequenceTypeDeliveryFailure.write(value.failed, buf)
 
 @dataclass
 class EndpointInfo:
@@ -1200,8 +2499,434 @@ class _UniffiFfiConverterTypeEndpointInfo(_UniffiConverterRustBuffer):
         _UniffiFfiConverterString.write(value.bound_address, buf)
         _UniffiFfiConverterBoolean.write(value.workspace_ready, buf)
 
+@dataclass
+class InterestObservation:
+    """
+    The settled result of `set_interest`.
+"""
+    def __init__(self, *, workspace:WorkspaceId, revision:int, topic:str, subscribed:bool, admission:DeliveryReport):
+        self.workspace = workspace
+        self.revision = revision
+        self.topic = topic
+        self.subscribed = subscribed
+        self.admission = admission
+        
+        
 
-class _UniffiFfiConverterTypeWorkspaceId:
+    
+    def __str__(self):
+        return "InterestObservation(workspace={}, revision={}, topic={}, subscribed={}, admission={})".format(self.workspace, self.revision, self.topic, self.subscribed, self.admission)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.revision != other.revision:
+            return False
+        if self.topic != other.topic:
+            return False
+        if self.subscribed != other.subscribed:
+            return False
+        if self.admission != other.admission:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeInterestObservation(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return InterestObservation(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            revision=_UniffiFfiConverterUInt64.read(buf),
+            topic=_UniffiFfiConverterString.read(buf),
+            subscribed=_UniffiFfiConverterBoolean.read(buf),
+            admission=_UniffiFfiConverterTypeDeliveryReport.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterUInt64.check_lower(value.revision)
+        _UniffiFfiConverterString.check_lower(value.topic)
+        _UniffiFfiConverterBoolean.check_lower(value.subscribed)
+        _UniffiFfiConverterTypeDeliveryReport.check_lower(value.admission)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterUInt64.write(value.revision, buf)
+        _UniffiFfiConverterString.write(value.topic, buf)
+        _UniffiFfiConverterBoolean.write(value.subscribed, buf)
+        _UniffiFfiConverterTypeDeliveryReport.write(value.admission, buf)
+
+@dataclass
+class InvitationCheckpoint:
+    """
+    A verified invitation checkpoint and the member that served it.
+"""
+    def __init__(self, *, workspace:WorkspaceId, checkpoint:bytes, peer:EndpointId):
+        self.workspace = workspace
+        self.checkpoint = checkpoint
+        self.peer = peer
+        
+        
+
+    
+    def __str__(self):
+        return "InvitationCheckpoint(workspace={}, checkpoint={}, peer={})".format(self.workspace, self.checkpoint, self.peer)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.checkpoint != other.checkpoint:
+            return False
+        if self.peer != other.peer:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeInvitationCheckpoint(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return InvitationCheckpoint(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            checkpoint=_UniffiFfiConverterBytes.read(buf),
+            peer=_UniffiFfiConverterTypeEndpointId.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterBytes.check_lower(value.checkpoint)
+        _UniffiFfiConverterTypeEndpointId.check_lower(value.peer)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterBytes.write(value.checkpoint, buf)
+        _UniffiFfiConverterTypeEndpointId.write(value.peer, buf)
+
+@dataclass
+class InvitationControl:
+    """
+    One registered invitation link (read only; changing it is management).
+"""
+    def __init__(self, *, number:int, key:Key32, expires_at:int, enabled:bool, personal:bool, automatic:bool, request_access:bool, approved:bool):
+        self.number = number
+        self.key = key
+        self.expires_at = expires_at
+        self.enabled = enabled
+        self.personal = personal
+        self.automatic = automatic
+        self.request_access = request_access
+        self.approved = approved
+        
+        
+
+    
+    def __str__(self):
+        return "InvitationControl(number={}, key={}, expires_at={}, enabled={}, personal={}, automatic={}, request_access={}, approved={})".format(self.number, self.key, self.expires_at, self.enabled, self.personal, self.automatic, self.request_access, self.approved)
+    def __eq__(self, other):
+        if self.number != other.number:
+            return False
+        if self.key != other.key:
+            return False
+        if self.expires_at != other.expires_at:
+            return False
+        if self.enabled != other.enabled:
+            return False
+        if self.personal != other.personal:
+            return False
+        if self.automatic != other.automatic:
+            return False
+        if self.request_access != other.request_access:
+            return False
+        if self.approved != other.approved:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeInvitationControl(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return InvitationControl(
+            number=_UniffiFfiConverterUInt64.read(buf),
+            key=_UniffiFfiConverterTypeKey32.read(buf),
+            expires_at=_UniffiFfiConverterUInt64.read(buf),
+            enabled=_UniffiFfiConverterBoolean.read(buf),
+            personal=_UniffiFfiConverterBoolean.read(buf),
+            automatic=_UniffiFfiConverterBoolean.read(buf),
+            request_access=_UniffiFfiConverterBoolean.read(buf),
+            approved=_UniffiFfiConverterBoolean.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterUInt64.check_lower(value.number)
+        _UniffiFfiConverterTypeKey32.check_lower(value.key)
+        _UniffiFfiConverterUInt64.check_lower(value.expires_at)
+        _UniffiFfiConverterBoolean.check_lower(value.enabled)
+        _UniffiFfiConverterBoolean.check_lower(value.personal)
+        _UniffiFfiConverterBoolean.check_lower(value.automatic)
+        _UniffiFfiConverterBoolean.check_lower(value.request_access)
+        _UniffiFfiConverterBoolean.check_lower(value.approved)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterUInt64.write(value.number, buf)
+        _UniffiFfiConverterTypeKey32.write(value.key, buf)
+        _UniffiFfiConverterUInt64.write(value.expires_at, buf)
+        _UniffiFfiConverterBoolean.write(value.enabled, buf)
+        _UniffiFfiConverterBoolean.write(value.personal, buf)
+        _UniffiFfiConverterBoolean.write(value.automatic, buf)
+        _UniffiFfiConverterBoolean.write(value.request_access, buf)
+        _UniffiFfiConverterBoolean.write(value.approved, buf)
+
+@dataclass
+class InvitationDetails:
+    """
+    What an invitation link grants, checked against its checkpoint.
+"""
+    def __init__(self, *, workspace:WorkspaceId, invitation_key:Key32, workspace_name:typing.Optional[str], epoch:int, personal:bool, automatic:bool, expires_at:int):
+        self.workspace = workspace
+        self.invitation_key = invitation_key
+        self.workspace_name = workspace_name
+        self.epoch = epoch
+        self.personal = personal
+        self.automatic = automatic
+        self.expires_at = expires_at
+        
+        
+
+    
+    def __str__(self):
+        return "InvitationDetails(workspace={}, invitation_key={}, workspace_name={}, epoch={}, personal={}, automatic={}, expires_at={})".format(self.workspace, self.invitation_key, self.workspace_name, self.epoch, self.personal, self.automatic, self.expires_at)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.invitation_key != other.invitation_key:
+            return False
+        if self.workspace_name != other.workspace_name:
+            return False
+        if self.epoch != other.epoch:
+            return False
+        if self.personal != other.personal:
+            return False
+        if self.automatic != other.automatic:
+            return False
+        if self.expires_at != other.expires_at:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeInvitationDetails(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return InvitationDetails(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            invitation_key=_UniffiFfiConverterTypeKey32.read(buf),
+            workspace_name=_UniffiFfiConverterOptionalString.read(buf),
+            epoch=_UniffiFfiConverterUInt64.read(buf),
+            personal=_UniffiFfiConverterBoolean.read(buf),
+            automatic=_UniffiFfiConverterBoolean.read(buf),
+            expires_at=_UniffiFfiConverterUInt64.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterTypeKey32.check_lower(value.invitation_key)
+        _UniffiFfiConverterOptionalString.check_lower(value.workspace_name)
+        _UniffiFfiConverterUInt64.check_lower(value.epoch)
+        _UniffiFfiConverterBoolean.check_lower(value.personal)
+        _UniffiFfiConverterBoolean.check_lower(value.automatic)
+        _UniffiFfiConverterUInt64.check_lower(value.expires_at)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterTypeKey32.write(value.invitation_key, buf)
+        _UniffiFfiConverterOptionalString.write(value.workspace_name, buf)
+        _UniffiFfiConverterUInt64.write(value.epoch, buf)
+        _UniffiFfiConverterBoolean.write(value.personal, buf)
+        _UniffiFfiConverterBoolean.write(value.automatic, buf)
+        _UniffiFfiConverterUInt64.write(value.expires_at, buf)
+
+@dataclass
+class RouteHint:
+    def __init__(self, *, peer:EndpointId, address:str):
+        self.peer = peer
+        self.address = address
+        
+        
+
+    
+    def __str__(self):
+        return "RouteHint(peer={}, address={})".format(self.peer, self.address)
+    def __eq__(self, other):
+        if self.peer != other.peer:
+            return False
+        if self.address != other.address:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeRouteHint(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return RouteHint(
+            peer=_UniffiFfiConverterTypeEndpointId.read(buf),
+            address=_UniffiFfiConverterString.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeEndpointId.check_lower(value.peer)
+        _UniffiFfiConverterString.check_lower(value.address)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeEndpointId.write(value.peer, buf)
+        _UniffiFfiConverterString.write(value.address, buf)
+
+class _UniffiFfiConverterSequenceTypeRouteHint(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterTypeRouteHint.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypeRouteHint.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypeRouteHint.read(buf) for i in range(count)
+        ]
+
+@dataclass
+class InvitationInfo:
+    """
+    An adopted invitation link. `invitation` and `checkpoint` are secret
+    bearer material: give them only to the invited person.
+"""
+    def __init__(self, *, workspace:WorkspaceId, workspace_name:typing.Optional[str], invitation:bytes, invitation_key:Key32, checkpoint:bytes, peer:EndpointId, bootstrap_peers:typing.List[EndpointId], address:str, routes:typing.List[RouteHint]):
+        self.workspace = workspace
+        self.workspace_name = workspace_name
+        self.invitation = invitation
+        self.invitation_key = invitation_key
+        self.checkpoint = checkpoint
+        self.peer = peer
+        self.bootstrap_peers = bootstrap_peers
+        self.address = address
+        self.routes = routes
+        
+        
+
+    
+    def __str__(self):
+        return "InvitationInfo(workspace={}, workspace_name={}, invitation={}, invitation_key={}, checkpoint={}, peer={}, bootstrap_peers={}, address={}, routes={})".format(self.workspace, self.workspace_name, self.invitation, self.invitation_key, self.checkpoint, self.peer, self.bootstrap_peers, self.address, self.routes)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.workspace_name != other.workspace_name:
+            return False
+        if self.invitation != other.invitation:
+            return False
+        if self.invitation_key != other.invitation_key:
+            return False
+        if self.checkpoint != other.checkpoint:
+            return False
+        if self.peer != other.peer:
+            return False
+        if self.bootstrap_peers != other.bootstrap_peers:
+            return False
+        if self.address != other.address:
+            return False
+        if self.routes != other.routes:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeInvitationInfo(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return InvitationInfo(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            workspace_name=_UniffiFfiConverterOptionalString.read(buf),
+            invitation=_UniffiFfiConverterBytes.read(buf),
+            invitation_key=_UniffiFfiConverterTypeKey32.read(buf),
+            checkpoint=_UniffiFfiConverterBytes.read(buf),
+            peer=_UniffiFfiConverterTypeEndpointId.read(buf),
+            bootstrap_peers=_UniffiFfiConverterSequenceTypeEndpointId.read(buf),
+            address=_UniffiFfiConverterString.read(buf),
+            routes=_UniffiFfiConverterSequenceTypeRouteHint.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterOptionalString.check_lower(value.workspace_name)
+        _UniffiFfiConverterBytes.check_lower(value.invitation)
+        _UniffiFfiConverterTypeKey32.check_lower(value.invitation_key)
+        _UniffiFfiConverterBytes.check_lower(value.checkpoint)
+        _UniffiFfiConverterTypeEndpointId.check_lower(value.peer)
+        _UniffiFfiConverterSequenceTypeEndpointId.check_lower(value.bootstrap_peers)
+        _UniffiFfiConverterString.check_lower(value.address)
+        _UniffiFfiConverterSequenceTypeRouteHint.check_lower(value.routes)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterOptionalString.write(value.workspace_name, buf)
+        _UniffiFfiConverterBytes.write(value.invitation, buf)
+        _UniffiFfiConverterTypeKey32.write(value.invitation_key, buf)
+        _UniffiFfiConverterBytes.write(value.checkpoint, buf)
+        _UniffiFfiConverterTypeEndpointId.write(value.peer, buf)
+        _UniffiFfiConverterSequenceTypeEndpointId.write(value.bootstrap_peers, buf)
+        _UniffiFfiConverterString.write(value.address, buf)
+        _UniffiFfiConverterSequenceTypeRouteHint.write(value.routes, buf)
+
+@dataclass
+class JoinAdmissionStep:
+    """
+    One admission commit for `stage_join`.
+"""
+    def __init__(self, *, commit:bytes, authorization:AdmissionAuthorization):
+        self.commit = commit
+        self.authorization = authorization
+        
+        
+
+    
+    def __str__(self):
+        return "JoinAdmissionStep(commit={}, authorization={})".format(self.commit, self.authorization)
+    def __eq__(self, other):
+        if self.commit != other.commit:
+            return False
+        if self.authorization != other.authorization:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeJoinAdmissionStep(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return JoinAdmissionStep(
+            commit=_UniffiFfiConverterBytes.read(buf),
+            authorization=_UniffiFfiConverterTypeAdmissionAuthorization.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterBytes.check_lower(value.commit)
+        _UniffiFfiConverterTypeAdmissionAuthorization.check_lower(value.authorization)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterBytes.write(value.commit, buf)
+        _UniffiFfiConverterTypeAdmissionAuthorization.write(value.authorization, buf)
+
+
+class _UniffiFfiConverterTypeMemberId:
     @staticmethod
     def write(value, buf):
         _UniffiFfiConverterString.write(value, buf)
@@ -1223,13 +2948,623 @@ class _UniffiFfiConverterTypeWorkspaceId:
         return _UniffiFfiConverterString.lower(value)
 
 
-WorkspaceId = str
+MemberId = str
 
-class _UniffiFfiConverterOptionalTypeWorkspaceId(_UniffiConverterRustBuffer):
+@dataclass
+class JoinRequest:
+    """
+    A started join. Send `admission_request` to a member.
+"""
+    def __init__(self, *, workspace:WorkspaceId, member:MemberId, endpoint:EndpointId, admission_request:bytes):
+        self.workspace = workspace
+        self.member = member
+        self.endpoint = endpoint
+        self.admission_request = admission_request
+        
+        
+
+    
+    def __str__(self):
+        return "JoinRequest(workspace={}, member={}, endpoint={}, admission_request={})".format(self.workspace, self.member, self.endpoint, self.admission_request)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.member != other.member:
+            return False
+        if self.endpoint != other.endpoint:
+            return False
+        if self.admission_request != other.admission_request:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeJoinRequest(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return JoinRequest(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            member=_UniffiFfiConverterTypeMemberId.read(buf),
+            endpoint=_UniffiFfiConverterTypeEndpointId.read(buf),
+            admission_request=_UniffiFfiConverterBytes.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterTypeMemberId.check_lower(value.member)
+        _UniffiFfiConverterTypeEndpointId.check_lower(value.endpoint)
+        _UniffiFfiConverterBytes.check_lower(value.admission_request)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterTypeMemberId.write(value.member, buf)
+        _UniffiFfiConverterTypeEndpointId.write(value.endpoint, buf)
+        _UniffiFfiConverterBytes.write(value.admission_request, buf)
+
+
+
+
+
+
+class MemberKind(enum.Enum):
+    
+    PERSON = 0
+    
+    SERVICE = 1
+    
+
+
+class _UniffiFfiConverterTypeMemberKind(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        variant = buf.read_i32()
+        if variant == 1:
+            return MemberKind.PERSON
+        if variant == 2:
+            return MemberKind.SERVICE
+        raise InternalError("Raw enum value doesn't match any cases")
+
+    @staticmethod
+    def check_lower(value):
+        if value == MemberKind.PERSON:
+            return
+        if value == MemberKind.SERVICE:
+            return
+        raise ValueError(value)
+
+    @staticmethod
+    def write(value, buf):
+        if value == MemberKind.PERSON:
+            buf.write_i32(1)
+        if value == MemberKind.SERVICE:
+            buf.write_i32(2)
+
+
+
+
+
+
+
+
+class Presence(enum.Enum):
+    
+    SELF_MEMBER = 0
+    
+    UNKNOWN = 1
+    
+    REACHABLE = 2
+    
+    STALE = 3
+    
+
+
+class _UniffiFfiConverterTypePresence(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        variant = buf.read_i32()
+        if variant == 1:
+            return Presence.SELF_MEMBER
+        if variant == 2:
+            return Presence.UNKNOWN
+        if variant == 3:
+            return Presence.REACHABLE
+        if variant == 4:
+            return Presence.STALE
+        raise InternalError("Raw enum value doesn't match any cases")
+
+    @staticmethod
+    def check_lower(value):
+        if value == Presence.SELF_MEMBER:
+            return
+        if value == Presence.UNKNOWN:
+            return
+        if value == Presence.REACHABLE:
+            return
+        if value == Presence.STALE:
+            return
+        raise ValueError(value)
+
+    @staticmethod
+    def write(value, buf):
+        if value == Presence.SELF_MEMBER:
+            buf.write_i32(1)
+        if value == Presence.UNKNOWN:
+            buf.write_i32(2)
+        if value == Presence.REACHABLE:
+            buf.write_i32(3)
+        if value == Presence.STALE:
+            buf.write_i32(4)
+
+
+
+@dataclass
+class MemberInfo:
+    """
+    One member of the workspace.
+"""
+    def __init__(self, *, id:MemberId, endpoint:EndpointId, administrator:bool, self_member:bool, display_name:typing.Optional[str], kind:MemberKind, presence:Presence, last_contact_age_ms:typing.Optional[int], presence_fresh_for_ms:typing.Optional[int]):
+        self.id = id
+        self.endpoint = endpoint
+        self.administrator = administrator
+        self.self_member = self_member
+        self.display_name = display_name
+        self.kind = kind
+        self.presence = presence
+        self.last_contact_age_ms = last_contact_age_ms
+        self.presence_fresh_for_ms = presence_fresh_for_ms
+        
+        
+
+    
+    def __str__(self):
+        return "MemberInfo(id={}, endpoint={}, administrator={}, self_member={}, display_name={}, kind={}, presence={}, last_contact_age_ms={}, presence_fresh_for_ms={})".format(self.id, self.endpoint, self.administrator, self.self_member, self.display_name, self.kind, self.presence, self.last_contact_age_ms, self.presence_fresh_for_ms)
+    def __eq__(self, other):
+        if self.id != other.id:
+            return False
+        if self.endpoint != other.endpoint:
+            return False
+        if self.administrator != other.administrator:
+            return False
+        if self.self_member != other.self_member:
+            return False
+        if self.display_name != other.display_name:
+            return False
+        if self.kind != other.kind:
+            return False
+        if self.presence != other.presence:
+            return False
+        if self.last_contact_age_ms != other.last_contact_age_ms:
+            return False
+        if self.presence_fresh_for_ms != other.presence_fresh_for_ms:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeMemberInfo(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return MemberInfo(
+            id=_UniffiFfiConverterTypeMemberId.read(buf),
+            endpoint=_UniffiFfiConverterTypeEndpointId.read(buf),
+            administrator=_UniffiFfiConverterBoolean.read(buf),
+            self_member=_UniffiFfiConverterBoolean.read(buf),
+            display_name=_UniffiFfiConverterOptionalString.read(buf),
+            kind=_UniffiFfiConverterTypeMemberKind.read(buf),
+            presence=_UniffiFfiConverterTypePresence.read(buf),
+            last_contact_age_ms=_UniffiFfiConverterOptionalUInt64.read(buf),
+            presence_fresh_for_ms=_UniffiFfiConverterOptionalUInt64.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeMemberId.check_lower(value.id)
+        _UniffiFfiConverterTypeEndpointId.check_lower(value.endpoint)
+        _UniffiFfiConverterBoolean.check_lower(value.administrator)
+        _UniffiFfiConverterBoolean.check_lower(value.self_member)
+        _UniffiFfiConverterOptionalString.check_lower(value.display_name)
+        _UniffiFfiConverterTypeMemberKind.check_lower(value.kind)
+        _UniffiFfiConverterTypePresence.check_lower(value.presence)
+        _UniffiFfiConverterOptionalUInt64.check_lower(value.last_contact_age_ms)
+        _UniffiFfiConverterOptionalUInt64.check_lower(value.presence_fresh_for_ms)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeMemberId.write(value.id, buf)
+        _UniffiFfiConverterTypeEndpointId.write(value.endpoint, buf)
+        _UniffiFfiConverterBoolean.write(value.administrator, buf)
+        _UniffiFfiConverterBoolean.write(value.self_member, buf)
+        _UniffiFfiConverterOptionalString.write(value.display_name, buf)
+        _UniffiFfiConverterTypeMemberKind.write(value.kind, buf)
+        _UniffiFfiConverterTypePresence.write(value.presence, buf)
+        _UniffiFfiConverterOptionalUInt64.write(value.last_contact_age_ms, buf)
+        _UniffiFfiConverterOptionalUInt64.write(value.presence_fresh_for_ms, buf)
+
+class _UniffiFfiConverterSequenceTypeMemberInfo(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterTypeMemberInfo.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypeMemberInfo.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypeMemberInfo.read(buf) for i in range(count)
+        ]
+
+@dataclass
+class MemberRoster:
+    """
+    The workspace members.
+"""
+    def __init__(self, *, workspace:WorkspaceId, workspace_name:typing.Optional[str], workspace_name_revision:int, workspace_name_head:Key32, epoch:int, members:typing.List[MemberInfo], profile_count:int, profiles_retained:bool):
+        self.workspace = workspace
+        self.workspace_name = workspace_name
+        self.workspace_name_revision = workspace_name_revision
+        self.workspace_name_head = workspace_name_head
+        self.epoch = epoch
+        self.members = members
+        self.profile_count = profile_count
+        self.profiles_retained = profiles_retained
+        
+        
+
+    
+    def __str__(self):
+        return "MemberRoster(workspace={}, workspace_name={}, workspace_name_revision={}, workspace_name_head={}, epoch={}, members={}, profile_count={}, profiles_retained={})".format(self.workspace, self.workspace_name, self.workspace_name_revision, self.workspace_name_head, self.epoch, self.members, self.profile_count, self.profiles_retained)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.workspace_name != other.workspace_name:
+            return False
+        if self.workspace_name_revision != other.workspace_name_revision:
+            return False
+        if self.workspace_name_head != other.workspace_name_head:
+            return False
+        if self.epoch != other.epoch:
+            return False
+        if self.members != other.members:
+            return False
+        if self.profile_count != other.profile_count:
+            return False
+        if self.profiles_retained != other.profiles_retained:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeMemberRoster(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return MemberRoster(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            workspace_name=_UniffiFfiConverterOptionalString.read(buf),
+            workspace_name_revision=_UniffiFfiConverterUInt64.read(buf),
+            workspace_name_head=_UniffiFfiConverterTypeKey32.read(buf),
+            epoch=_UniffiFfiConverterUInt64.read(buf),
+            members=_UniffiFfiConverterSequenceTypeMemberInfo.read(buf),
+            profile_count=_UniffiFfiConverterUInt64.read(buf),
+            profiles_retained=_UniffiFfiConverterBoolean.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterOptionalString.check_lower(value.workspace_name)
+        _UniffiFfiConverterUInt64.check_lower(value.workspace_name_revision)
+        _UniffiFfiConverterTypeKey32.check_lower(value.workspace_name_head)
+        _UniffiFfiConverterUInt64.check_lower(value.epoch)
+        _UniffiFfiConverterSequenceTypeMemberInfo.check_lower(value.members)
+        _UniffiFfiConverterUInt64.check_lower(value.profile_count)
+        _UniffiFfiConverterBoolean.check_lower(value.profiles_retained)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterOptionalString.write(value.workspace_name, buf)
+        _UniffiFfiConverterUInt64.write(value.workspace_name_revision, buf)
+        _UniffiFfiConverterTypeKey32.write(value.workspace_name_head, buf)
+        _UniffiFfiConverterUInt64.write(value.epoch, buf)
+        _UniffiFfiConverterSequenceTypeMemberInfo.write(value.members, buf)
+        _UniffiFfiConverterUInt64.write(value.profile_count, buf)
+        _UniffiFfiConverterBoolean.write(value.profiles_retained, buf)
+
+@dataclass
+class MembershipGossipMetrics:
+    def __init__(self, *, sent:int, no_overlay:int, failed:int, received:int, staged:int, rejected:int, range_pulled:int, range_failed:int):
+        self.sent = sent
+        self.no_overlay = no_overlay
+        self.failed = failed
+        self.received = received
+        self.staged = staged
+        self.rejected = rejected
+        self.range_pulled = range_pulled
+        self.range_failed = range_failed
+        
+        
+
+    
+    def __str__(self):
+        return "MembershipGossipMetrics(sent={}, no_overlay={}, failed={}, received={}, staged={}, rejected={}, range_pulled={}, range_failed={})".format(self.sent, self.no_overlay, self.failed, self.received, self.staged, self.rejected, self.range_pulled, self.range_failed)
+    def __eq__(self, other):
+        if self.sent != other.sent:
+            return False
+        if self.no_overlay != other.no_overlay:
+            return False
+        if self.failed != other.failed:
+            return False
+        if self.received != other.received:
+            return False
+        if self.staged != other.staged:
+            return False
+        if self.rejected != other.rejected:
+            return False
+        if self.range_pulled != other.range_pulled:
+            return False
+        if self.range_failed != other.range_failed:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeMembershipGossipMetrics(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return MembershipGossipMetrics(
+            sent=_UniffiFfiConverterUInt64.read(buf),
+            no_overlay=_UniffiFfiConverterUInt64.read(buf),
+            failed=_UniffiFfiConverterUInt64.read(buf),
+            received=_UniffiFfiConverterUInt64.read(buf),
+            staged=_UniffiFfiConverterUInt64.read(buf),
+            rejected=_UniffiFfiConverterUInt64.read(buf),
+            range_pulled=_UniffiFfiConverterUInt64.read(buf),
+            range_failed=_UniffiFfiConverterUInt64.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterUInt64.check_lower(value.sent)
+        _UniffiFfiConverterUInt64.check_lower(value.no_overlay)
+        _UniffiFfiConverterUInt64.check_lower(value.failed)
+        _UniffiFfiConverterUInt64.check_lower(value.received)
+        _UniffiFfiConverterUInt64.check_lower(value.staged)
+        _UniffiFfiConverterUInt64.check_lower(value.rejected)
+        _UniffiFfiConverterUInt64.check_lower(value.range_pulled)
+        _UniffiFfiConverterUInt64.check_lower(value.range_failed)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterUInt64.write(value.sent, buf)
+        _UniffiFfiConverterUInt64.write(value.no_overlay, buf)
+        _UniffiFfiConverterUInt64.write(value.failed, buf)
+        _UniffiFfiConverterUInt64.write(value.received, buf)
+        _UniffiFfiConverterUInt64.write(value.staged, buf)
+        _UniffiFfiConverterUInt64.write(value.rejected, buf)
+        _UniffiFfiConverterUInt64.write(value.range_pulled, buf)
+        _UniffiFfiConverterUInt64.write(value.range_failed, buf)
+
+
+
+
+
+
+class RouteKind:
+    def __init__(self):
+        raise RuntimeError("RouteKind cannot be instantiated directly")
+
+    # Each enum variant is a nested class of the enum itself.
+    @dataclass
+    class DIRECT:
+        
+        def __init__(self, ):
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RouteKind.DIRECT()".format()
+        def __eq__(self, other):
+            if not isinstance(other, RouteKind):
+                return NotImplemented
+            if not other.is_DIRECT():
+                return False
+            return True
+
+    @dataclass
+    class RELAY:
+        
+        def __init__(self, ):
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RouteKind.RELAY()".format()
+        def __eq__(self, other):
+            if not isinstance(other, RouteKind):
+                return NotImplemented
+            if not other.is_RELAY():
+                return False
+            return True
+
+    @dataclass
+    class TOR:
+        
+        def __init__(self, ):
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RouteKind.TOR()".format()
+        def __eq__(self, other):
+            if not isinstance(other, RouteKind):
+                return NotImplemented
+            if not other.is_TOR():
+                return False
+            return True
+
+    @dataclass
+    class CUSTOM:
+        
+        def __init__(self, name:str):
+            self.name = name
+            
+            
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RouteKind.CUSTOM(name={})".format(self.name)
+        def __eq__(self, other):
+            if not isinstance(other, RouteKind):
+                return NotImplemented
+            if not other.is_CUSTOM():
+                return False
+            if self.name != other.name:
+                return False
+            return True
+
+    
+
+    # For each variant, we have `is_NAME` and `is_name` methods for easily checking
+    # whether an instance is that variant.
+    def is_DIRECT(self) -> bool:
+        return isinstance(self, RouteKind.DIRECT)
+    def is_direct(self) -> bool:
+        return isinstance(self, RouteKind.DIRECT)
+    def is_RELAY(self) -> bool:
+        return isinstance(self, RouteKind.RELAY)
+    def is_relay(self) -> bool:
+        return isinstance(self, RouteKind.RELAY)
+    def is_TOR(self) -> bool:
+        return isinstance(self, RouteKind.TOR)
+    def is_tor(self) -> bool:
+        return isinstance(self, RouteKind.TOR)
+    def is_CUSTOM(self) -> bool:
+        return isinstance(self, RouteKind.CUSTOM)
+    def is_custom(self) -> bool:
+        return isinstance(self, RouteKind.CUSTOM)
+    
+
+# Now, a little trick - we make each nested variant class be a subclass of the main
+# enum class, so that method calls and instance checks etc will work intuitively.
+# We might be able to do this a little more neatly with a metaclass, but this'll do.
+RouteKind.DIRECT = type("RouteKind.DIRECT", (RouteKind.DIRECT, RouteKind,), {})  # type: ignore
+RouteKind.RELAY = type("RouteKind.RELAY", (RouteKind.RELAY, RouteKind,), {})  # type: ignore
+RouteKind.TOR = type("RouteKind.TOR", (RouteKind.TOR, RouteKind,), {})  # type: ignore
+RouteKind.CUSTOM = type("RouteKind.CUSTOM", (RouteKind.CUSTOM, RouteKind,), {})  # type: ignore
+
+
+
+
+class _UniffiFfiConverterTypeRouteKind(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        variant = buf.read_i32()
+        if variant == 1:
+            return RouteKind.DIRECT(
+            )
+        if variant == 2:
+            return RouteKind.RELAY(
+            )
+        if variant == 3:
+            return RouteKind.TOR(
+            )
+        if variant == 4:
+            return RouteKind.CUSTOM(
+                _UniffiFfiConverterString.read(buf),
+            )
+        raise InternalError("Raw enum value doesn't match any cases")
+
+    @staticmethod
+    def check_lower(value):
+        if value.is_DIRECT():
+            return
+        if value.is_RELAY():
+            return
+        if value.is_TOR():
+            return
+        if value.is_CUSTOM():
+            _UniffiFfiConverterString.check_lower(value.name)
+            return
+        raise ValueError(value)
+
+    @staticmethod
+    def write(value, buf):
+        if value.is_DIRECT():
+            buf.write_i32(1)
+        if value.is_RELAY():
+            buf.write_i32(2)
+        if value.is_TOR():
+            buf.write_i32(3)
+        if value.is_CUSTOM():
+            buf.write_i32(4)
+            _UniffiFfiConverterString.write(value.name, buf)
+
+
+
+@dataclass
+class PeerRoute:
+    def __init__(self, *, member:MemberId, route:RouteKind, rtt_ms:int):
+        self.member = member
+        self.route = route
+        self.rtt_ms = rtt_ms
+        
+        
+
+    
+    def __str__(self):
+        return "PeerRoute(member={}, route={}, rtt_ms={})".format(self.member, self.route, self.rtt_ms)
+    def __eq__(self, other):
+        if self.member != other.member:
+            return False
+        if self.route != other.route:
+            return False
+        if self.rtt_ms != other.rtt_ms:
+            return False
+        return True
+
+class _UniffiFfiConverterTypePeerRoute(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return PeerRoute(
+            member=_UniffiFfiConverterTypeMemberId.read(buf),
+            route=_UniffiFfiConverterTypeRouteKind.read(buf),
+            rtt_ms=_UniffiFfiConverterUInt64.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeMemberId.check_lower(value.member)
+        _UniffiFfiConverterTypeRouteKind.check_lower(value.route)
+        _UniffiFfiConverterUInt64.check_lower(value.rtt_ms)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeMemberId.write(value.member, buf)
+        _UniffiFfiConverterTypeRouteKind.write(value.route, buf)
+        _UniffiFfiConverterUInt64.write(value.rtt_ms, buf)
+
+class _UniffiFfiConverterOptionalTypeEndpointId(_UniffiConverterRustBuffer):
     @classmethod
     def check_lower(cls, value):
         if value is not None:
-            _UniffiFfiConverterTypeWorkspaceId.check_lower(value)
+            _UniffiFfiConverterTypeEndpointId.check_lower(value)
 
     @classmethod
     def write(cls, value, buf):
@@ -1238,7 +3573,7 @@ class _UniffiFfiConverterOptionalTypeWorkspaceId(_UniffiConverterRustBuffer):
             return
 
         buf.write_u8(1)
-        _UniffiFfiConverterTypeWorkspaceId.write(value, buf)
+        _UniffiFfiConverterTypeEndpointId.write(value, buf)
 
     @classmethod
     def read(cls, buf):
@@ -1246,9 +3581,565 @@ class _UniffiFfiConverterOptionalTypeWorkspaceId(_UniffiConverterRustBuffer):
         if flag == 0:
             return None
         elif flag == 1:
-            return _UniffiFfiConverterTypeWorkspaceId.read(buf)
+            return _UniffiFfiConverterTypeEndpointId.read(buf)
         else:
             raise InternalError("Unexpected flag byte for optional type")
+
+class _UniffiFfiConverterUInt32(_UniffiConverterPrimitiveInt):
+    CLASS_NAME = "u32"
+    VALUE_MIN = 0
+    VALUE_MAX = 2**32
+
+    @staticmethod
+    def read(buf):
+        return buf.read_u32()
+
+    @staticmethod
+    def write(value, buf):
+        buf.write_u32(value)
+
+@dataclass
+class PresenceRound:
+    """
+    The outcome of one presence round.
+"""
+    def __init__(self, *, sync_peer:typing.Optional[EndpointId], response_errors:int, response_error:typing.Optional[str]):
+        self.sync_peer = sync_peer
+        self.response_errors = response_errors
+        self.response_error = response_error
+        
+        
+
+    
+    def __str__(self):
+        return "PresenceRound(sync_peer={}, response_errors={}, response_error={})".format(self.sync_peer, self.response_errors, self.response_error)
+    def __eq__(self, other):
+        if self.sync_peer != other.sync_peer:
+            return False
+        if self.response_errors != other.response_errors:
+            return False
+        if self.response_error != other.response_error:
+            return False
+        return True
+
+class _UniffiFfiConverterTypePresenceRound(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return PresenceRound(
+            sync_peer=_UniffiFfiConverterOptionalTypeEndpointId.read(buf),
+            response_errors=_UniffiFfiConverterUInt32.read(buf),
+            response_error=_UniffiFfiConverterOptionalString.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterOptionalTypeEndpointId.check_lower(value.sync_peer)
+        _UniffiFfiConverterUInt32.check_lower(value.response_errors)
+        _UniffiFfiConverterOptionalString.check_lower(value.response_error)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterOptionalTypeEndpointId.write(value.sync_peer, buf)
+        _UniffiFfiConverterUInt32.write(value.response_errors, buf)
+        _UniffiFfiConverterOptionalString.write(value.response_error, buf)
+
+@dataclass
+class PublicationCurrent:
+    """
+    Current-value (latest-value) metadata of a protected publication.
+"""
+    def __init__(self, *, selector:Key32, replacement_key:Key32, expires_at:int, tombstone:bool):
+        self.selector = selector
+        self.replacement_key = replacement_key
+        self.expires_at = expires_at
+        self.tombstone = tombstone
+        
+        
+
+    
+    def __str__(self):
+        return "PublicationCurrent(selector={}, replacement_key={}, expires_at={}, tombstone={})".format(self.selector, self.replacement_key, self.expires_at, self.tombstone)
+    def __eq__(self, other):
+        if self.selector != other.selector:
+            return False
+        if self.replacement_key != other.replacement_key:
+            return False
+        if self.expires_at != other.expires_at:
+            return False
+        if self.tombstone != other.tombstone:
+            return False
+        return True
+
+class _UniffiFfiConverterTypePublicationCurrent(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return PublicationCurrent(
+            selector=_UniffiFfiConverterTypeKey32.read(buf),
+            replacement_key=_UniffiFfiConverterTypeKey32.read(buf),
+            expires_at=_UniffiFfiConverterUInt64.read(buf),
+            tombstone=_UniffiFfiConverterBoolean.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeKey32.check_lower(value.selector)
+        _UniffiFfiConverterTypeKey32.check_lower(value.replacement_key)
+        _UniffiFfiConverterUInt64.check_lower(value.expires_at)
+        _UniffiFfiConverterBoolean.check_lower(value.tombstone)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeKey32.write(value.selector, buf)
+        _UniffiFfiConverterTypeKey32.write(value.replacement_key, buf)
+        _UniffiFfiConverterUInt64.write(value.expires_at, buf)
+        _UniffiFfiConverterBoolean.write(value.tombstone, buf)
+
+
+class _UniffiFfiConverterTypeRecordId:
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterString.write(value, buf)
+
+    @staticmethod
+    def read(buf):
+        return _UniffiFfiConverterString.read(buf)
+
+    @staticmethod
+    def lift(value):
+        return _UniffiFfiConverterString.lift(value)
+
+    @staticmethod
+    def check_lower(value):
+        return _UniffiFfiConverterString.check_lower(value)
+
+    @staticmethod
+    def lower(value):
+        return _UniffiFfiConverterString.lower(value)
+
+
+RecordId = str
+
+class _UniffiFfiConverterSequenceTypeMemberId(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterTypeMemberId.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypeMemberId.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypeMemberId.read(buf) for i in range(count)
+        ]
+
+class _UniffiFfiConverterOptionalTypePublicationCurrent(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        if value is not None:
+            _UniffiFfiConverterTypePublicationCurrent.check_lower(value)
+
+    @classmethod
+    def write(cls, value, buf):
+        if value is None:
+            buf.write_u8(0)
+            return
+
+        buf.write_u8(1)
+        _UniffiFfiConverterTypePublicationCurrent.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        flag = buf.read_u8()
+        if flag == 0:
+            return None
+        elif flag == 1:
+            return _UniffiFfiConverterTypePublicationCurrent.read(buf)
+        else:
+            raise InternalError("Unexpected flag byte for optional type")
+
+@dataclass
+class ReceivedPublication:
+    """
+    An authenticated object in the durable inbox. It stays pending until an
+    acknowledgement or rejection is adopted (at-least-once delivery).
+"""
+    def __init__(self, *, workspace:WorkspaceId, revision:int, member:MemberId, endpoint:EndpointId, topic:str, id:RecordId, sequence:typing.Optional[int], payload:bytes, recipients:typing.List[MemberId], counter:int, current:typing.Optional[PublicationCurrent]):
+        self.workspace = workspace
+        self.revision = revision
+        self.member = member
+        self.endpoint = endpoint
+        self.topic = topic
+        self.id = id
+        self.sequence = sequence
+        self.payload = payload
+        self.recipients = recipients
+        self.counter = counter
+        self.current = current
+        
+        
+
+    
+    def __str__(self):
+        return "ReceivedPublication(workspace={}, revision={}, member={}, endpoint={}, topic={}, id={}, sequence={}, payload={}, recipients={}, counter={}, current={})".format(self.workspace, self.revision, self.member, self.endpoint, self.topic, self.id, self.sequence, self.payload, self.recipients, self.counter, self.current)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.revision != other.revision:
+            return False
+        if self.member != other.member:
+            return False
+        if self.endpoint != other.endpoint:
+            return False
+        if self.topic != other.topic:
+            return False
+        if self.id != other.id:
+            return False
+        if self.sequence != other.sequence:
+            return False
+        if self.payload != other.payload:
+            return False
+        if self.recipients != other.recipients:
+            return False
+        if self.counter != other.counter:
+            return False
+        if self.current != other.current:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeReceivedPublication(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return ReceivedPublication(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            revision=_UniffiFfiConverterUInt64.read(buf),
+            member=_UniffiFfiConverterTypeMemberId.read(buf),
+            endpoint=_UniffiFfiConverterTypeEndpointId.read(buf),
+            topic=_UniffiFfiConverterString.read(buf),
+            id=_UniffiFfiConverterTypeRecordId.read(buf),
+            sequence=_UniffiFfiConverterOptionalUInt64.read(buf),
+            payload=_UniffiFfiConverterBytes.read(buf),
+            recipients=_UniffiFfiConverterSequenceTypeMemberId.read(buf),
+            counter=_UniffiFfiConverterUInt64.read(buf),
+            current=_UniffiFfiConverterOptionalTypePublicationCurrent.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterUInt64.check_lower(value.revision)
+        _UniffiFfiConverterTypeMemberId.check_lower(value.member)
+        _UniffiFfiConverterTypeEndpointId.check_lower(value.endpoint)
+        _UniffiFfiConverterString.check_lower(value.topic)
+        _UniffiFfiConverterTypeRecordId.check_lower(value.id)
+        _UniffiFfiConverterOptionalUInt64.check_lower(value.sequence)
+        _UniffiFfiConverterBytes.check_lower(value.payload)
+        _UniffiFfiConverterSequenceTypeMemberId.check_lower(value.recipients)
+        _UniffiFfiConverterUInt64.check_lower(value.counter)
+        _UniffiFfiConverterOptionalTypePublicationCurrent.check_lower(value.current)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterUInt64.write(value.revision, buf)
+        _UniffiFfiConverterTypeMemberId.write(value.member, buf)
+        _UniffiFfiConverterTypeEndpointId.write(value.endpoint, buf)
+        _UniffiFfiConverterString.write(value.topic, buf)
+        _UniffiFfiConverterTypeRecordId.write(value.id, buf)
+        _UniffiFfiConverterOptionalUInt64.write(value.sequence, buf)
+        _UniffiFfiConverterBytes.write(value.payload, buf)
+        _UniffiFfiConverterSequenceTypeMemberId.write(value.recipients, buf)
+        _UniffiFfiConverterUInt64.write(value.counter, buf)
+        _UniffiFfiConverterOptionalTypePublicationCurrent.write(value.current, buf)
+
+@dataclass
+class RecoveryAdoption:
+    """
+    An adopted recovery. `missing_publications` counts objects the source
+    no longer had (a direct miss).
+"""
+    def __init__(self, *, workspace:WorkspaceId, epoch:int, member_count:int, durable:bool, recovered_publications:int, missing_publications:int):
+        self.workspace = workspace
+        self.epoch = epoch
+        self.member_count = member_count
+        self.durable = durable
+        self.recovered_publications = recovered_publications
+        self.missing_publications = missing_publications
+        
+        
+
+    
+    def __str__(self):
+        return "RecoveryAdoption(workspace={}, epoch={}, member_count={}, durable={}, recovered_publications={}, missing_publications={})".format(self.workspace, self.epoch, self.member_count, self.durable, self.recovered_publications, self.missing_publications)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.epoch != other.epoch:
+            return False
+        if self.member_count != other.member_count:
+            return False
+        if self.durable != other.durable:
+            return False
+        if self.recovered_publications != other.recovered_publications:
+            return False
+        if self.missing_publications != other.missing_publications:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeRecoveryAdoption(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return RecoveryAdoption(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            epoch=_UniffiFfiConverterUInt64.read(buf),
+            member_count=_UniffiFfiConverterUInt64.read(buf),
+            durable=_UniffiFfiConverterBoolean.read(buf),
+            recovered_publications=_UniffiFfiConverterUInt64.read(buf),
+            missing_publications=_UniffiFfiConverterUInt64.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterUInt64.check_lower(value.epoch)
+        _UniffiFfiConverterUInt64.check_lower(value.member_count)
+        _UniffiFfiConverterBoolean.check_lower(value.durable)
+        _UniffiFfiConverterUInt64.check_lower(value.recovered_publications)
+        _UniffiFfiConverterUInt64.check_lower(value.missing_publications)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterUInt64.write(value.epoch, buf)
+        _UniffiFfiConverterUInt64.write(value.member_count, buf)
+        _UniffiFfiConverterBoolean.write(value.durable, buf)
+        _UniffiFfiConverterUInt64.write(value.recovered_publications, buf)
+        _UniffiFfiConverterUInt64.write(value.missing_publications, buf)
+
+@dataclass
+class RecoveryRangeReady:
+    """
+    A fetched range, ready to stage.
+"""
+    def __init__(self, *, workspace:WorkspaceId, author:MemberId, peer:EndpointId, epoch:int, revision:int, after:int, through:int, packet_count:int, retained_bytes:int, automatic_source:bool, attempted:typing.Optional[int]):
+        self.workspace = workspace
+        self.author = author
+        self.peer = peer
+        self.epoch = epoch
+        self.revision = revision
+        self.after = after
+        self.through = through
+        self.packet_count = packet_count
+        self.retained_bytes = retained_bytes
+        self.automatic_source = automatic_source
+        self.attempted = attempted
+        
+        
+
+    
+    def __str__(self):
+        return "RecoveryRangeReady(workspace={}, author={}, peer={}, epoch={}, revision={}, after={}, through={}, packet_count={}, retained_bytes={}, automatic_source={}, attempted={})".format(self.workspace, self.author, self.peer, self.epoch, self.revision, self.after, self.through, self.packet_count, self.retained_bytes, self.automatic_source, self.attempted)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.author != other.author:
+            return False
+        if self.peer != other.peer:
+            return False
+        if self.epoch != other.epoch:
+            return False
+        if self.revision != other.revision:
+            return False
+        if self.after != other.after:
+            return False
+        if self.through != other.through:
+            return False
+        if self.packet_count != other.packet_count:
+            return False
+        if self.retained_bytes != other.retained_bytes:
+            return False
+        if self.automatic_source != other.automatic_source:
+            return False
+        if self.attempted != other.attempted:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeRecoveryRangeReady(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return RecoveryRangeReady(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            author=_UniffiFfiConverterTypeMemberId.read(buf),
+            peer=_UniffiFfiConverterTypeEndpointId.read(buf),
+            epoch=_UniffiFfiConverterUInt64.read(buf),
+            revision=_UniffiFfiConverterUInt64.read(buf),
+            after=_UniffiFfiConverterUInt64.read(buf),
+            through=_UniffiFfiConverterUInt64.read(buf),
+            packet_count=_UniffiFfiConverterUInt64.read(buf),
+            retained_bytes=_UniffiFfiConverterUInt64.read(buf),
+            automatic_source=_UniffiFfiConverterBoolean.read(buf),
+            attempted=_UniffiFfiConverterOptionalUInt64.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterTypeMemberId.check_lower(value.author)
+        _UniffiFfiConverterTypeEndpointId.check_lower(value.peer)
+        _UniffiFfiConverterUInt64.check_lower(value.epoch)
+        _UniffiFfiConverterUInt64.check_lower(value.revision)
+        _UniffiFfiConverterUInt64.check_lower(value.after)
+        _UniffiFfiConverterUInt64.check_lower(value.through)
+        _UniffiFfiConverterUInt64.check_lower(value.packet_count)
+        _UniffiFfiConverterUInt64.check_lower(value.retained_bytes)
+        _UniffiFfiConverterBoolean.check_lower(value.automatic_source)
+        _UniffiFfiConverterOptionalUInt64.check_lower(value.attempted)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterTypeMemberId.write(value.author, buf)
+        _UniffiFfiConverterTypeEndpointId.write(value.peer, buf)
+        _UniffiFfiConverterUInt64.write(value.epoch, buf)
+        _UniffiFfiConverterUInt64.write(value.revision, buf)
+        _UniffiFfiConverterUInt64.write(value.after, buf)
+        _UniffiFfiConverterUInt64.write(value.through, buf)
+        _UniffiFfiConverterUInt64.write(value.packet_count, buf)
+        _UniffiFfiConverterUInt64.write(value.retained_bytes, buf)
+        _UniffiFfiConverterBoolean.write(value.automatic_source, buf)
+        _UniffiFfiConverterOptionalUInt64.write(value.attempted, buf)
+
+class _UniffiFfiConverterOptionalTypeMemberId(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        if value is not None:
+            _UniffiFfiConverterTypeMemberId.check_lower(value)
+
+    @classmethod
+    def write(cls, value, buf):
+        if value is None:
+            buf.write_u8(0)
+            return
+
+        buf.write_u8(1)
+        _UniffiFfiConverterTypeMemberId.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        flag = buf.read_u8()
+        if flag == 0:
+            return None
+        elif flag == 1:
+            return _UniffiFfiConverterTypeMemberId.read(buf)
+        else:
+            raise InternalError("Unexpected flag byte for optional type")
+
+class _UniffiFfiConverterSequenceString(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterString.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterString.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterString.read(buf) for i in range(count)
+        ]
+
+@dataclass
+class RecoveryRangeRequest:
+    """
+    Which range of an author's objects to fetch from a peer.
+"""
+    def __init__(self, *, peer:typing.Optional[EndpointId] = _DEFAULT, author:typing.Optional[MemberId] = _DEFAULT, revision:int, topics:typing.List[str], after:typing.Optional[int] = _DEFAULT, through:typing.Optional[int] = _DEFAULT):
+        if peer is _DEFAULT:
+            self.peer = None
+        else:
+            self.peer = peer
+        if author is _DEFAULT:
+            self.author = None
+        else:
+            self.author = author
+        self.revision = revision
+        self.topics = topics
+        if after is _DEFAULT:
+            self.after = None
+        else:
+            self.after = after
+        if through is _DEFAULT:
+            self.through = None
+        else:
+            self.through = through
+        
+        
+
+    
+    def __str__(self):
+        return "RecoveryRangeRequest(peer={}, author={}, revision={}, topics={}, after={}, through={})".format(self.peer, self.author, self.revision, self.topics, self.after, self.through)
+    def __eq__(self, other):
+        if self.peer != other.peer:
+            return False
+        if self.author != other.author:
+            return False
+        if self.revision != other.revision:
+            return False
+        if self.topics != other.topics:
+            return False
+        if self.after != other.after:
+            return False
+        if self.through != other.through:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeRecoveryRangeRequest(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return RecoveryRangeRequest(
+            peer=_UniffiFfiConverterOptionalTypeEndpointId.read(buf),
+            author=_UniffiFfiConverterOptionalTypeMemberId.read(buf),
+            revision=_UniffiFfiConverterUInt64.read(buf),
+            topics=_UniffiFfiConverterSequenceString.read(buf),
+            after=_UniffiFfiConverterOptionalUInt64.read(buf),
+            through=_UniffiFfiConverterOptionalUInt64.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterOptionalTypeEndpointId.check_lower(value.peer)
+        _UniffiFfiConverterOptionalTypeMemberId.check_lower(value.author)
+        _UniffiFfiConverterUInt64.check_lower(value.revision)
+        _UniffiFfiConverterSequenceString.check_lower(value.topics)
+        _UniffiFfiConverterOptionalUInt64.check_lower(value.after)
+        _UniffiFfiConverterOptionalUInt64.check_lower(value.through)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterOptionalTypeEndpointId.write(value.peer, buf)
+        _UniffiFfiConverterOptionalTypeMemberId.write(value.author, buf)
+        _UniffiFfiConverterUInt64.write(value.revision, buf)
+        _UniffiFfiConverterSequenceString.write(value.topics, buf)
+        _UniffiFfiConverterOptionalUInt64.write(value.after, buf)
+        _UniffiFfiConverterOptionalUInt64.write(value.through, buf)
 
 
 
@@ -1358,11 +4249,244 @@ class _UniffiFfiConverterTypeWorkspacePhase(_UniffiConverterRustBuffer):
 
 
 
-class _UniffiFfiConverterOptionalString(_UniffiConverterRustBuffer):
+@dataclass
+class WorkspaceInfo:
+    """
+    A workspace this client created or joined.
+"""
+    def __init__(self, *, workspace:WorkspaceId, workspace_name:typing.Optional[str], epoch:int, member_count:int, durable:bool, phase:WorkspacePhase, reason:typing.Optional[str]):
+        self.workspace = workspace
+        self.workspace_name = workspace_name
+        self.epoch = epoch
+        self.member_count = member_count
+        self.durable = durable
+        self.phase = phase
+        self.reason = reason
+        
+        
+
+    
+    def __str__(self):
+        return "WorkspaceInfo(workspace={}, workspace_name={}, epoch={}, member_count={}, durable={}, phase={}, reason={})".format(self.workspace, self.workspace_name, self.epoch, self.member_count, self.durable, self.phase, self.reason)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.workspace_name != other.workspace_name:
+            return False
+        if self.epoch != other.epoch:
+            return False
+        if self.member_count != other.member_count:
+            return False
+        if self.durable != other.durable:
+            return False
+        if self.phase != other.phase:
+            return False
+        if self.reason != other.reason:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeWorkspaceInfo(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return WorkspaceInfo(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            workspace_name=_UniffiFfiConverterOptionalString.read(buf),
+            epoch=_UniffiFfiConverterUInt64.read(buf),
+            member_count=_UniffiFfiConverterUInt64.read(buf),
+            durable=_UniffiFfiConverterBoolean.read(buf),
+            phase=_UniffiFfiConverterTypeWorkspacePhase.read(buf),
+            reason=_UniffiFfiConverterOptionalString.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterOptionalString.check_lower(value.workspace_name)
+        _UniffiFfiConverterUInt64.check_lower(value.epoch)
+        _UniffiFfiConverterUInt64.check_lower(value.member_count)
+        _UniffiFfiConverterBoolean.check_lower(value.durable)
+        _UniffiFfiConverterTypeWorkspacePhase.check_lower(value.phase)
+        _UniffiFfiConverterOptionalString.check_lower(value.reason)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterOptionalString.write(value.workspace_name, buf)
+        _UniffiFfiConverterUInt64.write(value.epoch, buf)
+        _UniffiFfiConverterUInt64.write(value.member_count, buf)
+        _UniffiFfiConverterBoolean.write(value.durable, buf)
+        _UniffiFfiConverterTypeWorkspacePhase.write(value.phase, buf)
+        _UniffiFfiConverterOptionalString.write(value.reason, buf)
+
+class _UniffiFfiConverterSequenceTypePeerRoute(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterTypePeerRoute.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypePeerRoute.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypePeerRoute.read(buf) for i in range(count)
+        ]
+
+@dataclass
+class WorkspaceMetrics:
+    """
+    A local, read-only snapshot of workspace counters (diagnostics only).
+"""
+    def __init__(self, *, workspace:WorkspaceId, phase:WorkspacePhase, reason:typing.Optional[str], received_bytes:int, sent_bytes:int, receive_queue:int, admission_queue:int, admission_queue_bytes:int, admission_waiters:int, admission_in_flight:int, approval_pending:int, pending_objects:int, repair_jobs:int, gossip_neighbors:int, control_timing:ControlTimingMetrics, membership_gossip:MembershipGossipMetrics, connection_capacity:ConnectionCapacityMetrics, paths:typing.List[PeerRoute], paths_limited:bool):
+        self.workspace = workspace
+        self.phase = phase
+        self.reason = reason
+        self.received_bytes = received_bytes
+        self.sent_bytes = sent_bytes
+        self.receive_queue = receive_queue
+        self.admission_queue = admission_queue
+        self.admission_queue_bytes = admission_queue_bytes
+        self.admission_waiters = admission_waiters
+        self.admission_in_flight = admission_in_flight
+        self.approval_pending = approval_pending
+        self.pending_objects = pending_objects
+        self.repair_jobs = repair_jobs
+        self.gossip_neighbors = gossip_neighbors
+        self.control_timing = control_timing
+        self.membership_gossip = membership_gossip
+        self.connection_capacity = connection_capacity
+        self.paths = paths
+        self.paths_limited = paths_limited
+        
+        
+
+    
+    def __str__(self):
+        return "WorkspaceMetrics(workspace={}, phase={}, reason={}, received_bytes={}, sent_bytes={}, receive_queue={}, admission_queue={}, admission_queue_bytes={}, admission_waiters={}, admission_in_flight={}, approval_pending={}, pending_objects={}, repair_jobs={}, gossip_neighbors={}, control_timing={}, membership_gossip={}, connection_capacity={}, paths={}, paths_limited={})".format(self.workspace, self.phase, self.reason, self.received_bytes, self.sent_bytes, self.receive_queue, self.admission_queue, self.admission_queue_bytes, self.admission_waiters, self.admission_in_flight, self.approval_pending, self.pending_objects, self.repair_jobs, self.gossip_neighbors, self.control_timing, self.membership_gossip, self.connection_capacity, self.paths, self.paths_limited)
+    def __eq__(self, other):
+        if self.workspace != other.workspace:
+            return False
+        if self.phase != other.phase:
+            return False
+        if self.reason != other.reason:
+            return False
+        if self.received_bytes != other.received_bytes:
+            return False
+        if self.sent_bytes != other.sent_bytes:
+            return False
+        if self.receive_queue != other.receive_queue:
+            return False
+        if self.admission_queue != other.admission_queue:
+            return False
+        if self.admission_queue_bytes != other.admission_queue_bytes:
+            return False
+        if self.admission_waiters != other.admission_waiters:
+            return False
+        if self.admission_in_flight != other.admission_in_flight:
+            return False
+        if self.approval_pending != other.approval_pending:
+            return False
+        if self.pending_objects != other.pending_objects:
+            return False
+        if self.repair_jobs != other.repair_jobs:
+            return False
+        if self.gossip_neighbors != other.gossip_neighbors:
+            return False
+        if self.control_timing != other.control_timing:
+            return False
+        if self.membership_gossip != other.membership_gossip:
+            return False
+        if self.connection_capacity != other.connection_capacity:
+            return False
+        if self.paths != other.paths:
+            return False
+        if self.paths_limited != other.paths_limited:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeWorkspaceMetrics(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return WorkspaceMetrics(
+            workspace=_UniffiFfiConverterTypeWorkspaceId.read(buf),
+            phase=_UniffiFfiConverterTypeWorkspacePhase.read(buf),
+            reason=_UniffiFfiConverterOptionalString.read(buf),
+            received_bytes=_UniffiFfiConverterUInt64.read(buf),
+            sent_bytes=_UniffiFfiConverterUInt64.read(buf),
+            receive_queue=_UniffiFfiConverterUInt64.read(buf),
+            admission_queue=_UniffiFfiConverterUInt64.read(buf),
+            admission_queue_bytes=_UniffiFfiConverterUInt64.read(buf),
+            admission_waiters=_UniffiFfiConverterUInt64.read(buf),
+            admission_in_flight=_UniffiFfiConverterUInt64.read(buf),
+            approval_pending=_UniffiFfiConverterUInt64.read(buf),
+            pending_objects=_UniffiFfiConverterUInt64.read(buf),
+            repair_jobs=_UniffiFfiConverterUInt64.read(buf),
+            gossip_neighbors=_UniffiFfiConverterUInt64.read(buf),
+            control_timing=_UniffiFfiConverterTypeControlTimingMetrics.read(buf),
+            membership_gossip=_UniffiFfiConverterTypeMembershipGossipMetrics.read(buf),
+            connection_capacity=_UniffiFfiConverterTypeConnectionCapacityMetrics.read(buf),
+            paths=_UniffiFfiConverterSequenceTypePeerRoute.read(buf),
+            paths_limited=_UniffiFfiConverterBoolean.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(value.workspace)
+        _UniffiFfiConverterTypeWorkspacePhase.check_lower(value.phase)
+        _UniffiFfiConverterOptionalString.check_lower(value.reason)
+        _UniffiFfiConverterUInt64.check_lower(value.received_bytes)
+        _UniffiFfiConverterUInt64.check_lower(value.sent_bytes)
+        _UniffiFfiConverterUInt64.check_lower(value.receive_queue)
+        _UniffiFfiConverterUInt64.check_lower(value.admission_queue)
+        _UniffiFfiConverterUInt64.check_lower(value.admission_queue_bytes)
+        _UniffiFfiConverterUInt64.check_lower(value.admission_waiters)
+        _UniffiFfiConverterUInt64.check_lower(value.admission_in_flight)
+        _UniffiFfiConverterUInt64.check_lower(value.approval_pending)
+        _UniffiFfiConverterUInt64.check_lower(value.pending_objects)
+        _UniffiFfiConverterUInt64.check_lower(value.repair_jobs)
+        _UniffiFfiConverterUInt64.check_lower(value.gossip_neighbors)
+        _UniffiFfiConverterTypeControlTimingMetrics.check_lower(value.control_timing)
+        _UniffiFfiConverterTypeMembershipGossipMetrics.check_lower(value.membership_gossip)
+        _UniffiFfiConverterTypeConnectionCapacityMetrics.check_lower(value.connection_capacity)
+        _UniffiFfiConverterSequenceTypePeerRoute.check_lower(value.paths)
+        _UniffiFfiConverterBoolean.check_lower(value.paths_limited)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterTypeWorkspaceId.write(value.workspace, buf)
+        _UniffiFfiConverterTypeWorkspacePhase.write(value.phase, buf)
+        _UniffiFfiConverterOptionalString.write(value.reason, buf)
+        _UniffiFfiConverterUInt64.write(value.received_bytes, buf)
+        _UniffiFfiConverterUInt64.write(value.sent_bytes, buf)
+        _UniffiFfiConverterUInt64.write(value.receive_queue, buf)
+        _UniffiFfiConverterUInt64.write(value.admission_queue, buf)
+        _UniffiFfiConverterUInt64.write(value.admission_queue_bytes, buf)
+        _UniffiFfiConverterUInt64.write(value.admission_waiters, buf)
+        _UniffiFfiConverterUInt64.write(value.admission_in_flight, buf)
+        _UniffiFfiConverterUInt64.write(value.approval_pending, buf)
+        _UniffiFfiConverterUInt64.write(value.pending_objects, buf)
+        _UniffiFfiConverterUInt64.write(value.repair_jobs, buf)
+        _UniffiFfiConverterUInt64.write(value.gossip_neighbors, buf)
+        _UniffiFfiConverterTypeControlTimingMetrics.write(value.control_timing, buf)
+        _UniffiFfiConverterTypeMembershipGossipMetrics.write(value.membership_gossip, buf)
+        _UniffiFfiConverterTypeConnectionCapacityMetrics.write(value.connection_capacity, buf)
+        _UniffiFfiConverterSequenceTypePeerRoute.write(value.paths, buf)
+        _UniffiFfiConverterBoolean.write(value.paths_limited, buf)
+
+class _UniffiFfiConverterOptionalTypeWorkspaceId(_UniffiConverterRustBuffer):
     @classmethod
     def check_lower(cls, value):
         if value is not None:
-            _UniffiFfiConverterString.check_lower(value)
+            _UniffiFfiConverterTypeWorkspaceId.check_lower(value)
 
     @classmethod
     def write(cls, value, buf):
@@ -1371,7 +4495,7 @@ class _UniffiFfiConverterOptionalString(_UniffiConverterRustBuffer):
             return
 
         buf.write_u8(1)
-        _UniffiFfiConverterString.write(value, buf)
+        _UniffiFfiConverterTypeWorkspaceId.write(value, buf)
 
     @classmethod
     def read(cls, buf):
@@ -1379,7 +4503,7 @@ class _UniffiFfiConverterOptionalString(_UniffiConverterRustBuffer):
         if flag == 0:
             return None
         elif flag == 1:
-            return _UniffiFfiConverterString.read(buf)
+            return _UniffiFfiConverterTypeWorkspaceId.read(buf)
         else:
             raise InternalError("Unexpected flag byte for optional type")
 
@@ -1664,31 +4788,6 @@ class _UniffiFfiConverterTypeErrorCode(_UniffiConverterRustBuffer):
             buf.write_i32(22)
 
 
-
-class _UniffiFfiConverterOptionalTypeEndpointId(_UniffiConverterRustBuffer):
-    @classmethod
-    def check_lower(cls, value):
-        if value is not None:
-            _UniffiFfiConverterTypeEndpointId.check_lower(value)
-
-    @classmethod
-    def write(cls, value, buf):
-        if value is None:
-            buf.write_u8(0)
-            return
-
-        buf.write_u8(1)
-        _UniffiFfiConverterTypeEndpointId.write(value, buf)
-
-    @classmethod
-    def read(cls, buf):
-        flag = buf.read_u8()
-        if flag == 0:
-            return None
-        elif flag == 1:
-            return _UniffiFfiConverterTypeEndpointId.read(buf)
-        else:
-            raise InternalError("Unexpected flag byte for optional type")
 
 
 
@@ -2136,6 +5235,1235 @@ class _UniffiFfiConverterTypeEvent(_UniffiConverterRustBuffer):
 
 
 
+
+
+
+
+
+class InvitationKind(enum.Enum):
+    """
+    The kind of invitation link to register.
+"""
+    
+    REUSABLE = 0
+    """
+    Anyone with the link may join until it expires or is disabled.
+"""
+    
+    PERSONAL = 1
+    """
+    One person; an administrator approves the first join request.
+"""
+    
+    PERSONAL_AUTOMATIC = 2
+    """
+    One person; the first join request is approved automatically.
+"""
+    
+    REQUEST_ACCESS = 3
+    """
+    One person asks for access; an administrator approves or declines.
+"""
+    
+
+
+class _UniffiFfiConverterTypeInvitationKind(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        variant = buf.read_i32()
+        if variant == 1:
+            return InvitationKind.REUSABLE
+        if variant == 2:
+            return InvitationKind.PERSONAL
+        if variant == 3:
+            return InvitationKind.PERSONAL_AUTOMATIC
+        if variant == 4:
+            return InvitationKind.REQUEST_ACCESS
+        raise InternalError("Raw enum value doesn't match any cases")
+
+    @staticmethod
+    def check_lower(value):
+        if value == InvitationKind.REUSABLE:
+            return
+        if value == InvitationKind.PERSONAL:
+            return
+        if value == InvitationKind.PERSONAL_AUTOMATIC:
+            return
+        if value == InvitationKind.REQUEST_ACCESS:
+            return
+        raise ValueError(value)
+
+    @staticmethod
+    def write(value, buf):
+        if value == InvitationKind.REUSABLE:
+            buf.write_i32(1)
+        if value == InvitationKind.PERSONAL:
+            buf.write_i32(2)
+        if value == InvitationKind.PERSONAL_AUTOMATIC:
+            buf.write_i32(3)
+        if value == InvitationKind.REQUEST_ACCESS:
+            buf.write_i32(4)
+
+
+
+
+
+
+
+
+class RecoveryRangeStatus:
+    """
+    The state of a recovery range fetch.
+"""
+    def __init__(self):
+        raise RuntimeError("RecoveryRangeStatus cannot be instantiated directly")
+
+    # Each enum variant is a nested class of the enum itself.
+    @dataclass
+    class PENDING:
+        
+        def __init__(self, candidate_count:int, automatic_source:bool):
+            self.candidate_count = candidate_count
+            
+            
+            self.automatic_source = automatic_source
+            
+            
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryRangeStatus.PENDING(candidate_count={}, automatic_source={})".format(self.candidate_count, self.automatic_source)
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryRangeStatus):
+                return NotImplemented
+            if not other.is_PENDING():
+                return False
+            if self.candidate_count != other.candidate_count:
+                return False
+            if self.automatic_source != other.automatic_source:
+                return False
+            return True
+
+    @dataclass
+    class READY:
+        
+        def __init__(self, range:RecoveryRangeReady):
+            self.range = range
+            
+            
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryRangeStatus.READY(range={})".format(self.range)
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryRangeStatus):
+                return NotImplemented
+            if not other.is_READY():
+                return False
+            if self.range != other.range:
+                return False
+            return True
+
+    @dataclass
+    class SOURCE_WAITING:
+        
+        def __init__(self, automatic_source:bool):
+            self.automatic_source = automatic_source
+            
+            
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryRangeStatus.SOURCE_WAITING(automatic_source={})".format(self.automatic_source)
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryRangeStatus):
+                return NotImplemented
+            if not other.is_SOURCE_WAITING():
+                return False
+            if self.automatic_source != other.automatic_source:
+                return False
+            return True
+
+    @dataclass
+    class SOURCE_UNAVAILABLE:
+        
+        def __init__(self, attempted:int, reason:str, automatic_source:bool):
+            self.attempted = attempted
+            
+            
+            self.reason = reason
+            
+            
+            self.automatic_source = automatic_source
+            
+            
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryRangeStatus.SOURCE_UNAVAILABLE(attempted={}, reason={}, automatic_source={})".format(self.attempted, self.reason, self.automatic_source)
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryRangeStatus):
+                return NotImplemented
+            if not other.is_SOURCE_UNAVAILABLE():
+                return False
+            if self.attempted != other.attempted:
+                return False
+            if self.reason != other.reason:
+                return False
+            if self.automatic_source != other.automatic_source:
+                return False
+            return True
+
+    @dataclass
+    class REJECTED:
+        
+        def __init__(self, reason:str):
+            self.reason = reason
+            
+            
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryRangeStatus.REJECTED(reason={})".format(self.reason)
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryRangeStatus):
+                return NotImplemented
+            if not other.is_REJECTED():
+                return False
+            if self.reason != other.reason:
+                return False
+            return True
+
+    @dataclass
+    class CANCELLED:
+        
+        def __init__(self, ):
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryRangeStatus.CANCELLED()".format()
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryRangeStatus):
+                return NotImplemented
+            if not other.is_CANCELLED():
+                return False
+            return True
+
+    
+
+    # For each variant, we have `is_NAME` and `is_name` methods for easily checking
+    # whether an instance is that variant.
+    def is_PENDING(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.PENDING)
+    def is_pending(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.PENDING)
+    def is_READY(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.READY)
+    def is_ready(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.READY)
+    def is_SOURCE_WAITING(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.SOURCE_WAITING)
+    def is_source_waiting(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.SOURCE_WAITING)
+    def is_SOURCE_UNAVAILABLE(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.SOURCE_UNAVAILABLE)
+    def is_source_unavailable(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.SOURCE_UNAVAILABLE)
+    def is_REJECTED(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.REJECTED)
+    def is_rejected(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.REJECTED)
+    def is_CANCELLED(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.CANCELLED)
+    def is_cancelled(self) -> bool:
+        return isinstance(self, RecoveryRangeStatus.CANCELLED)
+    
+
+# Now, a little trick - we make each nested variant class be a subclass of the main
+# enum class, so that method calls and instance checks etc will work intuitively.
+# We might be able to do this a little more neatly with a metaclass, but this'll do.
+RecoveryRangeStatus.PENDING = type("RecoveryRangeStatus.PENDING", (RecoveryRangeStatus.PENDING, RecoveryRangeStatus,), {})  # type: ignore
+RecoveryRangeStatus.READY = type("RecoveryRangeStatus.READY", (RecoveryRangeStatus.READY, RecoveryRangeStatus,), {})  # type: ignore
+RecoveryRangeStatus.SOURCE_WAITING = type("RecoveryRangeStatus.SOURCE_WAITING", (RecoveryRangeStatus.SOURCE_WAITING, RecoveryRangeStatus,), {})  # type: ignore
+RecoveryRangeStatus.SOURCE_UNAVAILABLE = type("RecoveryRangeStatus.SOURCE_UNAVAILABLE", (RecoveryRangeStatus.SOURCE_UNAVAILABLE, RecoveryRangeStatus,), {})  # type: ignore
+RecoveryRangeStatus.REJECTED = type("RecoveryRangeStatus.REJECTED", (RecoveryRangeStatus.REJECTED, RecoveryRangeStatus,), {})  # type: ignore
+RecoveryRangeStatus.CANCELLED = type("RecoveryRangeStatus.CANCELLED", (RecoveryRangeStatus.CANCELLED, RecoveryRangeStatus,), {})  # type: ignore
+
+
+
+
+class _UniffiFfiConverterTypeRecoveryRangeStatus(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        variant = buf.read_i32()
+        if variant == 1:
+            return RecoveryRangeStatus.PENDING(
+                _UniffiFfiConverterUInt64.read(buf),
+                _UniffiFfiConverterBoolean.read(buf),
+            )
+        if variant == 2:
+            return RecoveryRangeStatus.READY(
+                _UniffiFfiConverterTypeRecoveryRangeReady.read(buf),
+            )
+        if variant == 3:
+            return RecoveryRangeStatus.SOURCE_WAITING(
+                _UniffiFfiConverterBoolean.read(buf),
+            )
+        if variant == 4:
+            return RecoveryRangeStatus.SOURCE_UNAVAILABLE(
+                _UniffiFfiConverterUInt64.read(buf),
+                _UniffiFfiConverterString.read(buf),
+                _UniffiFfiConverterBoolean.read(buf),
+            )
+        if variant == 5:
+            return RecoveryRangeStatus.REJECTED(
+                _UniffiFfiConverterString.read(buf),
+            )
+        if variant == 6:
+            return RecoveryRangeStatus.CANCELLED(
+            )
+        raise InternalError("Raw enum value doesn't match any cases")
+
+    @staticmethod
+    def check_lower(value):
+        if value.is_PENDING():
+            _UniffiFfiConverterUInt64.check_lower(value.candidate_count)
+            _UniffiFfiConverterBoolean.check_lower(value.automatic_source)
+            return
+        if value.is_READY():
+            _UniffiFfiConverterTypeRecoveryRangeReady.check_lower(value.range)
+            return
+        if value.is_SOURCE_WAITING():
+            _UniffiFfiConverterBoolean.check_lower(value.automatic_source)
+            return
+        if value.is_SOURCE_UNAVAILABLE():
+            _UniffiFfiConverterUInt64.check_lower(value.attempted)
+            _UniffiFfiConverterString.check_lower(value.reason)
+            _UniffiFfiConverterBoolean.check_lower(value.automatic_source)
+            return
+        if value.is_REJECTED():
+            _UniffiFfiConverterString.check_lower(value.reason)
+            return
+        if value.is_CANCELLED():
+            return
+        raise ValueError(value)
+
+    @staticmethod
+    def write(value, buf):
+        if value.is_PENDING():
+            buf.write_i32(1)
+            _UniffiFfiConverterUInt64.write(value.candidate_count, buf)
+            _UniffiFfiConverterBoolean.write(value.automatic_source, buf)
+        if value.is_READY():
+            buf.write_i32(2)
+            _UniffiFfiConverterTypeRecoveryRangeReady.write(value.range, buf)
+        if value.is_SOURCE_WAITING():
+            buf.write_i32(3)
+            _UniffiFfiConverterBoolean.write(value.automatic_source, buf)
+        if value.is_SOURCE_UNAVAILABLE():
+            buf.write_i32(4)
+            _UniffiFfiConverterUInt64.write(value.attempted, buf)
+            _UniffiFfiConverterString.write(value.reason, buf)
+            _UniffiFfiConverterBoolean.write(value.automatic_source, buf)
+        if value.is_REJECTED():
+            buf.write_i32(5)
+            _UniffiFfiConverterString.write(value.reason, buf)
+        if value.is_CANCELLED():
+            buf.write_i32(6)
+
+
+
+
+class RecoveryCandidateProtocol(typing.Protocol):
+    """
+    A staged recovery range. Adopt it with `adopt_recovery`.
+"""
+    
+    def durable(self, ) -> bool:
+        raise NotImplementedError
+    def is_used(self, ) -> bool:
+        raise NotImplementedError
+    def publication_count(self, ) -> int:
+        raise NotImplementedError
+    def workspace(self, ) -> WorkspaceId:
+        raise NotImplementedError
+
+class RecoveryCandidate(RecoveryCandidateProtocol):
+    """
+    A staged recovery range. Adopt it with `adopt_recovery`.
+"""
+    
+    _handle: ctypes.c_uint64
+    
+    def __init__(self, *args, **kwargs):
+        raise ValueError("This class has no default constructor")
+
+    def __del__(self):
+        # In case of partial initialization of instances.
+        handle = getattr(self, "_handle", None)
+        if handle is not None:
+            _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_free_recoverycandidate, handle)
+
+    def _uniffi_clone_handle(self):
+        return _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_clone_recoverycandidate, self._handle)
+
+    # Used by alternative constructors or any methods which return this type.
+    @classmethod
+    def _uniffi_make_instance(cls, handle):
+        # Lightly yucky way to bypass the usual __init__ logic
+        # and just create a new instance with the required handle.
+        inst = cls.__new__(cls)
+        inst._handle = handle
+        return inst
+    def durable(self, ) -> bool:
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_durable,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def is_used(self, ) -> bool:
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_is_used,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def publication_count(self, ) -> int:
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterUInt64.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_publication_count,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def workspace(self, ) -> WorkspaceId:
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceId.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_recoverycandidate_workspace,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+
+
+
+
+
+class _UniffiFfiConverterTypeRecoveryCandidate:
+    @staticmethod
+    def lift(value: int) -> RecoveryCandidate:
+        return RecoveryCandidate._uniffi_make_instance(value)
+
+    @staticmethod
+    def check_lower(value: RecoveryCandidate):
+        if not isinstance(value, RecoveryCandidate):
+            raise TypeError("Expected RecoveryCandidate instance, {} found".format(type(value).__name__))
+
+    @staticmethod
+    def lower(value: RecoveryCandidate) -> ctypes.c_uint64:
+        return value._uniffi_clone_handle()
+
+    @classmethod
+    def read(cls, buf: _UniffiRustBuffer) -> RecoveryCandidate:
+        ptr = buf.read_u64()
+        if ptr == 0:
+            raise InternalError("Raw handle value was null")
+        return cls.lift(ptr)
+
+    @classmethod
+    def write(cls, value: RecoveryCandidate, buf: _UniffiRustBuffer):
+        buf.write_u64(cls.lower(value))
+
+
+
+
+
+
+class RecoveryStage:
+    """
+    The result of `stage_recovery_range`.
+"""
+    def __init__(self):
+        raise RuntimeError("RecoveryStage cannot be instantiated directly")
+
+    # Each enum variant is a nested class of the enum itself.
+    @dataclass
+    class CANDIDATE:
+        
+        def __init__(self, candidate:RecoveryCandidate):
+            self.candidate = candidate
+            
+            
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryStage.CANDIDATE(candidate={})".format(self.candidate)
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryStage):
+                return NotImplemented
+            if not other.is_CANDIDATE():
+                return False
+            if self.candidate != other.candidate:
+                return False
+            return True
+
+    @dataclass
+    class ALREADY_COVERED:
+        
+        def __init__(self, ):
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryStage.ALREADY_COVERED()".format()
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryStage):
+                return NotImplemented
+            if not other.is_ALREADY_COVERED():
+                return False
+            return True
+
+    @dataclass
+    class NO_NEW_OBJECTS:
+        
+        def __init__(self, ):
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryStage.NO_NEW_OBJECTS()".format()
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryStage):
+                return NotImplemented
+            if not other.is_NO_NEW_OBJECTS():
+                return False
+            return True
+
+    @dataclass
+    class AWAITING_APPLICATION:
+        """
+        Nothing fits the pending bounds until the application acknowledges
+        or rejects pending objects. Drain the inbox, then ask again.
+"""
+        
+        def __init__(self, ):
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "RecoveryStage.AWAITING_APPLICATION()".format()
+        def __eq__(self, other):
+            if not isinstance(other, RecoveryStage):
+                return NotImplemented
+            if not other.is_AWAITING_APPLICATION():
+                return False
+            return True
+
+    
+
+    # For each variant, we have `is_NAME` and `is_name` methods for easily checking
+    # whether an instance is that variant.
+    def is_CANDIDATE(self) -> bool:
+        return isinstance(self, RecoveryStage.CANDIDATE)
+    def is_candidate(self) -> bool:
+        return isinstance(self, RecoveryStage.CANDIDATE)
+    def is_ALREADY_COVERED(self) -> bool:
+        return isinstance(self, RecoveryStage.ALREADY_COVERED)
+    def is_already_covered(self) -> bool:
+        return isinstance(self, RecoveryStage.ALREADY_COVERED)
+    def is_NO_NEW_OBJECTS(self) -> bool:
+        return isinstance(self, RecoveryStage.NO_NEW_OBJECTS)
+    def is_no_new_objects(self) -> bool:
+        return isinstance(self, RecoveryStage.NO_NEW_OBJECTS)
+    def is_AWAITING_APPLICATION(self) -> bool:
+        return isinstance(self, RecoveryStage.AWAITING_APPLICATION)
+    def is_awaiting_application(self) -> bool:
+        return isinstance(self, RecoveryStage.AWAITING_APPLICATION)
+    
+
+# Now, a little trick - we make each nested variant class be a subclass of the main
+# enum class, so that method calls and instance checks etc will work intuitively.
+# We might be able to do this a little more neatly with a metaclass, but this'll do.
+RecoveryStage.CANDIDATE = type("RecoveryStage.CANDIDATE", (RecoveryStage.CANDIDATE, RecoveryStage,), {})  # type: ignore
+RecoveryStage.ALREADY_COVERED = type("RecoveryStage.ALREADY_COVERED", (RecoveryStage.ALREADY_COVERED, RecoveryStage,), {})  # type: ignore
+RecoveryStage.NO_NEW_OBJECTS = type("RecoveryStage.NO_NEW_OBJECTS", (RecoveryStage.NO_NEW_OBJECTS, RecoveryStage,), {})  # type: ignore
+RecoveryStage.AWAITING_APPLICATION = type("RecoveryStage.AWAITING_APPLICATION", (RecoveryStage.AWAITING_APPLICATION, RecoveryStage,), {})  # type: ignore
+
+
+
+
+class _UniffiFfiConverterTypeRecoveryStage(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        variant = buf.read_i32()
+        if variant == 1:
+            return RecoveryStage.CANDIDATE(
+                _UniffiFfiConverterTypeRecoveryCandidate.read(buf),
+            )
+        if variant == 2:
+            return RecoveryStage.ALREADY_COVERED(
+            )
+        if variant == 3:
+            return RecoveryStage.NO_NEW_OBJECTS(
+            )
+        if variant == 4:
+            return RecoveryStage.AWAITING_APPLICATION(
+            )
+        raise InternalError("Raw enum value doesn't match any cases")
+
+    @staticmethod
+    def check_lower(value):
+        if value.is_CANDIDATE():
+            _UniffiFfiConverterTypeRecoveryCandidate.check_lower(value.candidate)
+            return
+        if value.is_ALREADY_COVERED():
+            return
+        if value.is_NO_NEW_OBJECTS():
+            return
+        if value.is_AWAITING_APPLICATION():
+            return
+        raise ValueError(value)
+
+    @staticmethod
+    def write(value, buf):
+        if value.is_CANDIDATE():
+            buf.write_i32(1)
+            _UniffiFfiConverterTypeRecoveryCandidate.write(value.candidate, buf)
+        if value.is_ALREADY_COVERED():
+            buf.write_i32(2)
+        if value.is_NO_NEW_OBJECTS():
+            buf.write_i32(3)
+        if value.is_AWAITING_APPLICATION():
+            buf.write_i32(4)
+
+
+
+
+class AdmissionCandidateProtocol(typing.Protocol):
+    """
+    A staged admission, approval or decline. Adopt it with `adopt_admission`.
+"""
+    
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        raise NotImplementedError
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        raise NotImplementedError
+
+class AdmissionCandidate(AdmissionCandidateProtocol):
+    """
+    A staged admission, approval or decline. Adopt it with `adopt_admission`.
+"""
+    
+    _handle: ctypes.c_uint64
+    
+    def __init__(self, *args, **kwargs):
+        raise ValueError("This class has no default constructor")
+
+    def __del__(self):
+        # In case of partial initialization of instances.
+        handle = getattr(self, "_handle", None)
+        if handle is not None:
+            _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_free_admissioncandidate, handle)
+
+    def _uniffi_clone_handle(self):
+        return _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_clone_admissioncandidate, self._handle)
+
+    # Used by alternative constructors or any methods which return this type.
+    @classmethod
+    def _uniffi_make_instance(cls, handle):
+        # Lightly yucky way to bypass the usual __init__ logic
+        # and just create a new instance with the required handle.
+        inst = cls.__new__(cls)
+        inst._handle = handle
+        return inst
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_admissioncandidate_is_used,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceId.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_admissioncandidate_workspace,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+
+
+
+
+
+class _UniffiFfiConverterTypeAdmissionCandidate:
+    @staticmethod
+    def lift(value: int) -> AdmissionCandidate:
+        return AdmissionCandidate._uniffi_make_instance(value)
+
+    @staticmethod
+    def check_lower(value: AdmissionCandidate):
+        if not isinstance(value, AdmissionCandidate):
+            raise TypeError("Expected AdmissionCandidate instance, {} found".format(type(value).__name__))
+
+    @staticmethod
+    def lower(value: AdmissionCandidate) -> ctypes.c_uint64:
+        return value._uniffi_clone_handle()
+
+    @classmethod
+    def read(cls, buf: _UniffiRustBuffer) -> AdmissionCandidate:
+        ptr = buf.read_u64()
+        if ptr == 0:
+            raise InternalError("Raw handle value was null")
+        return cls.lift(ptr)
+
+    @classmethod
+    def write(cls, value: AdmissionCandidate, buf: _UniffiRustBuffer):
+        buf.write_u64(cls.lower(value))
+
+class _UniffiFfiConverterOptionalUInt32(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        if value is not None:
+            _UniffiFfiConverterUInt32.check_lower(value)
+
+    @classmethod
+    def write(cls, value, buf):
+        if value is None:
+            buf.write_u8(0)
+            return
+
+        buf.write_u8(1)
+        _UniffiFfiConverterUInt32.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        flag = buf.read_u8()
+        if flag == 0:
+            return None
+        elif flag == 1:
+            return _UniffiFfiConverterUInt32.read(buf)
+        else:
+            raise InternalError("Unexpected flag byte for optional type")
+
+
+class InvitationCandidateProtocol(typing.Protocol):
+    """
+    A staged invitation link. Adopt it with `adopt_invitation`.
+"""
+    
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        raise NotImplementedError
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        raise NotImplementedError
+
+class InvitationCandidate(InvitationCandidateProtocol):
+    """
+    A staged invitation link. Adopt it with `adopt_invitation`.
+"""
+    
+    _handle: ctypes.c_uint64
+    
+    def __init__(self, *args, **kwargs):
+        raise ValueError("This class has no default constructor")
+
+    def __del__(self):
+        # In case of partial initialization of instances.
+        handle = getattr(self, "_handle", None)
+        if handle is not None:
+            _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_free_invitationcandidate, handle)
+
+    def _uniffi_clone_handle(self):
+        return _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_clone_invitationcandidate, self._handle)
+
+    # Used by alternative constructors or any methods which return this type.
+    @classmethod
+    def _uniffi_make_instance(cls, handle):
+        # Lightly yucky way to bypass the usual __init__ logic
+        # and just create a new instance with the required handle.
+        inst = cls.__new__(cls)
+        inst._handle = handle
+        return inst
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_invitationcandidate_is_used,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceId.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_invitationcandidate_workspace,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+
+
+
+
+
+class _UniffiFfiConverterTypeInvitationCandidate:
+    @staticmethod
+    def lift(value: int) -> InvitationCandidate:
+        return InvitationCandidate._uniffi_make_instance(value)
+
+    @staticmethod
+    def check_lower(value: InvitationCandidate):
+        if not isinstance(value, InvitationCandidate):
+            raise TypeError("Expected InvitationCandidate instance, {} found".format(type(value).__name__))
+
+    @staticmethod
+    def lower(value: InvitationCandidate) -> ctypes.c_uint64:
+        return value._uniffi_clone_handle()
+
+    @classmethod
+    def read(cls, buf: _UniffiRustBuffer) -> InvitationCandidate:
+        ptr = buf.read_u64()
+        if ptr == 0:
+            raise InternalError("Raw handle value was null")
+        return cls.lift(ptr)
+
+    @classmethod
+    def write(cls, value: InvitationCandidate, buf: _UniffiRustBuffer):
+        buf.write_u64(cls.lower(value))
+
+
+class JoinCandidateProtocol(typing.Protocol):
+    """
+    A staged join. Adopt it with `adopt_join`.
+"""
+    
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        raise NotImplementedError
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        raise NotImplementedError
+
+class JoinCandidate(JoinCandidateProtocol):
+    """
+    A staged join. Adopt it with `adopt_join`.
+"""
+    
+    _handle: ctypes.c_uint64
+    
+    def __init__(self, *args, **kwargs):
+        raise ValueError("This class has no default constructor")
+
+    def __del__(self):
+        # In case of partial initialization of instances.
+        handle = getattr(self, "_handle", None)
+        if handle is not None:
+            _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_free_joincandidate, handle)
+
+    def _uniffi_clone_handle(self):
+        return _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_clone_joincandidate, self._handle)
+
+    # Used by alternative constructors or any methods which return this type.
+    @classmethod
+    def _uniffi_make_instance(cls, handle):
+        # Lightly yucky way to bypass the usual __init__ logic
+        # and just create a new instance with the required handle.
+        inst = cls.__new__(cls)
+        inst._handle = handle
+        return inst
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_joincandidate_is_used,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceId.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_joincandidate_workspace,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+
+
+
+
+
+class _UniffiFfiConverterTypeJoinCandidate:
+    @staticmethod
+    def lift(value: int) -> JoinCandidate:
+        return JoinCandidate._uniffi_make_instance(value)
+
+    @staticmethod
+    def check_lower(value: JoinCandidate):
+        if not isinstance(value, JoinCandidate):
+            raise TypeError("Expected JoinCandidate instance, {} found".format(type(value).__name__))
+
+    @staticmethod
+    def lower(value: JoinCandidate) -> ctypes.c_uint64:
+        return value._uniffi_clone_handle()
+
+    @classmethod
+    def read(cls, buf: _UniffiRustBuffer) -> JoinCandidate:
+        ptr = buf.read_u64()
+        if ptr == 0:
+            raise InternalError("Raw handle value was null")
+        return cls.lift(ptr)
+
+    @classmethod
+    def write(cls, value: JoinCandidate, buf: _UniffiRustBuffer):
+        buf.write_u64(cls.lower(value))
+
+
+class PublicationCandidateProtocol(typing.Protocol):
+    """
+    A staged protected publication. Adopt it with `adopt_protected_publication`.
+"""
+    
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        raise NotImplementedError
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        raise NotImplementedError
+
+class PublicationCandidate(PublicationCandidateProtocol):
+    """
+    A staged protected publication. Adopt it with `adopt_protected_publication`.
+"""
+    
+    _handle: ctypes.c_uint64
+    
+    def __init__(self, *args, **kwargs):
+        raise ValueError("This class has no default constructor")
+
+    def __del__(self):
+        # In case of partial initialization of instances.
+        handle = getattr(self, "_handle", None)
+        if handle is not None:
+            _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_free_publicationcandidate, handle)
+
+    def _uniffi_clone_handle(self):
+        return _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_clone_publicationcandidate, self._handle)
+
+    # Used by alternative constructors or any methods which return this type.
+    @classmethod
+    def _uniffi_make_instance(cls, handle):
+        # Lightly yucky way to bypass the usual __init__ logic
+        # and just create a new instance with the required handle.
+        inst = cls.__new__(cls)
+        inst._handle = handle
+        return inst
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_publicationcandidate_is_used,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceId.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_publicationcandidate_workspace,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+
+
+
+
+
+class _UniffiFfiConverterTypePublicationCandidate:
+    @staticmethod
+    def lift(value: int) -> PublicationCandidate:
+        return PublicationCandidate._uniffi_make_instance(value)
+
+    @staticmethod
+    def check_lower(value: PublicationCandidate):
+        if not isinstance(value, PublicationCandidate):
+            raise TypeError("Expected PublicationCandidate instance, {} found".format(type(value).__name__))
+
+    @staticmethod
+    def lower(value: PublicationCandidate) -> ctypes.c_uint64:
+        return value._uniffi_clone_handle()
+
+    @classmethod
+    def read(cls, buf: _UniffiRustBuffer) -> PublicationCandidate:
+        ptr = buf.read_u64()
+        if ptr == 0:
+            raise InternalError("Raw handle value was null")
+        return cls.lift(ptr)
+
+    @classmethod
+    def write(cls, value: PublicationCandidate, buf: _UniffiRustBuffer):
+        buf.write_u64(cls.lower(value))
+
+
+class ReceptionCandidateProtocol(typing.Protocol):
+    """
+    A staged inbox change: a reception from `poll_protected`, or an
+    acknowledgement or rejection. Adopt it with `adopt_protected_reception`.
+"""
+    
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        raise NotImplementedError
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        raise NotImplementedError
+
+class ReceptionCandidate(ReceptionCandidateProtocol):
+    """
+    A staged inbox change: a reception from `poll_protected`, or an
+    acknowledgement or rejection. Adopt it with `adopt_protected_reception`.
+"""
+    
+    _handle: ctypes.c_uint64
+    
+    def __init__(self, *args, **kwargs):
+        raise ValueError("This class has no default constructor")
+
+    def __del__(self):
+        # In case of partial initialization of instances.
+        handle = getattr(self, "_handle", None)
+        if handle is not None:
+            _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_free_receptioncandidate, handle)
+
+    def _uniffi_clone_handle(self):
+        return _uniffi_rust_call(_UniffiLib.uniffi_arachne_sdk_fn_clone_receptioncandidate, self._handle)
+
+    # Used by alternative constructors or any methods which return this type.
+    @classmethod
+    def _uniffi_make_instance(cls, handle):
+        # Lightly yucky way to bypass the usual __init__ logic
+        # and just create a new instance with the required handle.
+        inst = cls.__new__(cls)
+        inst._handle = handle
+        return inst
+    def is_used(self, ) -> bool:
+        """
+        It was adopted (or an adopt was tried).
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_receptioncandidate_is_used,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def workspace(self, ) -> WorkspaceId:
+        """
+        The workspace this candidate changes.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceId.lift
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_receptioncandidate_workspace,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+
+
+
+
+
+class _UniffiFfiConverterTypeReceptionCandidate:
+    @staticmethod
+    def lift(value: int) -> ReceptionCandidate:
+        return ReceptionCandidate._uniffi_make_instance(value)
+
+    @staticmethod
+    def check_lower(value: ReceptionCandidate):
+        if not isinstance(value, ReceptionCandidate):
+            raise TypeError("Expected ReceptionCandidate instance, {} found".format(type(value).__name__))
+
+    @staticmethod
+    def lower(value: ReceptionCandidate) -> ctypes.c_uint64:
+        return value._uniffi_clone_handle()
+
+    @classmethod
+    def read(cls, buf: _UniffiRustBuffer) -> ReceptionCandidate:
+        ptr = buf.read_u64()
+        if ptr == 0:
+            raise InternalError("Raw handle value was null")
+        return cls.lift(ptr)
+
+    @classmethod
+    def write(cls, value: ReceptionCandidate, buf: _UniffiRustBuffer):
+        buf.write_u64(cls.lower(value))
+
+class _UniffiFfiConverterSequenceTypeInvitationControl(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterTypeInvitationControl.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypeInvitationControl.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypeInvitationControl.read(buf) for i in range(count)
+        ]
+
 class _UniffiFfiConverterOptionalTypeEvent(_UniffiConverterRustBuffer):
     @classmethod
     def check_lower(cls, value):
@@ -2161,6 +6489,129 @@ class _UniffiFfiConverterOptionalTypeEvent(_UniffiConverterRustBuffer):
         else:
             raise InternalError("Unexpected flag byte for optional type")
 
+class _UniffiFfiConverterOptionalTypeInterestObservation(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        if value is not None:
+            _UniffiFfiConverterTypeInterestObservation.check_lower(value)
+
+    @classmethod
+    def write(cls, value, buf):
+        if value is None:
+            buf.write_u8(0)
+            return
+
+        buf.write_u8(1)
+        _UniffiFfiConverterTypeInterestObservation.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        flag = buf.read_u8()
+        if flag == 0:
+            return None
+        elif flag == 1:
+            return _UniffiFfiConverterTypeInterestObservation.read(buf)
+        else:
+            raise InternalError("Unexpected flag byte for optional type")
+
+class _UniffiFfiConverterOptionalTypeReceivedPublication(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        if value is not None:
+            _UniffiFfiConverterTypeReceivedPublication.check_lower(value)
+
+    @classmethod
+    def write(cls, value, buf):
+        if value is None:
+            buf.write_u8(0)
+            return
+
+        buf.write_u8(1)
+        _UniffiFfiConverterTypeReceivedPublication.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        flag = buf.read_u8()
+        if flag == 0:
+            return None
+        elif flag == 1:
+            return _UniffiFfiConverterTypeReceivedPublication.read(buf)
+        else:
+            raise InternalError("Unexpected flag byte for optional type")
+
+class _UniffiFfiConverterOptionalTypeReceptionCandidate(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        if value is not None:
+            _UniffiFfiConverterTypeReceptionCandidate.check_lower(value)
+
+    @classmethod
+    def write(cls, value, buf):
+        if value is None:
+            buf.write_u8(0)
+            return
+
+        buf.write_u8(1)
+        _UniffiFfiConverterTypeReceptionCandidate.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        flag = buf.read_u8()
+        if flag == 0:
+            return None
+        elif flag == 1:
+            return _UniffiFfiConverterTypeReceptionCandidate.read(buf)
+        else:
+            raise InternalError("Unexpected flag byte for optional type")
+
+class _UniffiFfiConverterOptionalTypeRecoveryRangeStatus(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        if value is not None:
+            _UniffiFfiConverterTypeRecoveryRangeStatus.check_lower(value)
+
+    @classmethod
+    def write(cls, value, buf):
+        if value is None:
+            buf.write_u8(0)
+            return
+
+        buf.write_u8(1)
+        _UniffiFfiConverterTypeRecoveryRangeStatus.write(value, buf)
+
+    @classmethod
+    def read(cls, buf):
+        flag = buf.read_u8()
+        if flag == 0:
+            return None
+        elif flag == 1:
+            return _UniffiFfiConverterTypeRecoveryRangeStatus.read(buf)
+        else:
+            raise InternalError("Unexpected flag byte for optional type")
+
+class _UniffiFfiConverterSequenceTypeJoinAdmissionStep(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterTypeJoinAdmissionStep.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypeJoinAdmissionStep.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypeJoinAdmissionStep.read(buf) for i in range(count)
+        ]
+
 
 class ClientProtocol(typing.Protocol):
     """
@@ -2169,15 +6620,109 @@ class ClientProtocol(typing.Protocol):
     while another thread waits: no lock is held while a call waits.
 """
     
+    def acknowledge_admission_approval(self, attempt_id: AttemptId) -> None:
+        """
+        Mark a pending approval as seen.
+"""
+        raise NotImplementedError
+    def add_address_hint(self, peer: EndpointId,address: str) -> None:
+        """
+        Tell the transport where `peer` can be reached (`host:port`).
+"""
+        raise NotImplementedError
+    def admission_approvals(self, after: typing.Optional[AttemptId],limit: typing.Optional[int]) -> AdmissionApprovalPage:
+        """
+        One page of requests that wait for an administrator (`limit` 1-64).
+"""
+        raise NotImplementedError
+    def adopt_admission(self, candidate: AdmissionCandidate) -> WorkspaceInfo:
+        raise NotImplementedError
+    def adopt_invitation(self, candidate: InvitationCandidate) -> InvitationInfo:
+        """
+        Adopt a staged invitation and get its bearer link.
+"""
+        raise NotImplementedError
+    def adopt_join(self, candidate: JoinCandidate) -> WorkspaceInfo:
+        raise NotImplementedError
+    def adopt_protected_publication(self, candidate: PublicationCandidate) -> DeliveryReport:
+        """
+        Adopt and send a staged publication.
+"""
+        raise NotImplementedError
+    def adopt_protected_reception(self, candidate: ReceptionCandidate) -> None:
+        """
+        Adopt a reception, acknowledgement or rejection.
+"""
+        raise NotImplementedError
+    def adopt_recovery(self, candidate: RecoveryCandidate) -> RecoveryAdoption:
+        """
+        Adopt a staged range. Recovered objects wait in the inbox.
+"""
+        raise NotImplementedError
+    def begin_join(self, invitation: bytes,checkpoint: bytes,display_name: str,peers: typing.List[EndpointId]) -> JoinRequest:
+        """
+        Start joining. Send `admission_request` of the result to a member.
+"""
+        raise NotImplementedError
+    def cancel_recovery_range(self, ) -> None:
+        raise NotImplementedError
     def close(self, ) -> None:
         """
         Close the session. Idempotent, from any thread. It releases every
         waiter; later calls fail with `Closed`. Kotlin names it `shutdown`.
 """
         raise NotImplementedError
+    def create_workspace(self, display_name: str,workspace_name: typing.Optional[str]) -> WorkspaceInfo:
+        """
+        Create a workspace with this client as its first administrator.
+"""
+        raise NotImplementedError
     def describe(self, ) -> EndpointInfo:
         """
         The bound endpoint.
+"""
+        raise NotImplementedError
+    def fetch_invitation_checkpoint(self, invitation: bytes,peers: typing.List[EndpointId]) -> InvitationCheckpoint:
+        """
+        Fetch the current checkpoint of a compact invitation from up to three members.
+"""
+        raise NotImplementedError
+    def fetch_recovery_range(self, request: RecoveryRangeRequest,epoch: typing.Optional[int]) -> RecoveryRangeStatus:
+        """
+        Ask a peer for a range of an author's objects. `epoch`: an earlier
+        author epoch still in the receive window (`None`: current).
+"""
+        raise NotImplementedError
+    def inspect_invitation(self, invitation: bytes,checkpoint: bytes) -> InvitationDetails:
+        """
+        Check an invitation link against its checkpoint without joining.
+"""
+        raise NotImplementedError
+    def install_member_policy(self, revision: int,topics: typing.List[str]) -> None:
+        """
+        Route only `topics` between all members at `revision`.
+"""
+        raise NotImplementedError
+    def install_workspace_policy(self, revision: int) -> None:
+        """
+        Route every topic between all members at `revision` (epoch + 1).
+"""
+        raise NotImplementedError
+    def invitation_controls(self, ) -> typing.List[InvitationControl]:
+        """
+        The registered invitation links (read only).
+"""
+        raise NotImplementedError
+    def member_roster(self, ) -> MemberRoster:
+        raise NotImplementedError
+    def metrics(self, ) -> WorkspaceMetrics:
+        """
+        Local counters for diagnostics. Do not export them as telemetry.
+"""
+        raise NotImplementedError
+    def network_change(self, ) -> None:
+        """
+        Rebind sockets after the device network changed.
 """
         raise NotImplementedError
     def next_event(self, timeout_ms: int) -> typing.Optional[Event]:
@@ -2187,9 +6732,111 @@ class ClientProtocol(typing.Protocol):
         After `close` it fails with `Closed`.
 """
         raise NotImplementedError
+    def poll_control(self, ) -> bool:
+        """
+        Serve one queued peer-control exchange. `true`: one was served.
+"""
+        raise NotImplementedError
+    def poll_interest(self, ) -> typing.Optional[InterestObservation]:
+        """
+        The settled result of `set_interest`, or `None` while it is pending.
+"""
+        raise NotImplementedError
+    def poll_pending_object(self, ) -> typing.Optional[ReceivedPublication]:
+        """
+        The next object that the application has not acknowledged or rejected.
+"""
+        raise NotImplementedError
+    def poll_presence(self, announce: bool) -> PresenceRound:
+        """
+        One presence round with the members. `announce` marks a restart.
+"""
+        raise NotImplementedError
+    def poll_protected(self, ) -> typing.Optional[ReceptionCandidate]:
+        """
+        Stage one incoming protected publication. The plaintext stays hidden
+        until the candidate is adopted; then read it with `poll_pending_object`.
+"""
+        raise NotImplementedError
+    def poll_recovery_range(self, ) -> typing.Optional[RecoveryRangeStatus]:
+        """
+        The fetch result once it changed, or `None`.
+"""
+        raise NotImplementedError
+    def retained_admission(self, authenticated_endpoint: EndpointId,request: bytes) -> AdmissionReply:
+        """
+        The retained answer for an adopted admission, to send to the joiner.
+"""
+        raise NotImplementedError
+    def send_admission_reply(self, ) -> bool:
+        """
+        Answer the held exchange after its transition is durable.
+        `false`: the requester expired.
+"""
+        raise NotImplementedError
+    def set_deadline(self, deadline_ms: typing.Optional[int]) -> None:
+        """
+        Give each later blocking op this deadline (`None`: no deadline). At
+        the deadline the op fails with `DeadlineExceeded`.
+"""
+        raise NotImplementedError
+    def set_interest(self, workspace: WorkspaceId,revision: int,topic: str,subscribed: bool) -> None:
+        raise NotImplementedError
+    def stage_admission(self, authenticated_endpoint: EndpointId,request: bytes) -> AdmissionCandidate:
+        """
+        Stage the admission of a joiner. `authenticated_endpoint` is the
+        endpoint the request came from.
+"""
+        raise NotImplementedError
+    def stage_invitation(self, expires_at: int,kind: InvitationKind) -> InvitationCandidate:
+        """
+        Register an invitation link. `expires_at` is Unix seconds; 0 never expires.
+"""
+        raise NotImplementedError
+    def stage_invitation_approval(self, request: bytes,attempt_id: typing.Optional[AttemptId]) -> AdmissionCandidate:
+        """
+        Approve (bind) a personal invitation for one join request.
+"""
+        raise NotImplementedError
+    def stage_invitation_decline(self, request: bytes,attempt_id: typing.Optional[AttemptId]) -> AdmissionCandidate:
+        """
+        Decline a personal invitation request.
+"""
+        raise NotImplementedError
+    def stage_join(self, welcome: bytes,commits: typing.List[JoinAdmissionStep]) -> JoinCandidate:
+        """
+        Stage the join from the member's welcome and admission commits.
+"""
+        raise NotImplementedError
+    def stage_object_acknowledgement(self, object: ReceivedPublication) -> ReceptionCandidate:
+        """
+        Stage the application's acceptance of a pending object.
+"""
+        raise NotImplementedError
+    def stage_object_rejection(self, object: ReceivedPublication) -> ReceptionCandidate:
+        """
+        Stage a permanent rejection of a pending object; it never comes back.
+"""
+        raise NotImplementedError
+    def stage_protected_publication(self, workspace: WorkspaceId,revision: int,topic: str,id: RecordId,payload: bytes,current: typing.Optional[PublicationCurrent]) -> PublicationCandidate:
+        """
+        Stage an encrypted publication for the workspace members.
+"""
+        raise NotImplementedError
+    def stage_recovery_range(self, retain_until: int) -> RecoveryStage:
+        """
+        Stage a ready range. `retain_until` is Unix seconds; 0 keeps no copy
+        for third-party recovery.
+"""
+        raise NotImplementedError
     def state(self, ) -> WorkspaceState:
         """
         The workspace state.
+"""
+        raise NotImplementedError
+    def use_service_profile(self, ) -> None:
+        """
+        Mark this client's workspace profile as a service (no extra rights).
 """
         raise NotImplementedError
     def wait_for_work(self, timeout_ms: int) -> bool:
@@ -2252,6 +6899,207 @@ class Client(ClientProtocol):
         inst = cls.__new__(cls)
         inst._handle = handle
         return inst
+    def acknowledge_admission_approval(self, attempt_id: AttemptId) -> None:
+        """
+        Mark a pending approval as seen.
+"""
+        
+        _UniffiFfiConverterTypeAttemptId.check_lower(attempt_id)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeAttemptId.lower(attempt_id),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_acknowledge_admission_approval,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def add_address_hint(self, peer: EndpointId,address: str) -> None:
+        """
+        Tell the transport where `peer` can be reached (`host:port`).
+"""
+        
+        _UniffiFfiConverterTypeEndpointId.check_lower(peer)
+
+        _UniffiFfiConverterString.check_lower(address)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeEndpointId.lower(peer),
+            _UniffiFfiConverterString.lower(address),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_add_address_hint,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def admission_approvals(self, after: typing.Optional[AttemptId],limit: typing.Optional[int]) -> AdmissionApprovalPage:
+        """
+        One page of requests that wait for an administrator (`limit` 1-64).
+"""
+        
+        _UniffiFfiConverterOptionalTypeAttemptId.check_lower(after)
+
+        _UniffiFfiConverterOptionalUInt32.check_lower(limit)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterOptionalTypeAttemptId.lower(after),
+            _UniffiFfiConverterOptionalUInt32.lower(limit),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeAdmissionApprovalPage.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_admission_approvals,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def adopt_admission(self, candidate: AdmissionCandidate) -> WorkspaceInfo:
+        
+        _UniffiFfiConverterTypeAdmissionCandidate.check_lower(candidate)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeAdmissionCandidate.lower(candidate),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceInfo.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_admission,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def adopt_invitation(self, candidate: InvitationCandidate) -> InvitationInfo:
+        """
+        Adopt a staged invitation and get its bearer link.
+"""
+        
+        _UniffiFfiConverterTypeInvitationCandidate.check_lower(candidate)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeInvitationCandidate.lower(candidate),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeInvitationInfo.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_invitation,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def adopt_join(self, candidate: JoinCandidate) -> WorkspaceInfo:
+        
+        _UniffiFfiConverterTypeJoinCandidate.check_lower(candidate)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeJoinCandidate.lower(candidate),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceInfo.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_join,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def adopt_protected_publication(self, candidate: PublicationCandidate) -> DeliveryReport:
+        """
+        Adopt and send a staged publication.
+"""
+        
+        _UniffiFfiConverterTypePublicationCandidate.check_lower(candidate)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypePublicationCandidate.lower(candidate),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeDeliveryReport.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_protected_publication,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def adopt_protected_reception(self, candidate: ReceptionCandidate) -> None:
+        """
+        Adopt a reception, acknowledgement or rejection.
+"""
+        
+        _UniffiFfiConverterTypeReceptionCandidate.check_lower(candidate)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeReceptionCandidate.lower(candidate),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_protected_reception,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def adopt_recovery(self, candidate: RecoveryCandidate) -> RecoveryAdoption:
+        """
+        Adopt a staged range. Recovered objects wait in the inbox.
+"""
+        
+        _UniffiFfiConverterTypeRecoveryCandidate.check_lower(candidate)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeRecoveryCandidate.lower(candidate),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeRecoveryAdoption.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_adopt_recovery,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def begin_join(self, invitation: bytes,checkpoint: bytes,display_name: str,peers: typing.List[EndpointId]) -> JoinRequest:
+        """
+        Start joining. Send `admission_request` of the result to a member.
+"""
+        
+        _UniffiFfiConverterBytes.check_lower(invitation)
+
+        _UniffiFfiConverterBytes.check_lower(checkpoint)
+
+        _UniffiFfiConverterString.check_lower(display_name)
+
+        _UniffiFfiConverterSequenceTypeEndpointId.check_lower(peers)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterBytes.lower(invitation),
+            _UniffiFfiConverterBytes.lower(checkpoint),
+            _UniffiFfiConverterString.lower(display_name),
+            _UniffiFfiConverterSequenceTypeEndpointId.lower(peers),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeJoinRequest.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_begin_join,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def cancel_recovery_range(self, ) -> None:
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_cancel_recovery_range,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
     def close(self, ) -> None:
         """
         Close the session. Idempotent, from any thread. It releases every
@@ -2268,6 +7116,27 @@ class Client(ClientProtocol):
             *_uniffi_lowered_args,
         )
         return _uniffi_lift_return(_uniffi_ffi_result)
+    def create_workspace(self, display_name: str,workspace_name: typing.Optional[str]) -> WorkspaceInfo:
+        """
+        Create a workspace with this client as its first administrator.
+"""
+        
+        _UniffiFfiConverterString.check_lower(display_name)
+
+        _UniffiFfiConverterOptionalString.check_lower(workspace_name)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterString.lower(display_name),
+            _UniffiFfiConverterOptionalString.lower(workspace_name),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceInfo.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_create_workspace,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
     def describe(self, ) -> EndpointInfo:
         """
         The bound endpoint.
@@ -2280,6 +7149,166 @@ class Client(ClientProtocol):
         _uniffi_ffi_result = _uniffi_rust_call_with_error(
             _uniffi_error_converter,
             _UniffiLib.uniffi_arachne_sdk_fn_method_client_describe,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def fetch_invitation_checkpoint(self, invitation: bytes,peers: typing.List[EndpointId]) -> InvitationCheckpoint:
+        """
+        Fetch the current checkpoint of a compact invitation from up to three members.
+"""
+        
+        _UniffiFfiConverterBytes.check_lower(invitation)
+
+        _UniffiFfiConverterSequenceTypeEndpointId.check_lower(peers)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterBytes.lower(invitation),
+            _UniffiFfiConverterSequenceTypeEndpointId.lower(peers),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeInvitationCheckpoint.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_fetch_invitation_checkpoint,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def fetch_recovery_range(self, request: RecoveryRangeRequest,epoch: typing.Optional[int]) -> RecoveryRangeStatus:
+        """
+        Ask a peer for a range of an author's objects. `epoch`: an earlier
+        author epoch still in the receive window (`None`: current).
+"""
+        
+        _UniffiFfiConverterTypeRecoveryRangeRequest.check_lower(request)
+
+        _UniffiFfiConverterOptionalUInt64.check_lower(epoch)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeRecoveryRangeRequest.lower(request),
+            _UniffiFfiConverterOptionalUInt64.lower(epoch),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeRecoveryRangeStatus.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_fetch_recovery_range,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def inspect_invitation(self, invitation: bytes,checkpoint: bytes) -> InvitationDetails:
+        """
+        Check an invitation link against its checkpoint without joining.
+"""
+        
+        _UniffiFfiConverterBytes.check_lower(invitation)
+
+        _UniffiFfiConverterBytes.check_lower(checkpoint)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterBytes.lower(invitation),
+            _UniffiFfiConverterBytes.lower(checkpoint),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeInvitationDetails.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_inspect_invitation,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def install_member_policy(self, revision: int,topics: typing.List[str]) -> None:
+        """
+        Route only `topics` between all members at `revision`.
+"""
+        
+        _UniffiFfiConverterUInt64.check_lower(revision)
+
+        _UniffiFfiConverterSequenceString.check_lower(topics)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterUInt64.lower(revision),
+            _UniffiFfiConverterSequenceString.lower(topics),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_install_member_policy,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def install_workspace_policy(self, revision: int) -> None:
+        """
+        Route every topic between all members at `revision` (epoch + 1).
+"""
+        
+        _UniffiFfiConverterUInt64.check_lower(revision)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterUInt64.lower(revision),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_install_workspace_policy,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def invitation_controls(self, ) -> typing.List[InvitationControl]:
+        """
+        The registered invitation links (read only).
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterSequenceTypeInvitationControl.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_invitation_controls,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def member_roster(self, ) -> MemberRoster:
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeMemberRoster.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_member_roster,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def metrics(self, ) -> WorkspaceMetrics:
+        """
+        Local counters for diagnostics. Do not export them as telemetry.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeWorkspaceMetrics.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_metrics,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def network_change(self, ) -> None:
+        """
+        Rebind sockets after the device network changed.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_network_change,
             *_uniffi_lowered_args,
         )
         return _uniffi_lift_return(_uniffi_ffi_result)
@@ -2303,6 +7332,374 @@ class Client(ClientProtocol):
             *_uniffi_lowered_args,
         )
         return _uniffi_lift_return(_uniffi_ffi_result)
+    def poll_control(self, ) -> bool:
+        """
+        Serve one queued peer-control exchange. `true`: one was served.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_control,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def poll_interest(self, ) -> typing.Optional[InterestObservation]:
+        """
+        The settled result of `set_interest`, or `None` while it is pending.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterOptionalTypeInterestObservation.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_interest,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def poll_pending_object(self, ) -> typing.Optional[ReceivedPublication]:
+        """
+        The next object that the application has not acknowledged or rejected.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterOptionalTypeReceivedPublication.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_pending_object,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def poll_presence(self, announce: bool) -> PresenceRound:
+        """
+        One presence round with the members. `announce` marks a restart.
+"""
+        
+        _UniffiFfiConverterBoolean.check_lower(announce)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterBoolean.lower(announce),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypePresenceRound.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_presence,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def poll_protected(self, ) -> typing.Optional[ReceptionCandidate]:
+        """
+        Stage one incoming protected publication. The plaintext stays hidden
+        until the candidate is adopted; then read it with `poll_pending_object`.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterOptionalTypeReceptionCandidate.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_protected,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def poll_recovery_range(self, ) -> typing.Optional[RecoveryRangeStatus]:
+        """
+        The fetch result once it changed, or `None`.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterOptionalTypeRecoveryRangeStatus.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_poll_recovery_range,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def retained_admission(self, authenticated_endpoint: EndpointId,request: bytes) -> AdmissionReply:
+        """
+        The retained answer for an adopted admission, to send to the joiner.
+"""
+        
+        _UniffiFfiConverterTypeEndpointId.check_lower(authenticated_endpoint)
+
+        _UniffiFfiConverterBytes.check_lower(request)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeEndpointId.lower(authenticated_endpoint),
+            _UniffiFfiConverterBytes.lower(request),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeAdmissionReply.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_retained_admission,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def send_admission_reply(self, ) -> bool:
+        """
+        Answer the held exchange after its transition is durable.
+        `false`: the requester expired.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_send_admission_reply,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def set_deadline(self, deadline_ms: typing.Optional[int]) -> None:
+        """
+        Give each later blocking op this deadline (`None`: no deadline). At
+        the deadline the op fails with `DeadlineExceeded`.
+"""
+        
+        _UniffiFfiConverterOptionalUInt64.check_lower(deadline_ms)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterOptionalUInt64.lower(deadline_ms),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = None
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_set_deadline,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def set_interest(self, workspace: WorkspaceId,revision: int,topic: str,subscribed: bool) -> None:
+        
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(workspace)
+
+        _UniffiFfiConverterUInt64.check_lower(revision)
+
+        _UniffiFfiConverterString.check_lower(topic)
+
+        _UniffiFfiConverterBoolean.check_lower(subscribed)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeWorkspaceId.lower(workspace),
+            _UniffiFfiConverterUInt64.lower(revision),
+            _UniffiFfiConverterString.lower(topic),
+            _UniffiFfiConverterBoolean.lower(subscribed),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_set_interest,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_admission(self, authenticated_endpoint: EndpointId,request: bytes) -> AdmissionCandidate:
+        """
+        Stage the admission of a joiner. `authenticated_endpoint` is the
+        endpoint the request came from.
+"""
+        
+        _UniffiFfiConverterTypeEndpointId.check_lower(authenticated_endpoint)
+
+        _UniffiFfiConverterBytes.check_lower(request)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeEndpointId.lower(authenticated_endpoint),
+            _UniffiFfiConverterBytes.lower(request),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeAdmissionCandidate.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_admission,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_invitation(self, expires_at: int,kind: InvitationKind) -> InvitationCandidate:
+        """
+        Register an invitation link. `expires_at` is Unix seconds; 0 never expires.
+"""
+        
+        _UniffiFfiConverterUInt64.check_lower(expires_at)
+
+        _UniffiFfiConverterTypeInvitationKind.check_lower(kind)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterUInt64.lower(expires_at),
+            _UniffiFfiConverterTypeInvitationKind.lower(kind),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeInvitationCandidate.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_invitation,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_invitation_approval(self, request: bytes,attempt_id: typing.Optional[AttemptId]) -> AdmissionCandidate:
+        """
+        Approve (bind) a personal invitation for one join request.
+"""
+        
+        _UniffiFfiConverterBytes.check_lower(request)
+
+        _UniffiFfiConverterOptionalTypeAttemptId.check_lower(attempt_id)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterBytes.lower(request),
+            _UniffiFfiConverterOptionalTypeAttemptId.lower(attempt_id),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeAdmissionCandidate.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_invitation_approval,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_invitation_decline(self, request: bytes,attempt_id: typing.Optional[AttemptId]) -> AdmissionCandidate:
+        """
+        Decline a personal invitation request.
+"""
+        
+        _UniffiFfiConverterBytes.check_lower(request)
+
+        _UniffiFfiConverterOptionalTypeAttemptId.check_lower(attempt_id)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterBytes.lower(request),
+            _UniffiFfiConverterOptionalTypeAttemptId.lower(attempt_id),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeAdmissionCandidate.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_invitation_decline,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_join(self, welcome: bytes,commits: typing.List[JoinAdmissionStep]) -> JoinCandidate:
+        """
+        Stage the join from the member's welcome and admission commits.
+"""
+        
+        _UniffiFfiConverterBytes.check_lower(welcome)
+
+        _UniffiFfiConverterSequenceTypeJoinAdmissionStep.check_lower(commits)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterBytes.lower(welcome),
+            _UniffiFfiConverterSequenceTypeJoinAdmissionStep.lower(commits),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeJoinCandidate.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_join,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_object_acknowledgement(self, object: ReceivedPublication) -> ReceptionCandidate:
+        """
+        Stage the application's acceptance of a pending object.
+"""
+        
+        _UniffiFfiConverterTypeReceivedPublication.check_lower(object)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeReceivedPublication.lower(object),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeReceptionCandidate.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_object_acknowledgement,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_object_rejection(self, object: ReceivedPublication) -> ReceptionCandidate:
+        """
+        Stage a permanent rejection of a pending object; it never comes back.
+"""
+        
+        _UniffiFfiConverterTypeReceivedPublication.check_lower(object)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeReceivedPublication.lower(object),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeReceptionCandidate.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_object_rejection,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_protected_publication(self, workspace: WorkspaceId,revision: int,topic: str,id: RecordId,payload: bytes,current: typing.Optional[PublicationCurrent]) -> PublicationCandidate:
+        """
+        Stage an encrypted publication for the workspace members.
+"""
+        
+        _UniffiFfiConverterTypeWorkspaceId.check_lower(workspace)
+
+        _UniffiFfiConverterUInt64.check_lower(revision)
+
+        _UniffiFfiConverterString.check_lower(topic)
+
+        _UniffiFfiConverterTypeRecordId.check_lower(id)
+
+        _UniffiFfiConverterBytes.check_lower(payload)
+
+        _UniffiFfiConverterOptionalTypePublicationCurrent.check_lower(current)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterTypeWorkspaceId.lower(workspace),
+            _UniffiFfiConverterUInt64.lower(revision),
+            _UniffiFfiConverterString.lower(topic),
+            _UniffiFfiConverterTypeRecordId.lower(id),
+            _UniffiFfiConverterBytes.lower(payload),
+            _UniffiFfiConverterOptionalTypePublicationCurrent.lower(current),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypePublicationCandidate.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_protected_publication,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_recovery_range(self, retain_until: int) -> RecoveryStage:
+        """
+        Stage a ready range. `retain_until` is Unix seconds; 0 keeps no copy
+        for third-party recovery.
+"""
+        
+        _UniffiFfiConverterUInt64.check_lower(retain_until)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            _UniffiFfiConverterUInt64.lower(retain_until),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypeRecoveryStage.lift
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_stage_recovery_range,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
     def state(self, ) -> WorkspaceState:
         """
         The workspace state.
@@ -2315,6 +7712,21 @@ class Client(ClientProtocol):
         _uniffi_ffi_result = _uniffi_rust_call_with_error(
             _uniffi_error_converter,
             _UniffiLib.uniffi_arachne_sdk_fn_method_client_state,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def use_service_profile(self, ) -> None:
+        """
+        Mark this client's workspace profile as a service (no extra rights).
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = lambda val: None
+        _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_sdk_fn_method_client_use_service_profile,
             *_uniffi_lowered_args,
         )
         return _uniffi_lift_return(_uniffi_ffi_result)
@@ -2383,19 +7795,6 @@ class _UniffiFfiConverterTypeClient:
     def write(cls, value: Client, buf: _UniffiRustBuffer):
         buf.write_u64(cls.lower(value))
 
-class _UniffiFfiConverterUInt32(_UniffiConverterPrimitiveInt):
-    CLASS_NAME = "u32"
-    VALUE_MIN = 0
-    VALUE_MAX = 2**32
-
-    @staticmethod
-    def read(buf):
-        return buf.read_u32()
-
-    @staticmethod
-    def write(value, buf):
-        buf.write_u32(value)
-
 class _UniffiFfiConverterUInt8(_UniffiConverterPrimitiveInt):
     CLASS_NAME = "u8"
     VALUE_MIN = 0
@@ -2439,19 +7838,112 @@ def api_version() -> int:
         *_uniffi_lowered_args,
     )
     return _uniffi_lift_return(_uniffi_ffi_result)
+def is_suspended() -> bool:
+    """
+    The default context is suspended.
+"""
+    _uniffi_lowered_args = (
+    )
+    _uniffi_lift_return = _UniffiFfiConverterBoolean.lift
+    _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+    _uniffi_ffi_result = _uniffi_rust_call_with_error(
+        _uniffi_error_converter,
+        _UniffiLib.uniffi_arachne_sdk_fn_func_is_suspended,
+        *_uniffi_lowered_args,
+    )
+    return _uniffi_lift_return(_uniffi_ffi_result)
+def resume() -> None:
+    """
+    Restart what `suspend` stopped and rebind sockets.
+"""
+    _uniffi_lowered_args = (
+    )
+    _uniffi_lift_return = lambda val: None
+    _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+    _uniffi_ffi_result = _uniffi_rust_call_with_error(
+        _uniffi_error_converter,
+        _UniffiLib.uniffi_arachne_sdk_fn_func_resume,
+        *_uniffi_lowered_args,
+    )
+    return _uniffi_lift_return(_uniffi_ffi_result)
+def suspend() -> None:
+    """
+    Stop background work of every client in the default context (for an app
+    in the background). Clients stay open and ops still run.
+"""
+    _uniffi_lowered_args = (
+    )
+    _uniffi_lift_return = lambda val: None
+    _uniffi_error_converter = _UniffiFfiConverterTypeApiError
+    _uniffi_ffi_result = _uniffi_rust_call_with_error(
+        _uniffi_error_converter,
+        _UniffiLib.uniffi_arachne_sdk_fn_func_suspend,
+        *_uniffi_lowered_args,
+    )
+    return _uniffi_lift_return(_uniffi_ffi_result)
 
 __all__ = [
     "InternalError",
     "Network",
+    "MemberKind",
+    "Presence",
+    "RouteKind",
     "WorkspacePhase",
     "ErrorCode",
     "ApiError",
     "Event",
+    "InvitationKind",
+    "RecoveryRangeStatus",
+    "RecoveryStage",
+    "AdmissionApproval",
+    "AdmissionApprovalPage",
+    "AdmissionAuthorization",
+    "AdmissionReply",
     "ClientConfig",
+    "ConnectionCapacityMetrics",
+    "DurationSummary",
+    "ControlTimingMetrics",
+    "DeliveryFailure",
+    "DeliveryReport",
     "EndpointInfo",
+    "InterestObservation",
+    "InvitationCheckpoint",
+    "InvitationControl",
+    "InvitationDetails",
+    "RouteHint",
+    "InvitationInfo",
+    "JoinAdmissionStep",
+    "JoinRequest",
+    "MemberInfo",
+    "MemberRoster",
+    "MembershipGossipMetrics",
+    "PeerRoute",
+    "PresenceRound",
+    "PublicationCurrent",
+    "ReceivedPublication",
+    "RecoveryAdoption",
+    "RecoveryRangeReady",
+    "RecoveryRangeRequest",
+    "WorkspaceInfo",
+    "WorkspaceMetrics",
     "WorkspaceState",
     "api_error_code",
     "api_version",
+    "is_suspended",
+    "resume",
+    "suspend",
+    "RecoveryCandidate",
+    "RecoveryCandidateProtocol",
+    "AdmissionCandidate",
+    "AdmissionCandidateProtocol",
+    "InvitationCandidate",
+    "InvitationCandidateProtocol",
+    "JoinCandidate",
+    "JoinCandidateProtocol",
+    "PublicationCandidate",
+    "PublicationCandidateProtocol",
+    "ReceptionCandidate",
+    "ReceptionCandidateProtocol",
     "Client",
     "ClientProtocol",
 ]
