@@ -69,16 +69,31 @@ jobs:
           echo "ARACHNE_SDK_LIBRARY=$library" >> "$GITHUB_ENV"
           echo "LIBRARY_PATH=$native_dir" >> "$GITHUB_ENV"
 
+      # TODO(ADR A1/A4 step 8): the hand Go/Python/Swift bindings call ops
+      # that core removed (A3/B1) and are not ported. The generated bindings
+      # replace them; see the `generated-bindings` job. Delete this step with
+      # the hand bindings in step 8.
       - name: Test Go binding
+        if: false
         run: |
           test -z "$(gofmt -l bindings/go)"
           go test -count=1 ./bindings/go/...
           go vet ./bindings/go/...
 
+      # TODO(ADR A1/A4 step 8): the hand Go/Python/Swift bindings call ops
+      # that core removed (A3/B1) and are not ported. The generated bindings
+      # replace them; see the `generated-bindings` job. Delete this step with
+      # the hand bindings in step 8.
       - name: Test installed Python binding
+        if: false
         run: |
           python -m pip install ./bindings/python
           python -m unittest discover -s bindings/python/tests -v
 
+      # TODO(ADR A1/A4 step 8): the hand Go/Python/Swift bindings call ops
+      # that core removed (A3/B1) and are not ported. The generated bindings
+      # replace them; see the `generated-bindings` job. Delete this step with
+      # the hand bindings in step 8.
       - name: Test Swift package
+        if: false
         run: swift test

@@ -1,11 +1,12 @@
 // Single-member, non-durable send-path example; it has no receiving peer.
 // The fixed credential is demo-only; applications should use a private random credential.
-use arachne_sdk::{Client, ClientConfig, Network, Result};
+use arachne_sdk::{Client, ClientConfig, Network, Result, TransportOptions};
 
 fn main() -> Result<()> {
-    let mut client = Client::open(ClientConfig {
+    let client = Client::open(ClientConfig {
         network: Network::Direct,
         secret: Some([0x11; 32]),
+        transport: TransportOptions::default(),
     })?;
     let workspace = client.create_workspace("Publisher", Some("SDK example"))?;
     let revision = workspace.epoch + 1;

@@ -1,4 +1,4 @@
-use arachne_sdk::{Client, ClientConfig, JoinAdmissionStep, Network};
+use arachne_sdk::{Client, ClientConfig, JoinAdmissionStep, Network, TransportOptions};
 use std::{
     thread,
     time::{Duration, Instant},
@@ -7,17 +7,22 @@ use std::{
 // Fixed credentials keep the local example reproducible; applications should use
 // private, unique random credentials and store them securely.
 fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
-    let mut owner = Client::open(ClientConfig {
+    let owner = Client::open(ClientConfig {
         network: Network::Direct,
         secret: Some([0x11; 32]),
+        transport: TransportOptions::default(),
     })?;
-    let mut receiver = Client::open(ClientConfig {
+    let receiver = Client::open(ClientConfig {
         network: Network::Direct,
         secret: Some([0x22; 32]),
+        transport: TransportOptions::default(),
     })?;
 
     let workspace = owner.create_workspace("Owner", Some("SDK protected receive"))?;
-    let invitation = owner.issue_invitation()?;
+    // Register a reusable invitation link (no expiry), then adopt it to get
+    // the bearer link. A durable owner saves the candidate before adopting.
+    let staged = owner.stage_invitation(0)?;
+    let invitation = owner.adopt_invitation(&staged.snapshot)?;
     receiver.add_address_hint(
         invitation.peer,
         &invitation.address.replace("0.0.0.0:", "127.0.0.1:"),
@@ -97,13 +102,23 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
     if receiver.workspace_state()?.durable {
         receiver.save_candidate(&candidate.snapshot)?;
     }
-    let received = receiver.adopt_protected_reception(&candidate.snapshot)?;
-
+    // Adoption moves the object into the durable inbox; read it from there.
+    receiver.adopt_protected_reception(&candidate.snapshot)?;
+    let received = receiver
+        .poll_pending_object()?
+        .ok_or("adopted publication is not in the inbox")?;
     assert_eq!(received.workspace, workspace.workspace);
     assert_eq!(received.revision, revision);
     assert_eq!(received.topic, topic);
     assert_eq!(received.payload, payload);
     assert_eq!(received.endpoint, owner.endpoint()?.endpoint_key);
+
+    // Acknowledge the object so it is not delivered again.
+    let acknowledged = receiver.stage_object_acknowledgement(&received)?;
+    receiver.adopt_protected_reception(&acknowledged.snapshot)?;
+    if receiver.poll_pending_object()?.is_some() {
+        return Err("acknowledged object is still pending".into());
+    }
 
     owner.close()?;
     receiver.close()?;

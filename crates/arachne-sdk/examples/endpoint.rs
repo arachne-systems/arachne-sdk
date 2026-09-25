@@ -1,9 +1,10 @@
-use arachne_sdk::{Client, ClientConfig, Network};
+use arachne_sdk::{Client, ClientConfig, Network, TransportOptions};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut client = Client::open(ClientConfig {
+    let client = Client::open(ClientConfig {
         network: Network::Direct,
         secret: None,
+        transport: TransportOptions::default(),
     })?;
     let endpoint = client.endpoint()?;
     let workspace = client.create_workspace("SDK example", None)?;

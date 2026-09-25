@@ -8,16 +8,20 @@
 //! publication and reception, persistence ordering, and current integration limits.
 
 pub use arachne_runtime::{
-    AdmissionAuthorization, AdmissionReply, Client, ClientConfig, ClientResult as Result,
-    ConnectionCapacityMetrics, ConnectivityReport, ControlTimingMetrics, DeliveryFailure,
-    DeliveryReport, DurationSummary, EndpointInfo, Error, ErrorKind, InterestObservation,
-    InvitationDetails, InvitationInfo, JoinAdmissionStep, JoinRequest, MemberInfo, MemberKind,
-    MemberRoster, MembershipGossipMetrics, Network, PeerPolicy, PeerRoute, Presence,
+    AdmissionApproval, AdmissionApprovalPage, AdmissionAuthorization, AdmissionReply, ApiError,
+    Client, ClientConfig, ClientResult as Result, ConnectionCapacityMetrics, ConnectivityReport,
+    Context, ContextConfig, ControlTimingMetrics, DeliveryFailure, DeliveryReport, DurationSummary,
+    EndpointInfo, Error, ErrorCode, ErrorKind, Event, FreshnessAnchor, InterestObservation,
+    InvitationCheckpoint, InvitationControl, InvitationDetails, InvitationInfo, InvitationKind,
+    JoinAdmissionStep, JoinRequest, Limits, MemberAction, MemberInfo, MemberKind, MemberRoster,
+    MembershipGossipMetrics, NearbyAdvertisement, NearbyEndpoint, NearbyMode, NearbyScan, Network,
+    OperatorRelay, PeerPolicy, PeerRoute, PowerProfile, Presence, PresenceRound,
     ProtectedReceptionCandidate, Publication, PublicationCandidate, PublicationCurrent,
-    ReceivedProtectedPublication, RecoveryAdoption, RecoveryCandidate,
-    RecoveryRangeReady, RecoveryRangeRequest, RecoveryRangeStatus, RecoveryStage, RouteHint,
-    RouteKind, WorkspaceActivity, WorkspaceCandidate, WorkspaceInfo, WorkspaceMetrics,
-    WorkspacePhase, WorkspaceState,
+    ReceivedProtectedPublication, RecoveryAdoption, RecoveryCandidate, RecoveryRangeReady,
+    RecoveryRangeRequest, RecoveryRangeStatus, RecoveryStage, RelayTrust, RemovedMembership,
+    RouteHint, RouteKind, RuntimeConfig, TransportInfo, TransportOptions, TransportTimeouts,
+    WorkspaceActivity, WorkspaceCandidate, WorkspaceInfo, WorkspaceMetrics, WorkspacePhase,
+    WorkspaceState,
 };
 
 mod ffi;

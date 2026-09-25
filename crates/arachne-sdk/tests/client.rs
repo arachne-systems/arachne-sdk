@@ -1,12 +1,13 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use arachne_sdk::{Client, ClientConfig, MemberKind, Network, WorkspacePhase};
+use arachne_sdk::{Client, ClientConfig, MemberKind, Network, TransportOptions, WorkspacePhase};
 
 #[test]
 fn opens_a_native_client_through_the_sdk_boundary() {
-    let mut client = Client::open(ClientConfig {
+    let client = Client::open(ClientConfig {
         network: Network::Direct,
         secret: Some([7; 32]),
+        transport: TransportOptions::default(),
     })
     .unwrap();
 
@@ -33,9 +34,10 @@ fn protected_publication_can_be_saved_adopted_and_restored() {
     let config = ClientConfig {
         network: Network::Direct,
         secret: Some([9; 32]),
+        transport: TransportOptions::default(),
     };
     let root = [10; 32];
-    let mut client = Client::open(config.clone()).unwrap();
+    let client = Client::open(config.clone()).unwrap();
     let workspace = client
         .create_workspace("Feed owner", Some("Feed test"))
         .unwrap();
@@ -76,7 +78,7 @@ fn protected_publication_can_be_saved_adopted_and_restored() {
     );
     client.close().unwrap();
 
-    let mut restored = Client::open(config).unwrap();
+    let restored = Client::open(config).unwrap();
     restored
         .restore_record_storage(&path, &root, workspace.workspace)
         .unwrap();
