@@ -5,3 +5,8 @@
 **/*.py[cod]
 /bindings/python/build/
 /bindings/python/*.egg-info/
+/android/.gradle/
+/android/build/
+/android/*/build/
+/android/.kotlin/
+/android/local.properties
