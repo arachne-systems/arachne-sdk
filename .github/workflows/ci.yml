@@ -97,3 +97,72 @@ jobs:
       - name: Test Swift package
         if: false
         run: swift test
+
+  generated-bindings:
+    name: Generated bindings (UniFFI)
+    runs-on: ubuntu-latest
+    env:
+      CARGO_BUILD_JOBS: 2
+      CARGO_PROFILE_DEV_DEBUG: 0
+      CARGO_INCREMENTAL: 0
+      RUSTUP_TOOLCHAIN: 1.98.0
+      JNA_VERSION: 5.17.0
+      JNA_SHA256: b3a9408e7c51e08ef0e3bfcc08f443f6ec0f6191ba8cd7c18d53d2b22e5bdbc0
+      KOTLIN_VERSION: 2.3.0
+      KOTLIN_SHA256: ea16ab1cab29d419bf41b60ecc0e305d449fa661d9c05fbcc5b2a6672505456a
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Install Rust 1.98.0
+        run: rustup toolchain install 1.98.0 --profile minimal
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.1.3"
+
+      - uses: astral-sh/setup-uv@v7
+
+      - name: Install kotlinc and JNA
+        run: |
+          tools="$RUNNER_TEMP/kotlin-tools"
+          mkdir -p "$tools"
+          curl -sfLo "$tools/kotlin.zip" \
+            "https://github.com/JetBrains/kotlin/releases/download/v$KOTLIN_VERSION/kotlin-compiler-$KOTLIN_VERSION.zip"
+          echo "$KOTLIN_SHA256  $tools/kotlin.zip" | sha256sum -c -
+          unzip -q "$tools/kotlin.zip" -d "$tools"
+          echo "$tools/kotlinc/bin" >> "$GITHUB_PATH"
+          curl -sfLo "$tools/jna.jar" \
+            "https://repo1.maven.org/maven2/net/java/dev/jna/jna/$JNA_VERSION/jna-$JNA_VERSION.jar"
+          echo "$JNA_SHA256  $tools/jna.jar" | sha256sum -c -
+          echo "JNA_JAR=$tools/jna.jar" >> "$GITHUB_ENV"
+
+      - name: Cache the patched Go generator
+        id: bindgen-go
+        uses: actions/cache@v4
+        with:
+          path: target/tools/bin
+          key: uniffi-bindgen-go-${{ runner.os }}-${{ hashFiles('scripts/build-uniffi-bindgen-go.sh', 'patches/uniffi-bindgen-go-enum-discr.patch') }}
+
+      - name: Build the patched Go generator
+        if: steps.bindgen-go.outputs.cache-hit != 'true'
+        run: scripts/build-uniffi-bindgen-go.sh
+
+      - name: Generate bindings and check they are committed
+        run: |
+          scripts/generate-bindings.sh
+          git diff --exit-code -- generated/
+          test -z "$(git status --porcelain -- generated/)"
+
+      - name: Smoke-test Kotlin, Swift, Python and Go
+        run: scripts/uniffi-smoke.sh
