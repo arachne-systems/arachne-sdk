@@ -595,6 +595,36 @@ mod tests {
     }
 
     #[test]
+    fn wait_for_work_times_out_and_wake_releases_it() {
+        let client = Client::open(ClientConfig {
+            network: Network::Direct,
+            secret: None,
+            deadline_ms: None,
+        })
+        .unwrap();
+        let start = Instant::now();
+        assert!(!client.wait_for_work(100).unwrap());
+        assert!(start.elapsed() >= Duration::from_millis(90));
+        let waiter = {
+            let client = client.clone();
+            thread::spawn(move || {
+                let start = Instant::now();
+                (client.wait_for_work(30_000), start.elapsed())
+            })
+        };
+        thread::sleep(Duration::from_millis(200));
+        client.wake().unwrap();
+        let (work, elapsed) = waiter.join().unwrap();
+        assert!(!work.unwrap());
+        assert!(elapsed < Duration::from_secs(2), "{elapsed:?}");
+        client.close().unwrap();
+        assert_eq!(
+            client.wait_for_work(10).unwrap_err().code(),
+            ErrorCode::Closed
+        );
+    }
+
+    #[test]
     fn close_from_another_thread_releases_next_event() {
         let client = Client::open(ClientConfig {
             network: Network::Direct,
