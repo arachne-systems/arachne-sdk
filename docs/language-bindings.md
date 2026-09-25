@@ -1,4 +1,118 @@
-# Go, Python, and Swift SDKs
+# Language bindings
+
+The SDK is moving from hand-written bindings over a JSON C ABI to bindings that
+UniFFI generates from Rust (ADR A1/A4 in core, `docs/reviews/adr-a1-a4-sdk-contract.md`,
+steps 7-9). Both paths are in the repository during the move.
+
+## Generated bindings (UniFFI)
+
+### What is generated
+
+One Rust module, `crates/arachne-sdk/src/uniffi_api.rs`, is the source of truth.
+It wraps core's typed `arachne_runtime::Client`. It sends no JSON and holds no lock
+while a call waits. The first slice has:
+
+| Item | Kind | Notes |
+| --- | --- | --- |
+| `Client` | object | `open(ClientConfig)`, `describe()`, `state()`, `next_event(timeout_ms)`, `wait_for_work(timeout_ms)`, `wake()`, `close()` |
+| `ClientConfig` | record | `network`, optional 32-byte `secret`, optional `deadline_ms` |
+| `EndpointInfo`, `WorkspaceState` | records | IDs are lowercase hex strings |
+| `Network`, `Event`, `WorkspacePhase` | enums | `Network.Tor` always exists; this build gives `Unsupported` (103) |
+| `ApiError`, `ErrorCode` | error, enum | `ErrorCode` carries the stable numbers (1, 100, 101, ...) |
+| `api_error_code(error)`, `api_version()` | functions | Read the code with `api_error_code`, in every language |
+
+Rules for foreign code:
+
+- All calls block. Call them from a worker thread, not a UI thread or an async executor.
+  `close`, `wake`, `next_event` and `wait_for_work` can run on different threads at
+  the same time. `close` releases every waiter.
+- Branch on `api_error_code(error)`, not on the message text.
+- Keep a default branch in every `when`/`switch`/`match` on `Event`, `ErrorCode` and
+  `ApiError`. The foreign enums are exhaustive, but new variants come with a new
+  `api_version`.
+- Kotlin: `Client.close` is named `shutdown` (it ends the session). The generated
+  `close()` of `AutoCloseable` frees the native handle. Call `shutdown()`, then `close()`
+  (or use `use { }`).
+
+### Layout
+
+| Path | What |
+| --- | --- |
+| `crates/arachne-sdk/src/uniffi_api.rs` | Exported Rust surface (mirrors of the core contract types, see below) |
+| `crates/arachne-sdk/uniffi.toml` | Generator settings: package and module names, the Kotlin `close` rename |
+| `crates/uniffi-bindgen` | `uniffi-bindgen` at the exact scaffolding version (`=0.31.2`) for Kotlin, Swift, Python |
+| `patches/uniffi-bindgen-go-enum-discr.patch` | Fix for `uniffi-bindgen-go` v0.7.1 (provenance in `patches/README.md`) |
+| `scripts/build-uniffi-bindgen-go.sh` | Builds the patched Go generator into `target/tools/bin` |
+| `scripts/generate-bindings.sh` | Builds the cdylib and writes `generated/` |
+| `scripts/uniffi-smoke.sh` | Runs `tests/uniffi/<language>` against `generated/` |
+| `generated/kotlin/org/arachne/sdk/generated/arachne_sdk.kt` | Kotlin (JNA), package `org.arachne.sdk.generated` |
+| `generated/swift/ArachneGenerated.swift`, `ArachneGeneratedFFI.{h,modulemap}` | Swift module `ArachneGenerated` and its C module |
+| `generated/python/arachne_generated/` | Python package `arachne_generated` (the library goes next to `arachne_sdk.py`) |
+| `generated/go/arachne_sdk/` | Go package `github.com/arachne-systems/arachne-sdk/generated/go/arachne_sdk` (cgo) |
+
+**The generated files are committed.** Go modules and SwiftPM remote packages fetch
+source and run no build step, so Go and Swift users can only get generated code that
+is in the repository. Committed output also makes every change to the foreign API
+show in review. CI regenerates the tree and fails if `git diff` is not empty, so the
+files cannot drift from the Rust source. Do not edit them by hand. The names
+(`org.arachne.sdk.generated`, `ArachneGenerated`, `arachne_generated`) are different
+from the hand packages so that both can load in one process during the move.
+
+### Generate and test
+
+```sh
+scripts/build-uniffi-bindgen-go.sh          # one time; patched uniffi-bindgen-go
+scripts/generate-bindings.sh                # cargo build + generate into generated/
+JNA_JAR=/path/to/jna-5.17.0.jar scripts/uniffi-smoke.sh   # kotlin swift python go
+```
+
+The smoke tests need `kotlinc` and `java` 21, Swift 6.1.3, `uv` and Go with cgo.
+Each test opens a client, reads `describe` and `state`, waits in `next_event` with a
+timeout, checks that `wake` and a `close` from another thread release a parked
+`next_event`, and checks the error codes 100, 103 and 1 across the boundary. The
+`generated-bindings` CI job runs the same steps on Linux.
+
+### Versions
+
+All four generators use UniFFI `=0.31.2`. `uniffi-bindgen-go` v0.7.1+v0.31.0 is the
+only Go generator for 0.31, so we do not move to UniFFI 0.32 until a Go release for it
+exists. The Go build moves the generator's own `uniffi` dependencies from 0.31.0 to
+0.31.2, so the scaffolding and all generators use one version.
+
+### Mirrors of the core contract
+
+Core has no `uniffi` feature yet. So `uniffi_api.rs` declares copies of
+`ErrorCode`, `ApiError`, `Event` and `Network` with `From` conversions. UniFFI `remote`
+types cannot be used for them, because the core types are `#[non_exhaustive]`.
+Unit tests check the copies against core (`ErrorCode::ALL`, `Network::ALL`, and one
+`ApiError::new` for each code). `Event` has no `ALL` list, so a new core event gives
+`Internal` at run time until the mirror has it. The ID newtypes (`EndpointId`,
+`WorkspaceId`) and `WorkspacePhase` are exported directly as remote types. When core
+adds the derives behind its `uniffi` feature (ADR step 7), delete the mirrors.
+
+### Migration plan from the hand bindings
+
+1. **Now (this slice).** Pipeline, generated tree, smoke tests and CI job exist. The hand
+   bindings and `ffi.rs` stay unchanged. At the local core pin `2205887`, the hand
+   Go, Python and Swift bindings call ops that core removed (A3, B1), so their CI steps
+   are off (`if: false`, with a TODO). The Rust SDK API (`arachne_sdk::Client`,
+   examples, `tests/client.rs`) is ported and tested.
+2. **Grow the surface with core (ADR steps 2-6).** Add each typed op to `uniffi_api.rs`
+   as one exported method. Candidates become objects bound to their client and kind
+   (the Kotlin PR's "candidate owner" check becomes a Rust-side session check, so no
+   language keeps a candidate map). When core exports its own types behind `uniffi`,
+   delete the mirrors.
+3. **Kotlin (ADR step 7).** Replace `Client.kt`, `Models.kt` and `Native.kt` in the Kotlin
+   PR with the generated file. Rename the package to `org.arachne.sdk`. Keep
+   `com.sun.jna` and the generated package in `consumer-rules.pro`. Run the AAR smoke test.
+4. **Swift, Python, Go (ADR step 8).** Point `Package.swift`, `bindings/python/pyproject.toml`
+   and the Go import path at `generated/`. Delete `bindings/go`, `bindings/python/arachne_sdk`,
+   `bindings/swift/Sources/ArachneSDK`, `include/arachne_sdk.h` and `ffi.rs`. Delete the
+   off CI steps.
+5. **Dispatcher (ADR step 9).** Core deletes `execute`/`execute_stored`. The SDK has no
+   `rawCall` left to remove.
+
+## Hand-written bindings (to be removed in step 8)
 
 Go, Python, and Swift expose typed clients over the Rust runtime. Each package
 uses the same small C ABI and requires a native library built for the host
@@ -8,7 +122,7 @@ Core source revision it builds against. The package commands below use the
 repository root as the Go module and Swift package, with Python installed from
 its local package directory.
 
-## Build the native library
+### Build the native library
 
 Clone with the Core submodule, then build from the repository root:
 
@@ -20,7 +134,7 @@ The library is in `target/debug`. Use a build for the same platform and
 architecture as the application. The Go package uses cgo; Python uses ctypes;
 Swift uses SwiftPM and a C system module.
 
-## Go
+### Go
 
 ```go
 package main
@@ -84,7 +198,7 @@ cd bindings/go
 go build ./...
 ```
 
-## Python
+### Python
 
 Install the package from the checkout and point it at the native library:
 
@@ -116,7 +230,7 @@ with Client.open(ClientConfig(Network.DIRECT, secrets.token_bytes(32))) as clien
     print("queued:", report.queued)
 ```
 
-## Swift
+### Swift
 
 ```swift
 import ArachneSDK
@@ -161,7 +275,7 @@ LD_LIBRARY_PATH="$PWD/target/debug" swift test
 
 On macOS use `DYLD_LIBRARY_PATH` for runtime lookup.
 
-## Typed client coverage
+### Typed client coverage
 
 Each language provides typed methods and models for endpoint and workspace
 state; workspace creation and invitations; join and admission staging/adoption;
