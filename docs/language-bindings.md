@@ -104,6 +104,37 @@ receive, reject; then presence, metrics, deadline, suspend and resume; and candi
 (another client, second adopt). The
 `generated-bindings` CI job runs the same steps on Linux.
 
+### Android AAR (generated Kotlin)
+
+`android/` is a Gradle build (wrapper 8.14.3, AGP 8.11.1, Kotlin 2.2.20, the same setup as the
+Kotlin PR) with two modules:
+
+- `:sdk` is the AAR. It holds `generated/kotlin` and `libarachne_sdk.so` for `arm64-v8a`
+  and `x86_64` (API 26+), and it ships `consumer-rules.pro` for R8. `scripts/build-android-libs.sh`
+  builds the libraries (release, stripped, `cargo ndk`, NDK 27.1.12297006). `.cargo/config.toml`
+  links them with 16 KB pages. The script fails if a LOAD segment is not aligned to `0x4000`.
+  It ships only `libarachne_sdk.so`; iroh's own cdylibs are linked in statically.
+- `:smoke` is a consumer app. It takes the AAR from the local Maven repo
+  (`android/build/repo`), so JNA comes in through the POM as it would for a real app.
+  R8 minifies it in both build types, so the instrumented test runs the shrunk binding.
+  The app adds no rules for the SDK or JNA.
+
+JNA (`net.java.dev.jna:jna:5.17.0@aar`) is an `api` dependency in the POM. It is not
+inside the AAR. A second copy of `libjnidispatch.so` in an ATAK process is the open risk
+of ADR step 9, so the host app decides where JNA comes from.
+
+```sh
+export ANDROID_HOME=~/Android/Sdk JAVA_HOME=/path/to/jdk-17-or-21   # a JDK with javac
+cd android
+./gradlew --no-daemon :sdk:publishReleasePublicationToLocalRepository :smoke:assembleRelease
+../scripts/check-android-r8.sh                 # UniFFI and JNA classes kept, not renamed
+ANDROID_SERIAL=emulator-5554 ./gradlew --no-daemon :smoke:connectedDebugAndroidTest
+```
+
+Set `ANDROID_SERIAL` when other devices are attached, because otherwise the test installs on
+every device. The `generated-android` CI job runs the same steps on a 16 KB page
+(`google_apis_ps16k`) API 35 emulator.
+
 ### Versions
 
 All four generators use UniFFI `=0.31.2`. `uniffi-bindgen-go` v0.7.1+v0.31.0 is the
@@ -136,9 +167,10 @@ structs, one `Network`), delete the matching shims.
    (the Kotlin PR's "candidate owner" check is now a Rust-side check, so no language
    keeps a candidate map); A5 moves that check into core. After core step 6, delete the
    shims.
-3. **Kotlin (ADR step 7).** Replace `Client.kt`, `Models.kt` and `Native.kt` in the Kotlin
-   PR with the generated file. Rename the package to `org.arachne.sdk`. Keep
-   `com.sun.jna` and the generated package in `consumer-rules.pro`. Run the AAR smoke test.
+3. **Kotlin (ADR step 7).** The generated AAR (`android/`) exists and passes its
+   minified emulator test. Next, retire the Kotlin PR's hand `Client.kt`, `Models.kt` and
+   `Native.kt` and its `bindings/kotlin-android`. Then rename the package to
+   `org.arachne.sdk` (update `consumer-rules.pro` with it).
 4. **Swift, Python, Go (ADR step 8).** Point `Package.swift`, `bindings/python/pyproject.toml`
    and the Go import path at `generated/`. Delete `bindings/go`, `bindings/python/arachne_sdk`,
    `bindings/swift/Sources/ArachneSDK`, `include/arachne_sdk.h` and `ffi.rs`. Delete the
