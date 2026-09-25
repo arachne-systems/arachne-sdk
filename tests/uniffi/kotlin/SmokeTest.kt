@@ -80,4 +80,6 @@ fun main() {
     }
     client.close() // AutoCloseable: frees the native handle
     println("KOTLIN PASS")
+
+    runFlow()
 }

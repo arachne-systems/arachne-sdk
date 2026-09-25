@@ -29,7 +29,7 @@ run() {
 
 kotlin() {
     local jna="${JNA_JAR:?set JNA_JAR to jna-5.17.0.jar}"
-    kotlinc "$GEN"/kotlin/org/arachne/sdk/generated/*.kt "$TESTS/kotlin/SmokeTest.kt" \
+    kotlinc "$GEN"/kotlin/org/arachne/sdk/generated/*.kt "$TESTS/kotlin/SmokeTest.kt" "$TESTS/kotlin/Flow.kt" \
         -cp "$jna" -include-runtime -nowarn -d "$OUT/smoke-kt.jar"
     run kotlin java -Djna.library.path="$LIBDIR" -cp "$OUT/smoke-kt.jar:$jna" SmokeTestKt
 }
@@ -38,7 +38,7 @@ swift() {
     # One module: the generated file plus the test.
     swiftc -module-name ArachneSmoke -swift-version 6 \
         -Xcc -fmodule-map-file="$GEN/swift/ArachneGeneratedFFI.modulemap" -I "$GEN/swift" \
-        "$GEN/swift/ArachneGenerated.swift" "$TESTS/swift/main.swift" \
+        "$GEN/swift/ArachneGenerated.swift" "$TESTS/swift/Flow.swift" "$TESTS/swift/main.swift" \
         -L "$LIBDIR" -larachne_sdk -o "$OUT/smoke-swift"
     run swift env LD_LIBRARY_PATH="$LIBDIR" "$OUT/smoke-swift"
 }
@@ -49,6 +49,7 @@ python() {
     cp -r "$GEN/python/arachne_generated" "$OUT/python/"
     cp "$LIB" "$OUT/python/arachne_generated/"
     run python env PYTHONPATH="$OUT/python" uv run --no-project python "$TESTS/python/test_smoke.py"
+    run python-flow env PYTHONPATH="$OUT/python" uv run --no-project python "$TESTS/python/test_flow.py"
 }
 
 go() {

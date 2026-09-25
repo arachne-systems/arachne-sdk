@@ -88,3 +88,5 @@ do {
     check(apiErrorCode(error: e).number() == 1, "after close error code = \(apiErrorCode(error: e).number())")
 }
 print("SWIFT PASS")
+
+do { try runFlow() } catch { check(false, "flow threw \(error)") }
