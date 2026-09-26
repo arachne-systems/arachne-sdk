@@ -5,7 +5,8 @@
 The generated SDK now consumes integrated Core `05434f8`. Rust, Kotlin, Swift,
 Python and Go checks pass. Addressed Critical and Bulk publication preserve the
 recipient set. The opt-in streaming feature passes its SDK check. Generated
-sources have no drift. Android packaging is the next check. SDK lines stay separate.
+sources have no drift. Android AAR, R8 smoke APK and test APK packaging checks
+pass. The finished Rust target is removed. SDK lines stay separate.
 
 ## Source and changes
 
@@ -38,7 +39,7 @@ added. CI checks both the default Rust build and the opt-in feature.
 
 ## Evidence
 
-Two RED checks preceded the SDK changes:
+Three RED checks preceded their fixes:
 
 1. The new Rust default test failed with unresolved SDK imports for Core's
    `PublicationMode`, `PublicationOptions` and `default_publication_options`.
@@ -46,6 +47,11 @@ Two RED checks preceded the SDK changes:
 2. With an empty SDK `moq` feature, the metrics test failed with Core's
    `Unsupported` error. Forwarding the feature makes it pass.
    Receipts: `/tmp/h5-refresh-moq-red.log` and `/tmp/h5-refresh-moq-green.log`.
+3. Android packaging rejected duplicate `--max-workers` arguments. The wrapper
+   hardcoded 4 while the caller, including CI, supplied its own limit. The wrapper
+   now adds the default only when the caller has no worker option. Both the CI
+   `--max-workers=2 --help` check and the full `--max-workers=4` build pass.
+   Receipts: `/tmp/h5-refresh-gradle-workers-{red,green}.log`.
 
 | Check on final Core `05434f8` | Result |
 | --- | --- |
@@ -60,6 +66,9 @@ Two RED checks preceded the SDK changes:
 | Fresh generation compared with tracked sources | PASS, all 15 files byte-identical |
 | Transport lock entries compared with Core | PASS, Iroh, Iroh-MoQ, MoQ net and MoQ Tokio |
 | Rustfmt, shell syntax, source whitespace | PASS |
+| Default Android AAR, R8 smoke APK and Android test APK | PASS, 4m 51s, 115 tasks |
+| R8 names and packaged native libraries | PASS, 674 Core classes, 128 JNA classes, both ABIs |
+| Native LOAD alignment | PASS, `0x4000` on arm64-v8a and x86_64 |
 
 The language build and run commands are the commands in
 `scripts/uniffi-smoke.sh`. They ran in separate steps so compilation used the
@@ -88,6 +97,31 @@ check, 15 existing typed tests, and all-feature Clippy. The scheduler check prov
 Bulk queue selection. Receipt of bytes through a foreign binding alone cannot
 prove that internal queue choice.
 
+## Android artifacts
+
+These artifacts use SDK source `853bacd3d9ae051c7b7341db1ec964b5d4958e79`
+and Core `05434f86f4297b33620502dc3385f31953ff5889`. Later edits in this lane
+only complete this receipt. Build command:
+
+```sh
+GRADLE_LANE=codex-h5-refresh scripts/gradle.sh --no-daemon --max-workers=4 \
+  :sdk:publishReleasePublicationToLocalRepository :smoke:assembleRelease \
+  :smoke:assembleDebugAndroidTest
+```
+
+The shared build lock, CPU affinity and Cargo environment described below wrapped
+this command. `scripts/check-android-r8.sh` passed afterward. No package was installed.
+
+| Artifact in this worktree | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `android/sdk/build/outputs/aar/sdk-release.aar` | 22,920,698 | `729b5d97ae310cc8dee51aea7e47e9d5ba2be7342dd79855199382657fcb5713` |
+| `android/smoke/build/outputs/apk/release/smoke-release-unsigned.apk` | 54,224,916 | `3e8c6f412991d4fc495ae009f33be430f23b47ad5e5fec75795bf4c25c4e8de1` |
+| `android/smoke/build/outputs/apk/androidTest/debug/smoke-debug-androidTest.apk` | 792,421 | `efbe849d8ff8669f49f1fbd83df9651c0df1cf30a29de9b6f6353f42f3122f47` |
+
+Receipts: `/tmp/h5-refresh-android-build.log`, `/tmp/h5-refresh-r8.log` and
+`/tmp/h5-refresh-android-artifacts.json`. The JSON includes both native library
+hashes. The AAR uses the default feature set; its streaming calls remain unavailable.
+
 ## Limits and owner decisions
 
 - The owner still selects the SDK line. This change does not merge the live
@@ -104,8 +138,9 @@ prove that internal queue choice.
 
 Cargo uses the shared lock, four jobs, CPUs 8–11, no incremental state and no
 dev/test/release debug information. Test binaries run outside the Cargo lock.
-No Cargo target is shared with another worktree. Finished compile caches are
-removed after the final checks; review artifacts are recorded before cleanup.
+No Cargo target is shared with another worktree. After all compilers exited,
+`target/` was removed: 5,609,181,184 bytes (5.224 GiB). Packages and generated
+sources remain for review. Receipt: `/tmp/h5-refresh-cache-cleanup.json`.
 
 The exact patched Go generator is retained at
 `/home/user/.cache/arachne-sdk-tools/uniffi-0.31.2-go-0b7fb4c-patched/uniffi-bindgen-go`.
