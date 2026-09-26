@@ -45,6 +45,10 @@ func (r ClientConfig) String() string {
 \t}
 \treturn fmt.Sprintf("ClientConfig{Network:%v Secret:%s Transport:%v Storage:%v}", r.Network, secret, r.Transport, r.Storage)
 }
+
+func (r ClientConfig) GoString() string {
+\treturn r.String()
+}
 """,
 )
 replace_once(

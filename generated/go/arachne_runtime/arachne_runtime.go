@@ -5520,6 +5520,10 @@ func (r ClientConfig) String() string {
 	return fmt.Sprintf("ClientConfig{Network:%v Secret:%s Transport:%v Storage:%v}", r.Network, secret, r.Transport, r.Storage)
 }
 
+func (r ClientConfig) GoString() string {
+	return r.String()
+}
+
 func (r *ClientConfig) Destroy() {
 	arachne_api.FfiDestroyerNetwork{}.Destroy(r.Network)
 	FfiDestroyerOptionalBytes{}.Destroy(r.Secret)
