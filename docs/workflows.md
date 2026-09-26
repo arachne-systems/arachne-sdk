@@ -52,6 +52,17 @@ returned object. For a replaceable current value, use
 `stage_protected_publication_with_current` and its selector, replacement key,
 expiry and tombstone fields.
 
+Use `stage_protected_publication_with_options` to select the audience and delivery
+mode. `default_publication_options()` returns Core's empty audience and `Critical`
+mode. Empty means the workspace audience. A directed audience contains at most
+64 current member IDs, sorted by bytes, with no duplicates or the sender's ID.
+It retains the same workspace authorization checks.
+
+`PublicationMode::Bulk` selects the Bulk queue. `PublicationMode::Current` carries
+the current-value metadata and requires an empty audience. These modes are one
+choice, so a Current publication cannot also be Bulk. The existing publication
+methods keep their default behavior.
+
 `poll_protected` stages incoming protected data. Adopt the candidate to commit
 it to the inbox. `poll_pending_object` returns the authenticated publication.
 After the application handles it, stage and adopt an acknowledgement or rejection.

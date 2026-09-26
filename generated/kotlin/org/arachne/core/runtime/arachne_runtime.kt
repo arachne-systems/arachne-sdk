@@ -674,6 +674,8 @@ internal object IntegrityCheckingUniffiLib {
     }
     external fun uniffi_arachne_runtime_checksum_func_default_client_config(
 ): Int
+external fun uniffi_arachne_runtime_checksum_func_default_publication_options(
+): Int
 external fun uniffi_arachne_runtime_checksum_func_default_transport_options(
 ): Int
 external fun uniffi_arachne_runtime_checksum_method_client_acknowledge_admission_approval(
@@ -805,6 +807,8 @@ external fun uniffi_arachne_runtime_checksum_method_client_stage_object_rejectio
 external fun uniffi_arachne_runtime_checksum_method_client_stage_protected_publication(
 ): Int
 external fun uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current(
+): Int
+external fun uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_options(
 ): Int
 external fun uniffi_arachne_runtime_checksum_method_client_stage_recovery_range(
 ): Int
@@ -1091,6 +1095,8 @@ external fun uniffi_arachne_runtime_fn_method_client_stage_protected_publication
 ): Long
 external fun uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_current(`ptr`: Long,`workspace`: RustBufferWorkspaceId.ByValue,`revision`: Long,`topic`: RustBuffer.ByValue,`id`: RustBufferRecordId.ByValue,`payload`: RustBuffer.ByValue,`current`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): Long
+external fun uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_options(`ptr`: Long,`workspace`: RustBufferWorkspaceId.ByValue,`revision`: Long,`topic`: RustBuffer.ByValue,`id`: RustBufferRecordId.ByValue,`payload`: RustBuffer.ByValue,`options`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): Long
 external fun uniffi_arachne_runtime_fn_method_client_stage_recovery_range(`ptr`: Long,`retainUntil`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
 external fun uniffi_arachne_runtime_fn_method_client_stage_solo_leave(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -1265,6 +1271,8 @@ external fun uniffi_arachne_runtime_fn_constructor_storageconfig_open_sqlite(`di
 ): Long
 external fun uniffi_arachne_runtime_fn_func_default_client_config(`network`: RustBufferNetwork.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
+external fun uniffi_arachne_runtime_fn_func_default_publication_options(uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
 external fun uniffi_arachne_runtime_fn_func_default_transport_options(uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
 external fun ffi_arachne_runtime_rustbuffer_alloc(`size`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -1387,6 +1395,9 @@ private fun uniffiCheckContractApiVersion(lib: IntegrityCheckingUniffiLib) {
 @Suppress("UNUSED_PARAMETER")
 private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_arachne_runtime_checksum_func_default_client_config() != 17430) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_arachne_runtime_checksum_func_default_publication_options() != 44032) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_arachne_runtime_checksum_func_default_transport_options() != 37452) {
@@ -1581,10 +1592,13 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_arachne_runtime_checksum_method_client_stage_object_rejection() != 29346) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication() != 46410) {
+    if (lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication() != 16457) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if (lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current() != 5183) {
+    if (lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current() != 20158) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_options() != 52562) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_arachne_runtime_checksum_method_client_stage_recovery_range() != 31108) {
@@ -2810,9 +2824,21 @@ public interface ClientInterface {
      */
     fun `stageObjectRejection`(`object`: ReceivedProtectedPublication): ProtectedReceptionCandidate
     
+    /**
+     * Stage a workspace publication with the default `Critical` delivery mode.
+     */
     fun `stageProtectedPublication`(`workspace`: WorkspaceId, `revision`: kotlin.ULong, `topic`: kotlin.String, `id`: RecordId, `payload`: kotlin.ByteArray): PublicationCandidate
     
+    /**
+     * Stage a workspace publication. `None` uses `Critical`; `Some` uses `Current`.
+     */
     fun `stageProtectedPublicationWithCurrent`(`workspace`: WorkspaceId, `revision`: kotlin.ULong, `topic`: kotlin.String, `id`: RecordId, `payload`: kotlin.ByteArray, `current`: PublicationCurrent?): PublicationCandidate
+    
+    /**
+     * Stage a protected publication with an explicit audience and delivery mode.
+     * Core validates the audience and saves the publication when it is adopted.
+     */
+    fun `stageProtectedPublicationWithOptions`(`workspace`: WorkspaceId, `revision`: kotlin.ULong, `topic`: kotlin.String, `id`: RecordId, `payload`: kotlin.ByteArray, `options`: PublicationOptions): PublicationCandidate
     
     /**
      * `retain_until` is Unix seconds (UTC) by this node's clock; 0 keeps no
@@ -4066,6 +4092,9 @@ open class Client: Disposable, AutoCloseable, ClientInterface
     
 
     
+    /**
+     * Stage a workspace publication with the default `Critical` delivery mode.
+     */
     @Throws(ApiException::class)override fun `stageProtectedPublication`(`workspace`: WorkspaceId, `revision`: kotlin.ULong, `topic`: kotlin.String, `id`: RecordId, `payload`: kotlin.ByteArray): PublicationCandidate {
             return FfiConverterTypePublicationCandidate.lift(
     callWithHandle {
@@ -4080,6 +4109,9 @@ open class Client: Disposable, AutoCloseable, ClientInterface
     
 
     
+    /**
+     * Stage a workspace publication. `None` uses `Critical`; `Some` uses `Current`.
+     */
     @Throws(ApiException::class)override fun `stageProtectedPublicationWithCurrent`(`workspace`: WorkspaceId, `revision`: kotlin.ULong, `topic`: kotlin.String, `id`: RecordId, `payload`: kotlin.ByteArray, `current`: PublicationCurrent?): PublicationCandidate {
             return FfiConverterTypePublicationCandidate.lift(
     callWithHandle {
@@ -4087,6 +4119,24 @@ open class Client: Disposable, AutoCloseable, ClientInterface
     UniffiLib.uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_current(
         it,
         FfiConverterTypeWorkspaceId.lower(`workspace`),FfiConverterULong.lower(`revision`),FfiConverterString.lower(`topic`),FfiConverterTypeRecordId.lower(`id`),FfiConverterByteArray.lower(`payload`),FfiConverterOptionalTypePublicationCurrent.lower(`current`),_status)
+}
+    }
+    )
+    }
+    
+
+    
+    /**
+     * Stage a protected publication with an explicit audience and delivery mode.
+     * Core validates the audience and saves the publication when it is adopted.
+     */
+    @Throws(ApiException::class)override fun `stageProtectedPublicationWithOptions`(`workspace`: WorkspaceId, `revision`: kotlin.ULong, `topic`: kotlin.String, `id`: RecordId, `payload`: kotlin.ByteArray, `options`: PublicationOptions): PublicationCandidate {
+            return FfiConverterTypePublicationCandidate.lift(
+    callWithHandle {
+    uniffiRustCallWithError(ApiExceptionExternalErrorHandler) { _status ->
+    UniffiLib.uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_options(
+        it,
+        FfiConverterTypeWorkspaceId.lower(`workspace`),FfiConverterULong.lower(`revision`),FfiConverterString.lower(`topic`),FfiConverterTypeRecordId.lower(`id`),FfiConverterByteArray.lower(`payload`),FfiConverterTypePublicationOptions.lower(`options`),_status)
 }
     }
     )
@@ -9964,6 +10014,53 @@ public object FfiConverterTypePublicationCurrent: FfiConverterRustBuffer<Publica
 
 
 /**
+ * Audience and delivery mode for a protected publication.
+ * The default is an empty audience (workspace members) and `Critical` mode.
+ */
+data class PublicationOptions (
+    /**
+     * Empty means the workspace audience. Otherwise, provide at most 64 current
+     * member IDs, sorted in ascending byte order, without duplicates or self.
+     * A directed audience cannot use `Current` mode.
+     */
+    var `recipients`: List<MemberId>
+    , 
+    var `mode`: PublicationMode
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypePublicationOptions: FfiConverterRustBuffer<PublicationOptions> {
+    override fun read(buf: ByteBuffer): PublicationOptions {
+        return PublicationOptions(
+            FfiConverterSequenceTypeMemberId.read(buf),
+            FfiConverterTypePublicationMode.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: PublicationOptions) = (
+            FfiConverterSequenceTypeMemberId.allocationSize(value.`recipients`) +
+            FfiConverterTypePublicationMode.allocationSize(value.`mode`)
+    )
+
+    override fun write(value: PublicationOptions, buf: ByteBuffer) {
+            FfiConverterSequenceTypeMemberId.write(value.`recipients`, buf)
+            FfiConverterTypePublicationMode.write(value.`mode`, buf)
+    }
+}
+
+
+
+/**
  * An authenticated pending object from the durable inbox.
  */
 data class ReceivedProtectedPublication (
@@ -10269,8 +10366,14 @@ data class RecoveryRangeRequest (
     , 
     var `topics`: List<kotlin.String>
     , 
+    /**
+     * None continues saved full-history progress. Some selects an independent tail.
+     */
     var `after`: kotlin.ULong?
     , 
+    /**
+     * None asks a holder for its bounded available range after the cursor.
+     */
     var `through`: kotlin.ULong?
     
 ){
@@ -12353,6 +12456,105 @@ public object FfiConverterTypePresence: FfiConverterRustBuffer<Presence> {
 
     override fun write(value: Presence, buf: ByteBuffer) {
         buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+/**
+ * Delivery mode for a protected publication. The default is `Critical`.
+ */
+sealed class PublicationMode {
+    
+    /**
+     * Use the Critical queue.
+     */
+    object Critical : PublicationMode()
+    
+    
+    /**
+     * Use the Bulk queue.
+     */
+    object Bulk : PublicationMode()
+    
+    
+    /**
+     * Publish a replaceable current value to the workspace.
+     */
+    data class Current(
+        val `metadata`: org.arachne.core.runtime.PublicationCurrent) : PublicationMode()
+        
+    {
+        
+
+        companion object
+    }
+    
+
+    
+
+    
+    
+
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypePublicationMode : FfiConverterRustBuffer<PublicationMode>{
+    override fun read(buf: ByteBuffer): PublicationMode {
+        return when(buf.getInt()) {
+            1 -> PublicationMode.Critical
+            2 -> PublicationMode.Bulk
+            3 -> PublicationMode.Current(
+                FfiConverterTypePublicationCurrent.read(buf),
+                )
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
+    }
+
+    override fun allocationSize(value: PublicationMode) = when(value) {
+        is PublicationMode.Critical -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is PublicationMode.Bulk -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is PublicationMode.Current -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypePublicationCurrent.allocationSize(value.`metadata`)
+            )
+        }
+    }
+
+    override fun write(value: PublicationMode, buf: ByteBuffer) {
+        when(value) {
+            is PublicationMode.Critical -> {
+                buf.putInt(1)
+                Unit
+            }
+            is PublicationMode.Bulk -> {
+                buf.putInt(2)
+                Unit
+            }
+            is PublicationMode.Current -> {
+                buf.putInt(3)
+                FfiConverterTypePublicationCurrent.write(value.`metadata`, buf)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
     }
 }
 
@@ -14980,6 +15182,21 @@ object ApiExceptionExternalErrorHandler : UniffiRustCallStatusErrorHandler<ApiEx
     UniffiLib.uniffi_arachne_runtime_fn_func_default_client_config(
     
         FfiConverterTypeNetwork.lower(`network`),_status)
+}
+    )
+    }
+    
+
+        /**
+         * Native publication defaults for foreign bindings: workspace audience and
+         * `Critical` mode. Set `recipients` for a directed audience, or `mode` for Bulk
+         * or Current delivery.
+         */ fun `defaultPublicationOptions`(): PublicationOptions {
+            return FfiConverterTypePublicationOptions.lift(
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_arachne_runtime_fn_func_default_publication_options(
+    
+        _status)
 }
     )
     }

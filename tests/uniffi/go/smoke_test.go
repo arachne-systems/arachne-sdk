@@ -32,6 +32,12 @@ func TestSmoke(t *testing.T) {
 		t.Fatalf("api_version = %d", v)
 	}
 
+	options := sdk.DefaultPublicationOptions()
+	if _, ok := options.Mode.(sdk.PublicationModeCritical); !ok || len(options.Recipients) != 0 {
+		t.Fatalf("Core publication defaults must be group Critical: %+v", options)
+	}
+	t.Log("ok: Core publication defaults are group Critical")
+
 	// 1. Errors cross with their numeric code.
 	short := []byte{1, 2, 3}
 	_, err := sdk.ClientOpen(clientConfig(api.NetworkDirect, &short))

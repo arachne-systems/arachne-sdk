@@ -481,6 +481,8 @@ def _uniffi_check_contract_api_version(lib):
 def _uniffi_check_api_checksums(lib):
     if lib.uniffi_arachne_runtime_checksum_func_default_client_config() != 17430:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_runtime_checksum_func_default_publication_options() != 44032:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_runtime_checksum_func_default_transport_options() != 37452:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_runtime_checksum_method_admissiongrant_epoch() != 22764:
@@ -659,9 +661,11 @@ def _uniffi_check_api_checksums(lib):
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_runtime_checksum_method_client_stage_object_rejection() != 29346:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    if lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication() != 46410:
+    if lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication() != 16457:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    if lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current() != 5183:
+    if lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current() != 20158:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_options() != 52562:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_runtime_checksum_method_client_stage_recovery_range() != 31108:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
@@ -1139,6 +1143,10 @@ _UniffiLib.uniffi_arachne_runtime_fn_func_default_client_config.argtypes = (
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_runtime_fn_func_default_client_config.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_runtime_fn_func_default_publication_options.argtypes = (
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_runtime_fn_func_default_publication_options.restype = _UniffiRustBuffer
 _UniffiLib.uniffi_arachne_runtime_fn_func_default_transport_options.argtypes = (
     ctypes.POINTER(_UniffiRustCallStatus),
 )
@@ -1683,6 +1691,17 @@ _UniffiLib.uniffi_arachne_runtime_fn_method_client_stage_protected_publication_w
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_current.restype = ctypes.c_uint64
+_UniffiLib.uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_options.argtypes = (
+    ctypes.c_uint64,
+    arachne_api._UniffiRustBuffer,
+    ctypes.c_uint64,
+    _UniffiRustBuffer,
+    arachne_api._UniffiRustBuffer,
+    _UniffiRustBuffer,
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_options.restype = ctypes.c_uint64
 _UniffiLib.uniffi_arachne_runtime_fn_method_client_stage_recovery_range.argtypes = (
     ctypes.c_uint64,
     ctypes.c_uint64,
@@ -1891,6 +1910,9 @@ _UniffiLib.ffi_arachne_runtime_uniffi_contract_version.restype = ctypes.c_uint32
 _UniffiLib.uniffi_arachne_runtime_checksum_func_default_client_config.argtypes = (
 )
 _UniffiLib.uniffi_arachne_runtime_checksum_func_default_client_config.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_runtime_checksum_func_default_publication_options.argtypes = (
+)
+_UniffiLib.uniffi_arachne_runtime_checksum_func_default_publication_options.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_runtime_checksum_func_default_transport_options.argtypes = (
 )
 _UniffiLib.uniffi_arachne_runtime_checksum_func_default_transport_options.restype = ctypes.c_uint16
@@ -2164,6 +2186,9 @@ _UniffiLib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publica
 _UniffiLib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current.argtypes = (
 )
 _UniffiLib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_options.argtypes = (
+)
+_UniffiLib.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_options.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_runtime_checksum_method_client_stage_recovery_range.argtypes = (
 )
 _UniffiLib.uniffi_arachne_runtime_checksum_method_client_stage_recovery_range.restype = ctypes.c_uint16
@@ -5904,6 +5929,197 @@ class _UniffiFfiConverterTypePublicationCurrent(_UniffiConverterRustBuffer):
         arachne_api._UniffiFfiConverterTypeKey32.write(value.replacement_key, buf)
         _UniffiFfiConverterUInt64.write(value.expires_at, buf)
         _UniffiFfiConverterBoolean.write(value.tombstone, buf)
+
+
+
+
+
+
+class PublicationMode:
+    """
+    Delivery mode for a protected publication. The default is `Critical`.
+"""
+    def __init__(self):
+        raise RuntimeError("PublicationMode cannot be instantiated directly")
+
+    # Each enum variant is a nested class of the enum itself.
+    @dataclass
+    class CRITICAL:
+        """
+        Use the Critical queue.
+"""
+        
+        def __init__(self, ):
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "PublicationMode.CRITICAL()".format()
+        def __eq__(self, other):
+            if not isinstance(other, PublicationMode):
+                return NotImplemented
+            if not other.is_CRITICAL():
+                return False
+            return True
+
+    @dataclass
+    class BULK:
+        """
+        Use the Bulk queue.
+"""
+        
+        def __init__(self, ):
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "PublicationMode.BULK()".format()
+        def __eq__(self, other):
+            if not isinstance(other, PublicationMode):
+                return NotImplemented
+            if not other.is_BULK():
+                return False
+            return True
+
+    @dataclass
+    class CURRENT:
+        """
+        Publish a replaceable current value to the workspace.
+"""
+        
+        def __init__(self, metadata:PublicationCurrent):
+            self.metadata = metadata
+            
+            
+            pass
+
+    
+            
+            
+    
+        def __str__(self):
+            return "PublicationMode.CURRENT(metadata={})".format(self.metadata)
+        def __eq__(self, other):
+            if not isinstance(other, PublicationMode):
+                return NotImplemented
+            if not other.is_CURRENT():
+                return False
+            if self.metadata != other.metadata:
+                return False
+            return True
+
+    
+
+    # For each variant, we have `is_NAME` and `is_name` methods for easily checking
+    # whether an instance is that variant.
+    def is_CRITICAL(self) -> bool:
+        return isinstance(self, PublicationMode.CRITICAL)
+    def is_critical(self) -> bool:
+        return isinstance(self, PublicationMode.CRITICAL)
+    def is_BULK(self) -> bool:
+        return isinstance(self, PublicationMode.BULK)
+    def is_bulk(self) -> bool:
+        return isinstance(self, PublicationMode.BULK)
+    def is_CURRENT(self) -> bool:
+        return isinstance(self, PublicationMode.CURRENT)
+    def is_current(self) -> bool:
+        return isinstance(self, PublicationMode.CURRENT)
+    
+
+# Now, a little trick - we make each nested variant class be a subclass of the main
+# enum class, so that method calls and instance checks etc will work intuitively.
+# We might be able to do this a little more neatly with a metaclass, but this'll do.
+PublicationMode.CRITICAL = type("PublicationMode.CRITICAL", (PublicationMode.CRITICAL, PublicationMode,), {})  # type: ignore
+PublicationMode.BULK = type("PublicationMode.BULK", (PublicationMode.BULK, PublicationMode,), {})  # type: ignore
+PublicationMode.CURRENT = type("PublicationMode.CURRENT", (PublicationMode.CURRENT, PublicationMode,), {})  # type: ignore
+
+
+
+
+class _UniffiFfiConverterTypePublicationMode(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        variant = buf.read_i32()
+        if variant == 1:
+            return PublicationMode.CRITICAL(
+            )
+        if variant == 2:
+            return PublicationMode.BULK(
+            )
+        if variant == 3:
+            return PublicationMode.CURRENT(
+                _UniffiFfiConverterTypePublicationCurrent.read(buf),
+            )
+        raise InternalError("Raw enum value doesn't match any cases")
+
+    @staticmethod
+    def check_lower(value):
+        if value.is_CRITICAL():
+            return
+        if value.is_BULK():
+            return
+        if value.is_CURRENT():
+            _UniffiFfiConverterTypePublicationCurrent.check_lower(value.metadata)
+            return
+        raise ValueError(value)
+
+    @staticmethod
+    def write(value, buf):
+        if value.is_CRITICAL():
+            buf.write_i32(1)
+        if value.is_BULK():
+            buf.write_i32(2)
+        if value.is_CURRENT():
+            buf.write_i32(3)
+            _UniffiFfiConverterTypePublicationCurrent.write(value.metadata, buf)
+
+
+
+@dataclass
+class PublicationOptions:
+    """
+    Audience and delivery mode for a protected publication.
+    The default is an empty audience (workspace members) and `Critical` mode.
+"""
+    def __init__(self, *, recipients:typing.List[arachne_api.MemberId], mode:PublicationMode):
+        self.recipients = recipients
+        self.mode = mode
+        
+        
+
+    
+    def __str__(self):
+        return "PublicationOptions(recipients={}, mode={})".format(self.recipients, self.mode)
+    def __eq__(self, other):
+        if self.recipients != other.recipients:
+            return False
+        if self.mode != other.mode:
+            return False
+        return True
+
+class _UniffiFfiConverterTypePublicationOptions(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return PublicationOptions(
+            recipients=_UniffiFfiConverterSequenceTypeMemberId.read(buf),
+            mode=_UniffiFfiConverterTypePublicationMode.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        _UniffiFfiConverterSequenceTypeMemberId.check_lower(value.recipients)
+        _UniffiFfiConverterTypePublicationMode.check_lower(value.mode)
+
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterSequenceTypeMemberId.write(value.recipients, buf)
+        _UniffiFfiConverterTypePublicationMode.write(value.mode, buf)
 
 
 
@@ -12368,8 +12584,20 @@ class ClientProtocol(typing.Protocol):
 """
         raise NotImplementedError
     def stage_protected_publication(self, workspace: arachne_api.WorkspaceId,revision: int,topic: str,id: arachne_api.RecordId,payload: bytes) -> PublicationCandidate:
+        """
+        Stage a workspace publication with the default `Critical` delivery mode.
+"""
         raise NotImplementedError
     def stage_protected_publication_with_current(self, workspace: arachne_api.WorkspaceId,revision: int,topic: str,id: arachne_api.RecordId,payload: bytes,current: typing.Optional[PublicationCurrent]) -> PublicationCandidate:
+        """
+        Stage a workspace publication. `None` uses `Critical`; `Some` uses `Current`.
+"""
+        raise NotImplementedError
+    def stage_protected_publication_with_options(self, workspace: arachne_api.WorkspaceId,revision: int,topic: str,id: arachne_api.RecordId,payload: bytes,options: PublicationOptions) -> PublicationCandidate:
+        """
+        Stage a protected publication with an explicit audience and delivery mode.
+        Core validates the audience and saves the publication when it is adopted.
+"""
         raise NotImplementedError
     def stage_recovery_range(self, retain_until: int) -> RecoveryStage:
         """
@@ -13914,6 +14142,9 @@ class Client(ClientProtocol):
         )
         return _uniffi_lift_return(_uniffi_ffi_result)
     def stage_protected_publication(self, workspace: arachne_api.WorkspaceId,revision: int,topic: str,id: arachne_api.RecordId,payload: bytes) -> PublicationCandidate:
+        """
+        Stage a workspace publication with the default `Critical` delivery mode.
+"""
         
         arachne_api._UniffiFfiConverterTypeWorkspaceId.check_lower(workspace)
 
@@ -13941,6 +14172,9 @@ class Client(ClientProtocol):
         )
         return _uniffi_lift_return(_uniffi_ffi_result)
     def stage_protected_publication_with_current(self, workspace: arachne_api.WorkspaceId,revision: int,topic: str,id: arachne_api.RecordId,payload: bytes,current: typing.Optional[PublicationCurrent]) -> PublicationCandidate:
+        """
+        Stage a workspace publication. `None` uses `Critical`; `Some` uses `Current`.
+"""
         
         arachne_api._UniffiFfiConverterTypeWorkspaceId.check_lower(workspace)
 
@@ -13967,6 +14201,40 @@ class Client(ClientProtocol):
         _uniffi_ffi_result = _uniffi_rust_call_with_error(
             _uniffi_error_converter,
             _UniffiLib.uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_current,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def stage_protected_publication_with_options(self, workspace: arachne_api.WorkspaceId,revision: int,topic: str,id: arachne_api.RecordId,payload: bytes,options: PublicationOptions) -> PublicationCandidate:
+        """
+        Stage a protected publication with an explicit audience and delivery mode.
+        Core validates the audience and saves the publication when it is adopted.
+"""
+        
+        arachne_api._UniffiFfiConverterTypeWorkspaceId.check_lower(workspace)
+
+        _UniffiFfiConverterUInt64.check_lower(revision)
+
+        _UniffiFfiConverterString.check_lower(topic)
+
+        arachne_api._UniffiFfiConverterTypeRecordId.check_lower(id)
+
+        _UniffiFfiConverterBytes.check_lower(payload)
+
+        _UniffiFfiConverterTypePublicationOptions.check_lower(options)
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+            arachne_api._UniffiFfiConverterTypeWorkspaceId.lower(workspace),
+            _UniffiFfiConverterUInt64.lower(revision),
+            _UniffiFfiConverterString.lower(topic),
+            arachne_api._UniffiFfiConverterTypeRecordId.lower(id),
+            _UniffiFfiConverterBytes.lower(payload),
+            _UniffiFfiConverterTypePublicationOptions.lower(options),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterTypePublicationCandidate.lift
+        _uniffi_error_converter = arachne_api._UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_options,
             *_uniffi_lowered_args,
         )
         return _uniffi_lift_return(_uniffi_ffi_result)
@@ -14396,6 +14664,22 @@ def default_client_config(network: arachne_api.Network) -> ClientConfig:
         *_uniffi_lowered_args,
     )
     return _uniffi_lift_return(_uniffi_ffi_result)
+def default_publication_options() -> PublicationOptions:
+    """
+    Native publication defaults for foreign bindings: workspace audience and
+    `Critical` mode. Set `recipients` for a directed audience, or `mode` for Bulk
+    or Current delivery.
+"""
+    _uniffi_lowered_args = (
+    )
+    _uniffi_lift_return = _UniffiFfiConverterTypePublicationOptions.lift
+    _uniffi_error_converter = None
+    _uniffi_ffi_result = _uniffi_rust_call_with_error(
+        _uniffi_error_converter,
+        _UniffiLib.uniffi_arachne_runtime_fn_func_default_publication_options,
+        *_uniffi_lowered_args,
+    )
+    return _uniffi_lift_return(_uniffi_ffi_result)
 def default_transport_options() -> TransportOptions:
     """
     Native transport defaults for foreign bindings.
@@ -14420,6 +14704,7 @@ __all__ = [
     "MemberKind",
     "Presence",
     "NearbyMode",
+    "PublicationMode",
     "WorkspaceProgressState",
     "AdmissionResponse",
     "CurrentViewStatus",
@@ -14478,6 +14763,7 @@ __all__ = [
     "PresenceRound",
     "Publication",
     "PublicationCurrent",
+    "PublicationOptions",
     "ReceivedProtectedPublication",
     "RecoveryAdoption",
     "RecoveryCutoffRequest",
@@ -14491,6 +14777,7 @@ __all__ = [
     "WorkspaceProgress",
     "WorkspaceState",
     "default_client_config",
+    "default_publication_options",
     "default_transport_options",
     "StorageConfig",
     "StorageConfigProtocol",

@@ -18,6 +18,10 @@ final class Box<T>: @unchecked Sendable { var value: T; init(_ v: T) { value = v
 
 check(apiVersion() >= 6, "api_version = \(apiVersion())")
 
+let options = defaultPublicationOptions()
+check(options.recipients.isEmpty && options.mode == .critical,
+      "Core publication defaults are group Critical")
+
 // 1. Errors cross with their numeric code.
 do {
     _ = try Client.open(config: clientConfig(.direct, Data([1, 2, 3])))

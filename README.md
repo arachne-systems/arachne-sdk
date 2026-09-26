@@ -37,6 +37,20 @@ The library is written to `target/debug` (`libarachne_sdk.so` on Linux,
 architecture as the language application. Linux x86_64 is the currently
 verified target; other targets are not release-qualified yet.
 
+### Optional streaming
+
+The `moq` Cargo feature enables Core's general protected stream transport:
+
+```sh
+CARGO_INCREMENTAL=0 CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0 \
+  cargo +1.98.0 build --locked -p arachne-sdk --features moq
+```
+
+The default library and Android build leave this feature off. Their stream methods
+return `Unsupported`. The same generated API works with either library; a host
+that needs streaming must package a native library built with `moq`. This feature
+adds no microphone, codec, floor or channel model to the SDK.
+
 ## Language bindings
 
 | Language | Package | Quick start |

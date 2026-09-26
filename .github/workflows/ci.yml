@@ -40,6 +40,7 @@ jobs:
         run: |
           cargo +1.98.0 fmt --package arachne-sdk --check
           cargo +1.98.0 test --locked -p arachne-sdk --all-targets
+          cargo +1.98.0 test --locked -p arachne-sdk --features moq --test client
           cargo +1.98.0 build --locked -p arachne-sdk
 
   generated-bindings:

@@ -382,6 +382,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_arachne_runtime_checksum_func_default_publication_options()
+		})
+		if checksum != 44032 {
+			// If this happens try cleaning and rebuilding your project
+			panic("arachne_runtime: uniffi_arachne_runtime_checksum_func_default_publication_options: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_arachne_runtime_checksum_func_default_transport_options()
 		})
 		if checksum != 37452 {
@@ -960,7 +969,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication()
 		})
-		if checksum != 46410 {
+		if checksum != 16457 {
 			// If this happens try cleaning and rebuilding your project
 			panic("arachne_runtime: uniffi_arachne_runtime_checksum_method_client_stage_protected_publication: UniFFI API checksum mismatch")
 		}
@@ -969,9 +978,18 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current()
 		})
-		if checksum != 5183 {
+		if checksum != 20158 {
 			// If this happens try cleaning and rebuilding your project
 			panic("arachne_runtime: uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_options()
+		})
+		if checksum != 52562 {
+			// If this happens try cleaning and rebuilding your project
+			panic("arachne_runtime: uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_options: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -2095,8 +2113,13 @@ type ClientInterface interface {
 	// Stage a permanent application rejection of a pending object. Its
 	// identity stays recorded, so it is never delivered again.
 	StageObjectRejection(object ReceivedProtectedPublication) (*ProtectedReceptionCandidate, error)
+	// Stage a workspace publication with the default `Critical` delivery mode.
 	StageProtectedPublication(workspace arachne_api.WorkspaceId, revision uint64, topic string, id arachne_api.RecordId, payload []byte) (*PublicationCandidate, error)
+	// Stage a workspace publication. `None` uses `Critical`; `Some` uses `Current`.
 	StageProtectedPublicationWithCurrent(workspace arachne_api.WorkspaceId, revision uint64, topic string, id arachne_api.RecordId, payload []byte, current *PublicationCurrent) (*PublicationCandidate, error)
+	// Stage a protected publication with an explicit audience and delivery mode.
+	// Core validates the audience and saves the publication when it is adopted.
+	StageProtectedPublicationWithOptions(workspace arachne_api.WorkspaceId, revision uint64, topic string, id arachne_api.RecordId, payload []byte, options PublicationOptions) (*PublicationCandidate, error)
 	// `retain_until` is Unix seconds (UTC) by this node's clock; 0 keeps no
 	// copy for third-party recovery.
 	StageRecoveryRange(retainUntil uint64) (RecoveryStage, error)
@@ -3234,6 +3257,7 @@ func (_self *Client) StageObjectRejection(object ReceivedProtectedPublication) (
 	}
 }
 
+// Stage a workspace publication with the default `Critical` delivery mode.
 func (_self *Client) StageProtectedPublication(workspace arachne_api.WorkspaceId, revision uint64, topic string, id arachne_api.RecordId, payload []byte) (*PublicationCandidate, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Client")
 	defer _self.ffiObject.decrementPointer()
@@ -3251,6 +3275,7 @@ func (_self *Client) StageProtectedPublication(workspace arachne_api.WorkspaceId
 	}
 }
 
+// Stage a workspace publication. `None` uses `Critical`; `Some` uses `Current`.
 func (_self *Client) StageProtectedPublicationWithCurrent(workspace arachne_api.WorkspaceId, revision uint64, topic string, id arachne_api.RecordId, payload []byte, current *PublicationCurrent) (*PublicationCandidate, error) {
 	_pointer := _self.ffiObject.incrementPointer("*Client")
 	defer _self.ffiObject.decrementPointer()
@@ -3259,6 +3284,25 @@ func (_self *Client) StageProtectedPublicationWithCurrent(workspace arachne_api.
 			_pointer,
 			CFromRustBuffer(arachne_api.LowerToExternalTypeWorkspaceId(workspace)), FfiConverterUint64INSTANCE.Lower(revision), FfiConverterStringINSTANCE.Lower(topic),
 			CFromRustBuffer(arachne_api.LowerToExternalTypeRecordId(id)), FfiConverterBytesINSTANCE.Lower(payload), FfiConverterOptionalPublicationCurrentINSTANCE.Lower(current), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *PublicationCandidate
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterPublicationCandidateINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Stage a protected publication with an explicit audience and delivery mode.
+// Core validates the audience and saves the publication when it is adopted.
+func (_self *Client) StageProtectedPublicationWithOptions(workspace arachne_api.WorkspaceId, revision uint64, topic string, id arachne_api.RecordId, payload []byte, options PublicationOptions) (*PublicationCandidate, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Client")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*arachne_api.ApiError](arachne_api.FfiConverterApiError{}, func(_uniffiStatus *C.RustCallStatus) C.uint64_t {
+		return C.uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_options(
+			_pointer,
+			CFromRustBuffer(arachne_api.LowerToExternalTypeWorkspaceId(workspace)), FfiConverterUint64INSTANCE.Lower(revision), FfiConverterStringINSTANCE.Lower(topic),
+			CFromRustBuffer(arachne_api.LowerToExternalTypeRecordId(id)), FfiConverterBytesINSTANCE.Lower(payload), FfiConverterPublicationOptionsINSTANCE.Lower(options), _uniffiStatus)
 	})
 	if _uniffiErr != nil {
 		var _uniffiDefaultValue *PublicationCandidate
@@ -7170,6 +7214,55 @@ func (_ FfiDestroyerPublicationCurrent) Destroy(value PublicationCurrent) {
 	value.Destroy()
 }
 
+// Audience and delivery mode for a protected publication.
+// The default is an empty audience (workspace members) and `Critical` mode.
+type PublicationOptions struct {
+	// Empty means the workspace audience. Otherwise, provide at most 64 current
+	// member IDs, sorted in ascending byte order, without duplicates or self.
+	// A directed audience cannot use `Current` mode.
+	Recipients []arachne_api.MemberId
+	Mode       PublicationMode
+}
+
+func (r *PublicationOptions) Destroy() {
+	FfiDestroyerSequenceMemberId{}.Destroy(r.Recipients)
+	FfiDestroyerPublicationMode{}.Destroy(r.Mode)
+}
+
+type FfiConverterPublicationOptions struct{}
+
+var FfiConverterPublicationOptionsINSTANCE = FfiConverterPublicationOptions{}
+
+func (c FfiConverterPublicationOptions) Lift(rb RustBufferI) PublicationOptions {
+	return LiftFromRustBuffer[PublicationOptions](c, rb)
+}
+
+func (c FfiConverterPublicationOptions) Read(reader io.Reader) PublicationOptions {
+	return PublicationOptions{
+		FfiConverterSequenceMemberIdINSTANCE.Read(reader),
+		FfiConverterPublicationModeINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterPublicationOptions) Lower(value PublicationOptions) C.RustBuffer {
+	return LowerIntoRustBuffer[PublicationOptions](c, value)
+}
+
+func (c FfiConverterPublicationOptions) LowerExternal(value PublicationOptions) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PublicationOptions](c, value))
+}
+
+func (c FfiConverterPublicationOptions) Write(writer io.Writer, value PublicationOptions) {
+	FfiConverterSequenceMemberIdINSTANCE.Write(writer, value.Recipients)
+	FfiConverterPublicationModeINSTANCE.Write(writer, value.Mode)
+}
+
+type FfiDestroyerPublicationOptions struct{}
+
+func (_ FfiDestroyerPublicationOptions) Destroy(value PublicationOptions) {
+	value.Destroy()
+}
+
 // An authenticated pending object from the durable inbox.
 type ReceivedProtectedPublication struct {
 	Workspace  arachne_api.WorkspaceId
@@ -7460,8 +7553,10 @@ type RecoveryRangeRequest struct {
 	Author   *arachne_api.MemberId
 	Revision uint64
 	Topics   []string
-	After    *uint64
-	Through  *uint64
+	// None continues saved full-history progress. Some selects an independent tail.
+	After *uint64
+	// None asks a holder for its bounded available range after the cursor.
+	Through *uint64
 }
 
 func (r *RecoveryRangeRequest) Destroy() {
@@ -9268,6 +9363,86 @@ func (FfiConverterPresence) Write(writer io.Writer, value Presence) {
 type FfiDestroyerPresence struct{}
 
 func (_ FfiDestroyerPresence) Destroy(value Presence) {
+}
+
+// Delivery mode for a protected publication. The default is `Critical`.
+type PublicationMode interface {
+	Destroy()
+}
+
+// Use the Critical queue.
+type PublicationModeCritical struct {
+}
+
+func (e PublicationModeCritical) Destroy() {
+}
+
+// Use the Bulk queue.
+type PublicationModeBulk struct {
+}
+
+func (e PublicationModeBulk) Destroy() {
+}
+
+// Publish a replaceable current value to the workspace.
+type PublicationModeCurrent struct {
+	Metadata PublicationCurrent
+}
+
+func (e PublicationModeCurrent) Destroy() {
+	FfiDestroyerPublicationCurrent{}.Destroy(e.Metadata)
+}
+
+type FfiConverterPublicationMode struct{}
+
+var FfiConverterPublicationModeINSTANCE = FfiConverterPublicationMode{}
+
+func (c FfiConverterPublicationMode) Lift(rb RustBufferI) PublicationMode {
+	return LiftFromRustBuffer[PublicationMode](c, rb)
+}
+
+func (c FfiConverterPublicationMode) Lower(value PublicationMode) C.RustBuffer {
+	return LowerIntoRustBuffer[PublicationMode](c, value)
+}
+
+func (c FfiConverterPublicationMode) LowerExternal(value PublicationMode) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PublicationMode](c, value))
+}
+func (FfiConverterPublicationMode) Read(reader io.Reader) PublicationMode {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return PublicationModeCritical{}
+	case 2:
+		return PublicationModeBulk{}
+	case 3:
+		return PublicationModeCurrent{
+			FfiConverterPublicationCurrentINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterPublicationMode.Read()", id))
+	}
+}
+
+func (FfiConverterPublicationMode) Write(writer io.Writer, value PublicationMode) {
+	switch variant_value := value.(type) {
+	case PublicationModeCritical:
+		writeInt32(writer, 1)
+	case PublicationModeBulk:
+		writeInt32(writer, 2)
+	case PublicationModeCurrent:
+		writeInt32(writer, 3)
+		FfiConverterPublicationCurrentINSTANCE.Write(writer, variant_value.Metadata)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterPublicationMode.Write", value))
+	}
+}
+
+type FfiDestroyerPublicationMode struct{}
+
+func (_ FfiDestroyerPublicationMode) Destroy(value PublicationMode) {
+	value.Destroy()
 }
 
 type RecoveryCutoffStatus interface {
@@ -12056,6 +12231,17 @@ func DefaultClientConfig(network arachne_api.Network) ClientConfig {
 		return GoRustBuffer{
 			inner: C.uniffi_arachne_runtime_fn_func_default_client_config(
 				CFromRustBuffer(arachne_api.FfiConverterNetworkINSTANCE.LowerExternal(network)), _uniffiStatus),
+		}
+	}))
+}
+
+// Native publication defaults for foreign bindings: workspace audience and
+// `Critical` mode. Set `recipients` for a directed audience, or `mode` for Bulk
+// or Current delivery.
+func DefaultPublicationOptions() PublicationOptions {
+	return FfiConverterPublicationOptionsINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_arachne_runtime_fn_func_default_publication_options(_uniffiStatus),
 		}
 	}))
 }

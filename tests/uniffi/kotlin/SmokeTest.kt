@@ -13,6 +13,10 @@ fun check(ok: Boolean, what: String) {
 fun main() {
     check(apiVersion() >= 6u, "api_version = ${apiVersion()}")
 
+    val options = defaultPublicationOptions()
+    check(options.recipients.isEmpty() && options.mode == PublicationMode.Critical,
+        "Core publication defaults are group Critical")
+
     // 1. Errors cross with their numeric code.
     try {
         Client.open(defaultClientConfig(Network.DIRECT).copy(secret = byteArrayOf(1, 2, 3)))

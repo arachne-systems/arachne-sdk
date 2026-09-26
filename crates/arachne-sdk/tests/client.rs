@@ -104,3 +104,25 @@ fn protected_publication_is_committed_by_core_and_restored() {
     restored.close().unwrap();
     std::fs::remove_dir_all(directory).unwrap();
 }
+
+#[test]
+fn moq_build_feature_controls_general_stream_metrics() {
+    let client = Client::open(default_client_config(Network::Direct)).unwrap();
+    #[cfg(not(feature = "moq"))]
+    assert_eq!(
+        client.moq_metrics().unwrap_err().code(),
+        ErrorCode::Unsupported
+    );
+    #[cfg(feature = "moq")]
+    {
+        let metrics = client
+            .moq_metrics()
+            .expect("SDK moq feature enables Core streaming");
+        assert_eq!(metrics.sessions_total, 0);
+        assert_eq!(metrics.sessions_active, 0);
+        assert_eq!(metrics.packets_sent, 0);
+        assert_eq!(metrics.packets_received, 0);
+        assert_eq!(metrics.rejected_sessions, 0);
+    }
+    client.close().unwrap();
+}

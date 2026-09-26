@@ -1015,9 +1015,21 @@ public protocol ClientProtocol: AnyObject, Sendable {
      */
     func stageObjectRejection(object: ReceivedProtectedPublication) throws  -> ProtectedReceptionCandidate
     
+    /**
+     * Stage a workspace publication with the default `Critical` delivery mode.
+     */
     func stageProtectedPublication(workspace: WorkspaceId, revision: UInt64, topic: String, id: RecordId, payload: Data) throws  -> PublicationCandidate
     
+    /**
+     * Stage a workspace publication. `None` uses `Critical`; `Some` uses `Current`.
+     */
     func stageProtectedPublicationWithCurrent(workspace: WorkspaceId, revision: UInt64, topic: String, id: RecordId, payload: Data, current: PublicationCurrent?) throws  -> PublicationCandidate
+    
+    /**
+     * Stage a protected publication with an explicit audience and delivery mode.
+     * Core validates the audience and saves the publication when it is adopted.
+     */
+    func stageProtectedPublicationWithOptions(workspace: WorkspaceId, revision: UInt64, topic: String, id: RecordId, payload: Data, options: PublicationOptions) throws  -> PublicationCandidate
     
     /**
      * `retain_until` is Unix seconds (UTC) by this node's clock; 0 keeps no
@@ -1943,6 +1955,9 @@ open func stageObjectRejection(object: ReceivedProtectedPublication)throws  -> P
 })
 }
     
+    /**
+     * Stage a workspace publication with the default `Critical` delivery mode.
+     */
 open func stageProtectedPublication(workspace: WorkspaceId, revision: UInt64, topic: String, id: RecordId, payload: Data)throws  -> PublicationCandidate  {
     return try  FfiConverterTypePublicationCandidate_lift(try rustCallWithError(FfiConverterTypeApiError_lift) {
     uniffi_arachne_runtime_fn_method_client_stage_protected_publication(
@@ -1956,6 +1971,9 @@ open func stageProtectedPublication(workspace: WorkspaceId, revision: UInt64, to
 })
 }
     
+    /**
+     * Stage a workspace publication. `None` uses `Critical`; `Some` uses `Current`.
+     */
 open func stageProtectedPublicationWithCurrent(workspace: WorkspaceId, revision: UInt64, topic: String, id: RecordId, payload: Data, current: PublicationCurrent?)throws  -> PublicationCandidate  {
     return try  FfiConverterTypePublicationCandidate_lift(try rustCallWithError(FfiConverterTypeApiError_lift) {
     uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_current(
@@ -1966,6 +1984,24 @@ open func stageProtectedPublicationWithCurrent(workspace: WorkspaceId, revision:
         FfiConverterTypeRecordId_lower(id),
         FfiConverterData.lower(payload),
         FfiConverterOptionTypePublicationCurrent.lower(current),$0
+    )
+})
+}
+    
+    /**
+     * Stage a protected publication with an explicit audience and delivery mode.
+     * Core validates the audience and saves the publication when it is adopted.
+     */
+open func stageProtectedPublicationWithOptions(workspace: WorkspaceId, revision: UInt64, topic: String, id: RecordId, payload: Data, options: PublicationOptions)throws  -> PublicationCandidate  {
+    return try  FfiConverterTypePublicationCandidate_lift(try rustCallWithError(FfiConverterTypeApiError_lift) {
+    uniffi_arachne_runtime_fn_method_client_stage_protected_publication_with_options(
+            self.uniffiCloneHandle(),
+        FfiConverterTypeWorkspaceId_lower(workspace),
+        FfiConverterUInt64.lower(revision),
+        FfiConverterString.lower(topic),
+        FfiConverterTypeRecordId_lower(id),
+        FfiConverterData.lower(payload),
+        FfiConverterTypePublicationOptions_lower(options),$0
     )
 })
 }
@@ -6630,6 +6666,74 @@ public func FfiConverterTypePublicationCurrent_lower(_ value: PublicationCurrent
 
 
 /**
+ * Audience and delivery mode for a protected publication.
+ * The default is an empty audience (workspace members) and `Critical` mode.
+ */
+public struct PublicationOptions: Equatable, Hashable {
+    /**
+     * Empty means the workspace audience. Otherwise, provide at most 64 current
+     * member IDs, sorted in ascending byte order, without duplicates or self.
+     * A directed audience cannot use `Current` mode.
+     */
+    public var recipients: [MemberId]
+    public var mode: PublicationMode
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(
+        /**
+         * Empty means the workspace audience. Otherwise, provide at most 64 current
+         * member IDs, sorted in ascending byte order, without duplicates or self.
+         * A directed audience cannot use `Current` mode.
+         */recipients: [MemberId], mode: PublicationMode) {
+        self.recipients = recipients
+        self.mode = mode
+    }
+
+    
+
+    
+}
+
+#if compiler(>=6)
+extension PublicationOptions: Sendable {}
+#endif
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypePublicationOptions: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> PublicationOptions {
+        return
+            try PublicationOptions(
+                recipients: FfiConverterSequenceTypeMemberId.read(from: &buf), 
+                mode: FfiConverterTypePublicationMode.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: PublicationOptions, into buf: inout [UInt8]) {
+        FfiConverterSequenceTypeMemberId.write(value.recipients, into: &buf)
+        FfiConverterTypePublicationMode.write(value.mode, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypePublicationOptions_lift(_ buf: RustBuffer) throws -> PublicationOptions {
+    return try FfiConverterTypePublicationOptions.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypePublicationOptions_lower(_ value: PublicationOptions) -> RustBuffer {
+    return FfiConverterTypePublicationOptions.lower(value)
+}
+
+
+/**
  * An authenticated pending object from the durable inbox.
  */
 public struct ReceivedProtectedPublication: Equatable, Hashable {
@@ -6981,12 +7085,24 @@ public struct RecoveryRangeRequest: Equatable, Hashable {
     public var author: MemberId?
     public var revision: UInt64
     public var topics: [String]
+    /**
+     * None continues saved full-history progress. Some selects an independent tail.
+     */
     public var after: UInt64?
+    /**
+     * None asks a holder for its bounded available range after the cursor.
+     */
     public var through: UInt64?
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(peer: EndpointId?, author: MemberId?, revision: UInt64, topics: [String], after: UInt64?, through: UInt64?) {
+    public init(peer: EndpointId?, author: MemberId?, revision: UInt64, topics: [String], 
+        /**
+         * None continues saved full-history progress. Some selects an independent tail.
+         */after: UInt64?, 
+        /**
+         * None asks a holder for its bounded available range after the cursor.
+         */through: UInt64?) {
         self.peer = peer
         self.author = author
         self.revision = revision
@@ -9246,6 +9362,95 @@ public func FfiConverterTypePresence_lower(_ value: Presence) -> RustBuffer {
 
 // Note that we don't yet support `indirect` for enums.
 // See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
+/**
+ * Delivery mode for a protected publication. The default is `Critical`.
+ */
+
+public enum PublicationMode: Equatable, Hashable {
+    
+    /**
+     * Use the Critical queue.
+     */
+    case critical
+    /**
+     * Use the Bulk queue.
+     */
+    case bulk
+    /**
+     * Publish a replaceable current value to the workspace.
+     */
+    case current(metadata: PublicationCurrent
+    )
+
+
+
+
+
+}
+
+#if compiler(>=6)
+extension PublicationMode: Sendable {}
+#endif
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypePublicationMode: FfiConverterRustBuffer {
+    typealias SwiftType = PublicationMode
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> PublicationMode {
+        let variant: Int32 = try readInt(&buf)
+        switch variant {
+        
+        case 1: return .critical
+        
+        case 2: return .bulk
+        
+        case 3: return .current(metadata: try FfiConverterTypePublicationCurrent.read(from: &buf)
+        )
+        
+        default: throw UniffiInternalError.unexpectedEnumCase
+        }
+    }
+
+    public static func write(_ value: PublicationMode, into buf: inout [UInt8]) {
+        switch value {
+        
+        
+        case .critical:
+            writeInt(&buf, Int32(1))
+        
+        
+        case .bulk:
+            writeInt(&buf, Int32(2))
+        
+        
+        case let .current(metadata):
+            writeInt(&buf, Int32(3))
+            FfiConverterTypePublicationCurrent.write(metadata, into: &buf)
+            
+        }
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypePublicationMode_lift(_ buf: RustBuffer) throws -> PublicationMode {
+    return try FfiConverterTypePublicationMode.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypePublicationMode_lower(_ value: PublicationMode) -> RustBuffer {
+    return FfiConverterTypePublicationMode.lower(value)
+}
+
+
+// Note that we don't yet support `indirect` for enums.
+// See https://github.com/mozilla/uniffi-rs/issues/396 for further discussion.
 
 public enum RecoveryCutoffStatus: Equatable, Hashable {
     
@@ -11204,6 +11409,17 @@ public func defaultClientConfig(network: Network) -> ClientConfig  {
 })
 }
 /**
+ * Native publication defaults for foreign bindings: workspace audience and
+ * `Critical` mode. Set `recipients` for a directed audience, or `mode` for Bulk
+ * or Current delivery.
+ */
+public func defaultPublicationOptions() -> PublicationOptions  {
+    return try!  FfiConverterTypePublicationOptions_lift(try! rustCall() {
+    uniffi_arachne_runtime_fn_func_default_publication_options($0
+    )
+})
+}
+/**
  * Native transport defaults for foreign bindings.
  */
 public func defaultTransportOptions() -> TransportOptions  {
@@ -11229,6 +11445,9 @@ private let initializationResult: InitializationResult = {
         return InitializationResult.contractVersionMismatch
     }
     if (uniffi_arachne_runtime_checksum_func_default_client_config() != 17430) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_arachne_runtime_checksum_func_default_publication_options() != 44032) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_arachne_runtime_checksum_func_default_transport_options() != 37452) {
@@ -11423,10 +11642,13 @@ private let initializationResult: InitializationResult = {
     if (uniffi_arachne_runtime_checksum_method_client_stage_object_rejection() != 29346) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_arachne_runtime_checksum_method_client_stage_protected_publication() != 46410) {
+    if (uniffi_arachne_runtime_checksum_method_client_stage_protected_publication() != 16457) {
         return InitializationResult.apiChecksumMismatch
     }
-    if (uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current() != 5183) {
+    if (uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_current() != 20158) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_arachne_runtime_checksum_method_client_stage_protected_publication_with_options() != 52562) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_arachne_runtime_checksum_method_client_stage_recovery_range() != 31108) {
