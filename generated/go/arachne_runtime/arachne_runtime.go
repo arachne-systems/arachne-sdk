@@ -4919,8 +4919,8 @@ func (_ FfiDestroyerRemovalCandidate) Destroy(value *RemovalCandidate) {
 //
 // With [`StorageConfig::with_anchors`] (monotonic host storage), core saves
 // the freshness anchor with every commit and restore requires a match: a
-// rolled-back database is refused. Without it the anchor is optional: the
-// host may save `record_freshness` itself and pass it to restore.
+// rolled-back database is refused. SQLite restore otherwise requires the
+// host to save `record_freshness` and pass it back explicitly.
 type StorageConfigInterface interface {
 }
 
@@ -4932,8 +4932,8 @@ type StorageConfigInterface interface {
 //
 // With [`StorageConfig::with_anchors`] (monotonic host storage), core saves
 // the freshness anchor with every commit and restore requires a match: a
-// rolled-back database is refused. Without it the anchor is optional: the
-// host may save `record_freshness` itself and pass it to restore.
+// rolled-back database is refused. SQLite restore otherwise requires the
+// host to save `record_freshness` and pass it back explicitly.
 type StorageConfig struct {
 	ffiObject FfiObject
 }
@@ -5510,6 +5510,14 @@ type ClientConfig struct {
 	Transport TransportOptions
 	// Record storage. Required to create, join or restore a workspace.
 	Storage **StorageConfig
+}
+
+func (r ClientConfig) String() string {
+	secret := "<nil>"
+	if r.Secret != nil {
+		secret = "[REDACTED]"
+	}
+	return fmt.Sprintf("ClientConfig{Network:%v Secret:%s Transport:%v Storage:%v}", r.Network, secret, r.Transport, r.Storage)
 }
 
 func (r *ClientConfig) Destroy() {
@@ -7616,6 +7624,9 @@ type RemovedMembership struct {
 	Epoch        uint64
 	Member       arachne_api.MemberId
 	CommitDigest arachne_api.Key32
+	// Freshness anchor of the durable removal. Save it before returning to
+	// the event loop; the removed client is already closed.
+	Freshness FreshnessAnchor
 }
 
 func (r *RemovedMembership) Destroy() {
@@ -7623,6 +7634,7 @@ func (r *RemovedMembership) Destroy() {
 	FfiDestroyerUint64{}.Destroy(r.Epoch)
 	arachne_api.FfiDestroyerTypeMemberId{}.Destroy(r.Member)
 	arachne_api.FfiDestroyerTypeKey32{}.Destroy(r.CommitDigest)
+	FfiDestroyerTypeFreshnessAnchor{}.Destroy(r.Freshness)
 }
 
 type FfiConverterRemovedMembership struct{}
@@ -7639,6 +7651,7 @@ func (c FfiConverterRemovedMembership) Read(reader io.Reader) RemovedMembership 
 		FfiConverterUint64INSTANCE.Read(reader),
 		arachne_api.FfiConverterTypeMemberIdINSTANCE.Read(reader),
 		arachne_api.FfiConverterTypeKey32INSTANCE.Read(reader),
+		FfiConverterTypeFreshnessAnchorINSTANCE.Read(reader),
 	}
 }
 
@@ -7655,6 +7668,7 @@ func (c FfiConverterRemovedMembership) Write(writer io.Writer, value RemovedMemb
 	FfiConverterUint64INSTANCE.Write(writer, value.Epoch)
 	arachne_api.FfiConverterTypeMemberIdINSTANCE.Write(writer, value.Member)
 	arachne_api.FfiConverterTypeKey32INSTANCE.Write(writer, value.CommitDigest)
+	FfiConverterTypeFreshnessAnchorINSTANCE.Write(writer, value.Freshness)
 }
 
 type FfiDestroyerRemovedMembership struct{}

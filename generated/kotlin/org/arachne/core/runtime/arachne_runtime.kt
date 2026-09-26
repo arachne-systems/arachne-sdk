@@ -7518,8 +7518,8 @@ public object FfiConverterTypeRemovalCandidate: FfiConverter<RemovalCandidate, L
  *
  * With [`StorageConfig::with_anchors`] (monotonic host storage), core saves
  * the freshness anchor with every commit and restore requires a match: a
- * rolled-back database is refused. Without it the anchor is optional: the
- * host may save `record_freshness` itself and pass it to restore.
+ * rolled-back database is refused. SQLite restore otherwise requires the
+ * host to save `record_freshness` and pass it back explicitly.
  */
 public interface StorageConfigInterface {
     
@@ -7535,8 +7535,8 @@ public interface StorageConfigInterface {
  *
  * With [`StorageConfig::with_anchors`] (monotonic host storage), core saves
  * the freshness anchor with every commit and restore requires a match: a
- * rolled-back database is refused. Without it the anchor is optional: the
- * host may save `record_freshness` itself and pass it to restore.
+ * rolled-back database is refused. SQLite restore otherwise requires the
+ * host to save `record_freshness` and pass it back explicitly.
  */
 open class StorageConfig: Disposable, AutoCloseable, StorageConfigInterface
 {
@@ -10432,6 +10432,12 @@ data class RemovedMembership (
     var `member`: MemberId
     , 
     var `commitDigest`: Key32
+    ,
+    /**
+     * Freshness anchor of the durable removal. Save it before returning to
+     * the event loop; the removed client is already closed.
+     */
+    var `freshness`: FreshnessAnchor
     
 ){
     
@@ -10452,6 +10458,7 @@ public object FfiConverterTypeRemovedMembership: FfiConverterRustBuffer<RemovedM
             FfiConverterULong.read(buf),
             FfiConverterTypeMemberId.read(buf),
             FfiConverterTypeKey32.read(buf),
+            FfiConverterTypeFreshnessAnchor.read(buf),
         )
     }
 
@@ -10459,7 +10466,8 @@ public object FfiConverterTypeRemovedMembership: FfiConverterRustBuffer<RemovedM
             FfiConverterTypeWorkspaceId.allocationSize(value.`workspace`) +
             FfiConverterULong.allocationSize(value.`epoch`) +
             FfiConverterTypeMemberId.allocationSize(value.`member`) +
-            FfiConverterTypeKey32.allocationSize(value.`commitDigest`)
+            FfiConverterTypeKey32.allocationSize(value.`commitDigest`) +
+            FfiConverterTypeFreshnessAnchor.allocationSize(value.`freshness`)
     )
 
     override fun write(value: RemovedMembership, buf: ByteBuffer) {
@@ -10467,6 +10475,7 @@ public object FfiConverterTypeRemovedMembership: FfiConverterRustBuffer<RemovedM
             FfiConverterULong.write(value.`epoch`, buf)
             FfiConverterTypeMemberId.write(value.`member`, buf)
             FfiConverterTypeKey32.write(value.`commitDigest`, buf)
+            FfiConverterTypeFreshnessAnchor.write(value.`freshness`, buf)
     }
 }
 

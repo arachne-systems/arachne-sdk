@@ -36,6 +36,11 @@ def check(ok, what):
 
 check(api_version() >= 6, f"api_version = {api_version()}")
 
+diagnostic_secret = bytes([0xA7]) * 32
+diagnostic_config = config(Network.DIRECT, diagnostic_secret)
+check("[REDACTED]" in str(diagnostic_config), "ClientConfig string redacts its secret")
+check(repr(diagnostic_secret) not in str(diagnostic_config), "ClientConfig string omits secret bytes")
+
 # 1. Errors cross with their numeric code.
 try:
     Client.open(config(network=Network.DIRECT, secret=b"\x01\x02\x03"))

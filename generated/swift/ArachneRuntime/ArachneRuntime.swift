@@ -3806,8 +3806,8 @@ public func FfiConverterTypeRemovalCandidate_lower(_ value: RemovalCandidate) ->
  *
  * With [`StorageConfig::with_anchors`] (monotonic host storage), core saves
  * the freshness anchor with every commit and restore requires a match: a
- * rolled-back database is refused. Without it the anchor is optional: the
- * host may save `record_freshness` itself and pass it to restore.
+ * rolled-back database is refused. SQLite restore otherwise requires the
+ * host to save `record_freshness` and pass it back explicitly.
  */
 public protocol StorageConfigProtocol: AnyObject, Sendable {
     
@@ -3821,8 +3821,8 @@ public protocol StorageConfigProtocol: AnyObject, Sendable {
  *
  * With [`StorageConfig::with_anchors`] (monotonic host storage), core saves
  * the freshness anchor with every commit and restore requires a match: a
- * rolled-back database is refused. Without it the anchor is optional: the
- * host may save `record_freshness` itself and pass it to restore.
+ * rolled-back database is refused. SQLite restore otherwise requires the
+ * host to save `record_freshness` and pass it back explicitly.
  */
 open class StorageConfig: StorageConfigProtocol, @unchecked Sendable {
     fileprivate let handle: UInt64
@@ -7170,14 +7170,24 @@ public struct RemovedMembership: Equatable, Hashable {
     public var epoch: UInt64
     public var member: MemberId
     public var commitDigest: Key32
+    /**
+     * Freshness anchor of the durable removal. Save it before returning to
+     * the event loop; the removed client is already closed.
+     */
+    public var freshness: FreshnessAnchor
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(workspace: WorkspaceId, epoch: UInt64, member: MemberId, commitDigest: Key32) {
+    public init(workspace: WorkspaceId, epoch: UInt64, member: MemberId, commitDigest: Key32,
+        /**
+         * Freshness anchor of the durable removal. Save it before returning to
+         * the event loop; the removed client is already closed.
+         */freshness: FreshnessAnchor) {
         self.workspace = workspace
         self.epoch = epoch
         self.member = member
         self.commitDigest = commitDigest
+        self.freshness = freshness
     }
 
     
@@ -7199,7 +7209,8 @@ public struct FfiConverterTypeRemovedMembership: FfiConverterRustBuffer {
                 workspace: FfiConverterTypeWorkspaceId.read(from: &buf), 
                 epoch: FfiConverterUInt64.read(from: &buf), 
                 member: FfiConverterTypeMemberId.read(from: &buf), 
-                commitDigest: FfiConverterTypeKey32.read(from: &buf)
+                commitDigest: FfiConverterTypeKey32.read(from: &buf),
+                freshness: FfiConverterTypeFreshnessAnchor.read(from: &buf)
         )
     }
 
@@ -7208,6 +7219,7 @@ public struct FfiConverterTypeRemovedMembership: FfiConverterRustBuffer {
         FfiConverterUInt64.write(value.epoch, into: &buf)
         FfiConverterTypeMemberId.write(value.member, into: &buf)
         FfiConverterTypeKey32.write(value.commitDigest, into: &buf)
+        FfiConverterTypeFreshnessAnchor.write(value.freshness, into: &buf)
     }
 }
 

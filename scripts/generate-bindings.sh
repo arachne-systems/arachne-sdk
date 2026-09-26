@@ -62,6 +62,7 @@ EOF
 
 # Go: separate API and runtime packages under the SDK module.
 "$BINDGEN_GO" "$LIB" --config "$CONFIG" --out-dir "$OUT/go"
+python3 "$ROOT/scripts/harden-generated-bindings.py" "$OUT"
 gofmt -w "$OUT/go"
 
 echo "generated into $OUT:"

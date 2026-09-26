@@ -40,6 +40,12 @@ before creating, joining or restoring a workspace. `StorageConfig.open_sqlite`
 takes a host-private directory and a separate 32-byte storage root. Create the
 directory before opening storage.
 
+Core zeroizes its native copies of the endpoint secret after opening. The host
+runtime still owns the bytes placed in `ClientConfig`: keep that buffer
+short-lived and clear mutable Go, Kotlin and Swift buffers after `open`. Python
+bytes are immutable, so load them just before `open` and release references
+immediately afterward. Generated diagnostic strings redact the secret.
+
 Use `Context.owned(limits, power, workers)` when the host needs independent limits
 or lifecycle control. Open the client with `Client.open_in(context, config)`.
 `Client.open(config)` uses the process default context. Suspending an owned context

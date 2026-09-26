@@ -4,6 +4,7 @@ package smoke_test
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"testing"
 	"time"
@@ -25,6 +26,14 @@ func clientConfig(network api.Network, secret *[]byte) sdk.ClientConfig {
 	config := sdk.DefaultClientConfig(network)
 	config.Secret = secret
 	return config
+}
+
+func TestClientConfigRedactsSecret(t *testing.T) {
+	diagnosticSecret := []byte(strings.Repeat("\xa7", 32))
+	renderedConfig := fmt.Sprintf("%+v", clientConfig(api.NetworkDirect, &diagnosticSecret))
+	if !strings.Contains(renderedConfig, "[REDACTED]") || strings.Contains(renderedConfig, "167 167 167") {
+		t.Fatalf("ClientConfig exposes its secret: %s", renderedConfig)
+	}
 }
 
 func TestSmoke(t *testing.T) {

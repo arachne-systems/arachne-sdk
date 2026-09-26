@@ -82,8 +82,9 @@ and the inbox decision.
 Reopen the Client with the same endpoint key, storage directory and storage root.
 Call `restore_workspace(workspace, expected_anchor)`. The result identifies active,
 joining or removed state. Restoring a removal returns its tombstone and closes
-the session. When the host stores an external freshness anchor,
-supply it to detect rollback. Reapply the service profile for service endpoints.
+the session. SQLite restore requires the freshness anchor returned by
+`record_freshness`; store it outside the database after every committing call.
+Reapply the service profile for service endpoints.
 A service profile changes the member profile; it does not grant membership.
 
 Use range recovery for retained publications, direct recovery for an authenticated

@@ -3543,8 +3543,8 @@ class StorageConfigProtocol(typing.Protocol):
 
     With [`StorageConfig::with_anchors`] (monotonic host storage), core saves
     the freshness anchor with every commit and restore requires a match: a
-    rolled-back database is refused. Without it the anchor is optional: the
-    host may save `record_freshness` itself and pass it to restore.
+    rolled-back database is refused. SQLite restore otherwise requires the
+    host to save `record_freshness` and pass it back explicitly.
 """
     
     pass
@@ -3559,8 +3559,8 @@ class StorageConfig(StorageConfigProtocol):
 
     With [`StorageConfig::with_anchors`] (monotonic host storage), core saves
     the freshness anchor with every commit and restore requires a match: a
-    rolled-back database is refused. Without it the anchor is optional: the
-    host may save `record_freshness` itself and pass it to restore.
+    rolled-back database is refused. SQLite restore otherwise requires the
+    host to save `record_freshness` and pass it back explicitly.
 """
     
     _handle: ctypes.c_uint64
@@ -3677,7 +3677,7 @@ class ClientConfig:
 
     
     def __str__(self):
-        return "ClientConfig(network={}, secret={}, transport={}, storage={})".format(self.network, self.secret, self.transport, self.storage)
+        return "ClientConfig(network={}, secret={}, transport={}, storage={})".format(self.network, "[REDACTED]" if self.secret is not None else None, self.transport, self.storage)
     def __eq__(self, other):
         if self.network != other.network:
             return False
@@ -6536,22 +6536,48 @@ class _UniffiFfiConverterTypeRecoveryRangeRequest(_UniffiConverterRustBuffer):
         _UniffiFfiConverterOptionalUInt64.write(value.after, buf)
         _UniffiFfiConverterOptionalUInt64.write(value.through, buf)
 
+
+class _UniffiFfiConverterTypeFreshnessAnchor:
+    @staticmethod
+    def write(value, buf):
+        _UniffiFfiConverterBytes.write(value, buf)
+
+    @staticmethod
+    def read(buf):
+        return _UniffiFfiConverterBytes.read(buf)
+
+    @staticmethod
+    def lift(value):
+        return _UniffiFfiConverterBytes.lift(value)
+
+    @staticmethod
+    def check_lower(value):
+        return _UniffiFfiConverterBytes.check_lower(value)
+
+    @staticmethod
+    def lower(value):
+        return _UniffiFfiConverterBytes.lower(value)
+
+
+FreshnessAnchor = bytes
+
 @dataclass
 class RemovedMembership:
     """
     This member's removal, adopted. The session has ended.
 """
-    def __init__(self, *, workspace:arachne_api.WorkspaceId, epoch:int, member:arachne_api.MemberId, commit_digest:arachne_api.Key32):
+    def __init__(self, *, workspace:arachne_api.WorkspaceId, epoch:int, member:arachne_api.MemberId, commit_digest:arachne_api.Key32, freshness:FreshnessAnchor):
         self.workspace = workspace
         self.epoch = epoch
         self.member = member
         self.commit_digest = commit_digest
+        self.freshness = freshness
         
         
 
     
     def __str__(self):
-        return "RemovedMembership(workspace={}, epoch={}, member={}, commit_digest={})".format(self.workspace, self.epoch, self.member, self.commit_digest)
+        return "RemovedMembership(workspace={}, epoch={}, member={}, commit_digest={}, freshness={})".format(self.workspace, self.epoch, self.member, self.commit_digest, self.freshness)
     def __eq__(self, other):
         if self.workspace != other.workspace:
             return False
@@ -6560,6 +6586,8 @@ class RemovedMembership:
         if self.member != other.member:
             return False
         if self.commit_digest != other.commit_digest:
+            return False
+        if self.freshness != other.freshness:
             return False
         return True
 
@@ -6571,6 +6599,7 @@ class _UniffiFfiConverterTypeRemovedMembership(_UniffiConverterRustBuffer):
             epoch=_UniffiFfiConverterUInt64.read(buf),
             member=arachne_api._UniffiFfiConverterTypeMemberId.read(buf),
             commit_digest=arachne_api._UniffiFfiConverterTypeKey32.read(buf),
+            freshness=_UniffiFfiConverterTypeFreshnessAnchor.read(buf),
         )
 
     @staticmethod
@@ -6579,6 +6608,7 @@ class _UniffiFfiConverterTypeRemovedMembership(_UniffiConverterRustBuffer):
         _UniffiFfiConverterUInt64.check_lower(value.epoch)
         arachne_api._UniffiFfiConverterTypeMemberId.check_lower(value.member)
         arachne_api._UniffiFfiConverterTypeKey32.check_lower(value.commit_digest)
+        _UniffiFfiConverterTypeFreshnessAnchor.check_lower(value.freshness)
 
     @staticmethod
     def write(value, buf):
@@ -6586,6 +6616,7 @@ class _UniffiFfiConverterTypeRemovedMembership(_UniffiConverterRustBuffer):
         _UniffiFfiConverterUInt64.write(value.epoch, buf)
         arachne_api._UniffiFfiConverterTypeMemberId.write(value.member, buf)
         arachne_api._UniffiFfiConverterTypeKey32.write(value.commit_digest, buf)
+        _UniffiFfiConverterTypeFreshnessAnchor.write(value.freshness, buf)
 
 @dataclass
 class ResourceTicket:
@@ -11248,31 +11279,6 @@ class _UniffiFfiConverterTypeRestoredWorkspace(_UniffiConverterRustBuffer):
             _UniffiFfiConverterTypeRemovedMembership.write(value._values[0], buf)
 
 
-
-
-class _UniffiFfiConverterTypeFreshnessAnchor:
-    @staticmethod
-    def write(value, buf):
-        _UniffiFfiConverterBytes.write(value, buf)
-
-    @staticmethod
-    def read(buf):
-        return _UniffiFfiConverterBytes.read(buf)
-
-    @staticmethod
-    def lift(value):
-        return _UniffiFfiConverterBytes.lift(value)
-
-    @staticmethod
-    def check_lower(value):
-        return _UniffiFfiConverterBytes.check_lower(value)
-
-    @staticmethod
-    def lower(value):
-        return _UniffiFfiConverterBytes.lower(value)
-
-
-FreshnessAnchor = bytes
 
 
 class CurrentViewCandidateProtocol(typing.Protocol):

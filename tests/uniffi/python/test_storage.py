@@ -64,18 +64,28 @@ with tempfile.TemporaryDirectory(prefix="arachne-sdk-python-storage-") as direct
     report = client.adopt_protected_publication(candidate)
     assert not report.failed
     assert client.workspace_state().durable
+    anchor = client.record_freshness()
     client.close()
 
+    missing_anchor = Client.open_in(context, config(directory))
+    try:
+        missing_anchor.restore_workspace(workspace.workspace, None)
+        raise AssertionError("SQLite restore accepted a missing freshness anchor")
+    except ApiError as error:
+        assert api_error_code(error) == ErrorCode.CANDIDATE_STALE
+    missing_anchor.close()
+
     restored = Client.open_in(context, config(directory))
-    restored.restore_workspace(workspace.workspace, None)
+    restored.restore_workspace(workspace.workspace, anchor)
     state = restored.workspace_state()
     assert state.durable and state.workspace == workspace.workspace and state.workspace_ready
     removed = restored.adopt_removal(restored.stage_solo_leave())
     assert removed.workspace == workspace.workspace
+    anchor = removed.freshness
     restored.close()
 
     departed = Client.open_in(context, config(directory))
-    tombstone = departed.restore_workspace(workspace.workspace, None)
+    tombstone = departed.restore_workspace(workspace.workspace, anchor)
     assert isinstance(tombstone, RestoredWorkspace.REMOVED)
     assert tombstone[0].workspace == workspace.workspace
     try:
