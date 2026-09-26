@@ -7,26 +7,37 @@
 //! The repository's `docs/workflows.md` covers invitations, protected
 //! publication and reception, persistence ordering, and current integration limits.
 
+pub use arachne_api::{
+    API_VERSION, ApiError, AttemptId, Capabilities, EndpointId, ErrorCode, Event, Feature, Key32,
+    Limits, MemberId, Network, PowerProfile, PublicationId, RecordId, TopicName, WorkspaceId,
+    api_error_code, api_version, default_limits,
+};
 pub use arachne_runtime::{
-    AdmissionApproval, AdmissionApprovalPage, AdmissionAuthorization, AdmissionReply, ApiError,
-    Client, ClientConfig, ClientResult as Result, ConnectionCapacityMetrics, ConnectivityReport,
-    Context, ContextConfig, ControlTimingMetrics, DeliveryFailure, DeliveryReport, DurationSummary,
-    EndpointInfo, Error, ErrorCode, ErrorKind, Event, FreshnessAnchor, InterestObservation,
-    InvitationCheckpoint, InvitationControl, InvitationDetails, InvitationInfo, InvitationKind,
-    JoinAdmissionStep, JoinRequest, Limits, MemberAction, MemberInfo, MemberKind, MemberRoster,
-    MembershipGossipMetrics, NearbyAdvertisement, NearbyEndpoint, NearbyMode, NearbyScan, Network,
-    OperatorRelay, PeerPolicy, PeerRoute, PowerProfile, Presence, PresenceRound,
-    ProtectedReceptionCandidate, Publication, PublicationCandidate, PublicationCurrent,
-    ReceivedProtectedPublication, RecoveryAdoption, RecoveryCandidate, RecoveryRangeReady,
-    RecoveryRangeRequest, RecoveryRangeStatus, RecoveryStage, RelayTrust, RemovedMembership,
-    RouteHint, RouteKind, RuntimeConfig, TransportInfo, TransportOptions, TransportTimeouts,
+    AdmissionApproval, AdmissionApprovalPage, AdmissionAuthorization, AdmissionGrant,
+    AdmissionNotice, AdmissionReply, AdmissionResponse, AdmissionStatus, AdmissionStatusKind,
+    AnchorSlots, AnchorStore, Client, ClientConfig, ClientResult as Result,
+    ConnectionCapacityMetrics, ConnectivityReport, Context, ContextConfig, ControlTimingMetrics,
+    CurrentViewAdoption, CurrentViewCandidate, CurrentViewRequest, CurrentViewStatus,
+    DeliveryFailure, DeliveryReport, DirectRecoveryReady, DirectRecoveryRequest,
+    DirectRecoveryStatus, DurationSummary, EndpointInfo, FreshnessAnchor, InterestObservation,
+    InvitationCandidate, InvitationCheckpoint, InvitationControl, InvitationDetails,
+    InvitationInfo, InvitationKind, JoinAdmissionStep, JoinCandidate, JoinProgress, JoinRequest,
+    MemberAction, MemberInfo, MemberKind, MemberRoster, MemberUpdate, MemberUpdateState,
+    MembershipCandidate, MembershipGossipMetrics, MemoryAnchors, MemoryProvider,
+    NearbyAdvertisement, NearbyEndpoint, NearbyMode, NearbyScan, OperatorRelay, PeerPolicy,
+    PeerRoute, Presence, PresenceRound, ProtectedReceptionCandidate, Publication,
+    PublicationCandidate, PublicationCurrent, ReceivedProtectedPublication, RecoveryAdoption,
+    RecoveryCandidate, RecoveryCutoffRequest, RecoveryCutoffStatus, RecoveryRangeReady,
+    RecoveryRangeRequest, RecoveryRangeStatus, RecoveryStage, RelayTrust, RemovalCandidate,
+    RemovedMembership, ResourceRequest, ResourceStatus, ResourceTicket, RestoredJoin,
+    RestoredWorkspace, RouteHint, RouteKind, RuntimeConfig, SqliteProvider, Storage, StorageConfig,
+    StorageProvider, StreamMetrics, TransportInfo, TransportOptions, TransportTimeouts,
     WorkspaceActivity, WorkspaceCandidate, WorkspaceInfo, WorkspaceMetrics, WorkspacePhase,
-    WorkspaceState,
+    WorkspaceProgress, WorkspaceProgressState, WorkspaceState, default_client_config,
+    default_transport_options,
 };
 
-mod ffi;
-
-// Generated-bindings surface (ADR A1/A4 steps 7-8). Kept in its own module so
-// the Rust API above does not change. See docs/language-bindings.md.
-uniffi::setup_scaffolding!();
-pub mod uniffi_api;
+// Keep both Core components' foreign exports in this SDK library. The types,
+// candidate checks and durable operations are defined only in Core.
+arachne_api::uniffi_reexport_scaffolding!();
+arachne_runtime::uniffi_reexport_scaffolding!();

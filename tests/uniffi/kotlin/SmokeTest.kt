@@ -1,6 +1,8 @@
 // Smoke test for the generated Kotlin binding (ADR A1/A4 step 7 slice).
 // Run by scripts/uniffi-smoke.sh.
-import org.arachne.sdk.generated.*
+import org.arachne.core.api.*
+import org.arachne.core.runtime.*
+import java.time.Duration
 import kotlin.concurrent.thread
 
 fun check(ok: Boolean, what: String) {
@@ -9,46 +11,46 @@ fun check(ok: Boolean, what: String) {
 }
 
 fun main() {
-    check(apiVersion() >= 5u, "api_version = ${apiVersion()}")
+    check(apiVersion() >= 6u, "api_version = ${apiVersion()}")
 
     // 1. Errors cross with their numeric code.
     try {
-        Client.open(ClientConfig(network = Network.DIRECT, secret = byteArrayOf(1, 2, 3)))
+        Client.open(defaultClientConfig(Network.DIRECT).copy(secret = byteArrayOf(1, 2, 3)))
         check(false, "short secret must throw")
     } catch (e: ApiException.InvalidInput) {
-        check(apiErrorCode(e).number() == 100u, "short secret error code = ${apiErrorCode(e).number()} (${apiErrorCode(e)})")
+        check(apiErrorCode(e).value == 100u, "short secret error code = ${apiErrorCode(e).value} (${apiErrorCode(e)})")
         check(apiErrorCode(e).value == 100u, "ErrorCode.value discriminant = ${apiErrorCode(e).value}")
     }
     try {
-        Client.open(ClientConfig(network = Network.TOR, secret = ByteArray(32) { 7 }))
+        Client.open(defaultClientConfig(Network.TOR).copy(secret = ByteArray(32) { 7 }))
         check(false, "Tor must throw")
     } catch (e: ApiException.State) {
-        check(apiErrorCode(e) == ErrorCode.UNSUPPORTED && apiErrorCode(e).number() == 103u,
-            "Tor error code = ${apiErrorCode(e).number()}")
+        check(apiErrorCode(e) == ErrorCode.UNSUPPORTED && apiErrorCode(e).value == 103u,
+            "Tor error code = ${apiErrorCode(e).value}")
     }
     try {
-        Client.open(ClientConfig(network = Network.LAN))
+        Client.open(defaultClientConfig(Network.LAN))
         check(false, "LAN without a secret must throw")
     } catch (e: ApiException) {
-        check(apiErrorCode(e).number() == 100u, "core error code = ${apiErrorCode(e).number()} ($e)")
+        check(apiErrorCode(e).value == 100u, "core error code = ${apiErrorCode(e).value} ($e)")
     }
 
     // 2. open -> describe -> state.
-    val client = Client.open(ClientConfig(network = Network.DIRECT))
-    val endpoint = client.describe()
-    check(endpoint.endpointId.length == 64, "describe endpoint_id = ${endpoint.endpointId}")
-    val state = client.state()
-    check(state.phase == WorkspacePhase.EMPTY && state.workspace == null, "state phase = ${state.phase}")
+    val client = Client.open(defaultClientConfig(Network.DIRECT))
+    val endpoint = client.endpoint()
+    check(endpoint.endpointKey.length == 64, "describe endpoint_id = ${endpoint.endpointKey}")
+    val state = client.workspaceState()
+    check(state.phase == Phase.EMPTY && state.workspace == null, "state phase = ${state.phase}")
 
     // 3. next_event with a timeout returns null after about the timeout.
     val t0 = System.nanoTime()
-    val none = client.nextEvent(200uL)
+    val none = client.nextEvent(Duration.ofMillis(200))
     val waited = (System.nanoTime() - t0) / 1_000_000
     check(none == null && waited in 150..5000, "next_event(200) returned null after $waited ms")
 
     // 4. wake() releases a parked next_event.
     var woke: Event? = Event.CLOSED
-    val w = thread { woke = client.nextEvent(30_000uL) }
+    val w = thread { woke = client.nextEvent(Duration.ofSeconds(30)) }
     Thread.sleep(200); client.wake(); w.join(2000)
     check(!w.isAlive && woke == null, "wake() released next_event")
 
@@ -57,7 +59,7 @@ fun main() {
     var elapsedMs = -1L
     val waiter = thread {
         val start = System.nanoTime()
-        got = client.nextEvent(30_000uL)
+        got = client.nextEvent(Duration.ofSeconds(30))
         elapsedMs = (System.nanoTime() - start) / 1_000_000
     }
     Thread.sleep(200)
@@ -73,10 +75,10 @@ fun main() {
 
     // 6. After close, calls fail with Closed (code 1).
     try {
-        client.describe()
+        client.endpoint()
         check(false, "call after close must throw")
     } catch (e: ApiException.Closed) {
-        check(apiErrorCode(e).number() == 1u, "after close error code = ${apiErrorCode(e).number()}")
+        check(apiErrorCode(e).value == 1u, "after close error code = ${apiErrorCode(e).value}")
     }
     client.close() // AutoCloseable: frees the native handle
     println("KOTLIN PASS")

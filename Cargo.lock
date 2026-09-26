@@ -94,6 +94,7 @@ version = "0.1.0"
 dependencies = [
  "serde",
  "thiserror 2.0.20",
+ "uniffi",
 ]
 
 [[package]]
@@ -187,17 +188,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "arachne-iroh-mdns-address-lookup"
+version = "0.5.0-arachne.1"
+dependencies = [
+ "data-encoding",
+ "derive_more",
+ "futures-util",
+ "iroh",
+ "iroh-base",
+ "n0-error",
+ "n0-future",
+ "n0-watcher",
+ "swarm-discovery",
+ "tokio",
+ "tokio-stream",
+ "tracing",
+]
+
+[[package]]
 name = "arachne-node"
 version = "0.1.0"
 dependencies = [
  "arachne-iroh-blobs",
  "arachne-iroh-gossip",
+ "arachne-iroh-mdns-address-lookup",
  "arachne-routing",
+ "arachne-security",
  "bytes",
  "futures-util",
  "getrandom 0.4.3",
  "iroh",
- "iroh-mdns-address-lookup",
  "postcard",
  "serde",
  "serde_json",
@@ -228,6 +248,7 @@ dependencies = [
  "sha2 0.10.9",
  "tokio",
  "tracing",
+ "uniffi",
  "zeroize",
 ]
 
@@ -237,8 +258,6 @@ version = "0.1.0"
 dependencies = [
  "arachne-api",
  "arachne-runtime",
- "thiserror 2.0.20",
- "uniffi",
 ]
 
 [[package]]
@@ -2023,8 +2042,6 @@ checksum = "791930b43c0d5973160d90a8f3894509f2b273430f5c5c73b668636d0287c5c0"
 [[package]]
 name = "iroh"
 version = "1.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b2f8d1cfffc83efe39a1031aab423ce09cb8048071baba550508931e9a81ce46"
 dependencies = [
  "backon",
  "blake3",
@@ -2122,26 +2139,6 @@ dependencies = [
  "pin-project",
  "smallvec",
  "tokio",
-]
-
-[[package]]
-name = "iroh-mdns-address-lookup"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cad3dfcaddd5c3681bf0a42606498fc6e8891de793408dfbc46a9fbe76f370b3"
-dependencies = [
- "data-encoding",
- "derive_more",
- "futures-util",
- "iroh",
- "iroh-base",
- "n0-error",
- "n0-future",
- "n0-watcher",
- "swarm-discovery",
- "tokio",
- "tokio-stream",
- "tracing",
 ]
 
 [[package]]

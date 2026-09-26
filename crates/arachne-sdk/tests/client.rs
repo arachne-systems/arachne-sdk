@@ -1,25 +1,26 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use arachne_sdk::{Client, ClientConfig, MemberKind, Network, TransportOptions, WorkspacePhase};
+use arachne_sdk::{
+    Client, Context, ErrorCode, Limits, MemberKind, Network, PowerProfile, RestoredWorkspace,
+    StorageConfig, WorkspacePhase, api_version, default_client_config,
+};
 
 #[test]
 fn opens_a_native_client_through_the_sdk_boundary() {
-    let client = Client::open(ClientConfig {
-        network: Network::Direct,
-        secret: Some([7; 32]),
-        transport: TransportOptions::default(),
-    })
-    .unwrap();
+    let limits = Limits::default().with_max_sessions(2);
+    let context = Context::owned(limits, PowerProfile::Normal, 1).unwrap();
+    let client = Client::open_in(context, default_client_config(Network::Direct)).unwrap();
 
+    assert!(api_version() >= 6);
+    assert_eq!(client.capabilities().unwrap().limits, limits);
     let state = client.workspace_state().unwrap();
     assert_eq!(state.phase, WorkspacePhase::Empty);
     assert!(!state.workspace_ready);
-
     client.close().unwrap();
 }
 
 #[test]
-fn protected_publication_can_be_saved_adopted_and_restored() {
+fn protected_publication_is_committed_by_core_and_restored() {
     let directory = std::env::temp_dir().join(format!(
         "arachne-sdk-{}-{}",
         std::process::id(),
@@ -29,24 +30,21 @@ fn protected_publication_can_be_saved_adopted_and_restored() {
             .as_nanos()
     ));
     std::fs::create_dir(&directory).unwrap();
-    let path = directory.join("records.db");
+    let mut config = default_client_config(Network::Direct);
+    config.secret = Some(vec![9; 32]);
+    config.storage = Some(
+        StorageConfig::open_sqlite(directory.to_str().unwrap().to_owned(), vec![10; 32]).unwrap(),
+    );
 
-    let config = ClientConfig {
-        network: Network::Direct,
-        secret: Some([9; 32]),
-        transport: TransportOptions::default(),
-    };
-    let root = [10; 32];
     let client = Client::open(config.clone()).unwrap();
     let workspace = client
-        .create_workspace("Feed owner", Some("Feed test"))
+        .create_workspace("Feed owner", Some("Feed test".into()))
         .unwrap();
     client.use_service_profile().unwrap();
     assert_eq!(
         client.member_roster().unwrap().members[0].kind,
         MemberKind::Service
     );
-    client.enable_record_storage(&path, &root).unwrap();
     client
         .install_workspace_policy(workspace.epoch + 1)
         .unwrap();
@@ -55,33 +53,46 @@ fn protected_publication_can_be_saved_adopted_and_restored() {
             workspace.workspace,
             workspace.epoch + 1,
             "feeds/catalog/v1",
-            [2; 16],
+            [2; 16].into(),
             br#"{"version":1}"#.to_vec(),
         )
         .unwrap();
+    assert_eq!(candidate.workspace(), workspace.workspace);
 
-    let mut altered = candidate.snapshot.clone();
-    altered[0] ^= 1;
-    assert!(client.save_candidate(&altered).is_err());
-    assert!(
-        client
-            .adopt_protected_publication(&candidate.snapshot)
-            .is_err()
+    let other = Client::open(default_client_config(Network::Direct)).unwrap();
+    assert_eq!(
+        other
+            .adopt_protected_publication(&candidate)
+            .unwrap_err()
+            .code(),
+        ErrorCode::WrongState
     );
-    client.save_candidate(&candidate.snapshot).unwrap();
+    other.close().unwrap();
     assert!(
         client
-            .adopt_protected_publication(&candidate.snapshot)
+            .adopt_protected_publication(&candidate)
             .unwrap()
             .failed
             .is_empty()
     );
+    assert_eq!(
+        client
+            .adopt_protected_publication(&candidate)
+            .unwrap_err()
+            .code(),
+        ErrorCode::CandidateStale
+    );
+    assert!(!candidate.discard().unwrap());
+    let anchor = client.record_freshness().unwrap();
     client.close().unwrap();
 
     let restored = Client::open(config).unwrap();
-    restored
-        .restore_record_storage(&path, &root, workspace.workspace)
-        .unwrap();
+    assert!(matches!(
+        restored
+            .restore_workspace(workspace.workspace, Some(anchor))
+            .unwrap(),
+        RestoredWorkspace::Active(_)
+    ));
     restored.use_service_profile().unwrap();
     let state = restored.workspace_state().unwrap();
     assert_eq!(state.workspace, Some(workspace.workspace));

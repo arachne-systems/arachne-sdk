@@ -1,24 +1,5 @@
-# UniFFI generator settings for the SDK cdylib (library mode reads this file
-# from the crate that defines the component).
-
-[bindings.kotlin]
-# Distinct from the hand binding package `org.arachne.sdk` until step 7
-# replaces it; then rename this to `org.arachne.sdk`.
-package_name = "org.arachne.sdk.generated"
-cdylib_name = "arachne_sdk"
-[bindings.kotlin.rename]
-# Every generated Kotlin object is AutoCloseable; its close() frees the
-# native handle. The Rust `close` (end the session) is `shutdown` in Kotlin.
-"Client.close" = "shutdown"
-
-[bindings.swift]
-module_name = "ArachneGenerated"
-ffi_module_name = "ArachneGeneratedFFI"
-ffi_module_filename = "ArachneGeneratedFFI"
-cdylib_name = "arachne_sdk"
-
-[bindings.python]
-cdylib_name = "arachne_sdk"
+# SDK Go packaging. Other language configs come from the Core crates.
+# Library mode supplies the shared library name.
 
 [bindings.go]
 go_mod = "github.com/arachne-systems/arachne-sdk/generated/go"

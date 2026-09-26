@@ -1,136 +1,92 @@
 # SDK workflow guide
 
-This guide maps the pre-release typed `Client` API to common workflows. The
-`endpoint` example opens a client and creates a workspace. The `join_flow`
-example walks through invitation and admission with two clients in one
-process; it passes the exchange in memory and is not a deployed transport.
+## BLUF
+
+Open a Client with a stable endpoint key and Core storage. Use typed candidates to
+change workspace state. Core commits durable state before an adopt call succeeds.
+Application payloads and UI behavior stay in the application.
 
 ## Start a client
 
-Open a client with a network profile, inspect its endpoint, and create a
-workspace:
+1. Obtain Core defaults with `default_client_config(network)`.
+2. Set a private endpoint key. Use a distinct key for each endpoint.
+3. Set `storage` to `StorageConfig::open_sqlite(directory, storage_root)`.
+   The root is a separate 32-byte key. Create the host-private directory first.
+4. Open an owned `Context`, then call `Client::open_in(context, config)`.
+5. Call `endpoint` and either `create_workspace` or `restore_workspace`.
 
-```rust
-use arachne_sdk::{Client, ClientConfig, Network, Result};
+`Network::Direct` permits an ephemeral endpoint without a secret for endpoint
+inspection. Creating or joining a durable workspace needs the configured secret
+and storage. The network profile selects Iroh discovery and relay behavior.
+Address hints carry peer routes, not peer identity.
 
-fn main() -> Result<()> {
-    let mut client = Client::open(ClientConfig {
-        network: Network::Direct,
-        secret: None,
-    })?;
-    let endpoint = client.endpoint()?;
-    let workspace = client.create_workspace("Owner", Some("Field team"))?;
-    println!("endpoint: {:?}", endpoint.endpoint_key);
-    println!("workspace: {:?}", workspace.workspace);
-    client.close()
-}
-```
-
-`secret: None` is allowed for an ephemeral identity with `Network::Direct`.
-Supply a securely stored endpoint credential when the endpoint key must stay
-stable across restarts. Protected publication and reception require
-`secret: Some(...)`; core derives the protected local-state key from that
-credential. The separate record-storage root key protects the local record
-database. Admission, join, and other staged workspace transitions also need a
-configured endpoint credential. Use a different credential for each endpoint.
-
-These client calls are synchronous. Run them on a blocking worker rather than
-an application's UI thread or async executor.
+Client calls block. Use a blocking worker outside the UI thread or async executor.
+An owned Context gives the host independent limits, power mode and suspend/resume.
 
 ## Invite and admit a member
 
-The API exposes the steps so the application can apply its admission and
-storage policy:
+1. The administrator stages and adopts an invitation. Share its invitation,
+   checkpoint and route information through the application's approved channel.
+2. The joining client calls `begin_join` or `begin_join_with_peers`. Core retains
+   the pending join in storage.
+3. The administrator stages the authenticated request and adopts the admission.
+   `retained_admission` returns the matching reply.
+4. The joining client stages and adopts the reply. Both clients install policy
+   derived from their accepted workspace state.
 
-1. The workspace owner calls `issue_invitation` and gives the joining client
-the invitation, checkpoint, and route information it needs to reach the owner.
-2. The joining client calls `begin_join`, producing a typed join request and
-endpoint ID. `begin_join_with_peers` also records known peer identities for
-the join lifecycle. With `Network::Direct`, add the invitation's peer and
-address with `add_address_hint` when discovery has not supplied a route.
-3. The owner calls `stage_admission` with the peer-authenticated endpoint ID
-and request. After deciding to admit it, the owner calls `adopt_admission`; it
-can then obtain the matching reply with `retained_admission`.
-4. The joining client passes the reply's welcome and a
-`JoinAdmissionStep { commit, authorization }` to `stage_join`. It then accepts
-the join by calling `adopt_join`.
+For a transport-driven flow, use `drive_join` and `drive_workspace` to advance the
+persisted protocol. Handle administrator-required, approval, self-update and
+recovery states as application states. After a restart, restore the workspace
+and continue its driver.
 
-For a direct network profile, use the peer and address returned in the
-invitation with `add_address_hint` when discovery has not supplied a route.
-The `join_flow` example passes admission data directly between clients; it
-does not show the production control channel or retry handling. Its distinct
-fixed credentials are for the local demo only.
-
-These are separate stage and adopt operations. When using record storage, save
-the exact candidate snapshot with `save_candidate` before the matching adopt
-call. Keep the invitation and admission exchange tied to the intended
-workspace and endpoint.
-
-For a transport-driven join, enable record storage before `begin_join_with_peers`
-and call `drive_join` to advance the persisted admission exchange. After a
-restart, `restore_record_storage` returns the join state so a pending join can
-resume with `drive_join`.
+The `join_flow` example passes protocol material between two Clients in one
+process. It checks the typed operations; it does not prove deployed discovery or
+operator approval flows. The fixed keys in examples are for that local run.
 
 ## Publish and receive protected data
 
-Install policy derived from the accepted workspace state. `install_policy`
-accepts explicit endpoint permissions; `install_workspace_policy` is a broad
-convenience policy that includes all current members and topics.
+Install workspace or member policy before publication. A protected publication
+has a workspace, policy revision, topic, record ID and opaque application payload.
+Call `stage_protected_publication`, then `adopt_protected_publication` with the
+returned object. For a replaceable current value, use
+`stage_protected_publication_with_current` and its selector, replacement key,
+expiry and tombstone fields.
 
-For the protected send path, call `stage_protected_publication` with the
-workspace, policy revision, topic, record ID, and opaque payload. If the
-workspace is durable, persist the exact returned snapshot before calling
-`adopt_protected_publication`.
+`poll_protected` stages incoming protected data. Adopt the candidate to commit
+it to the inbox. `poll_pending_object` returns the authenticated publication.
+After the application handles it, stage and adopt an acknowledgement or rejection.
+Pending data remains available until that application decision commits.
 
-For replaceable current values, call `enable_object_delivery` first, then use
-`stage_protected_publication_with_current` with `PublicationCurrent` metadata:
-a selector, replacement key, expiry, and tombstone flag. Use the basic method
-for ordinary protected publications.
+Core performs the durable write and readback. There is no SDK `save_candidate`
+step. Candidates cannot move to another client or operation, and cannot be used
+twice. A discard operation abandons a staged candidate.
 
-`publish` and `poll` are a separate, unprotected transport path. The runtime
-rejects both while a client has an admitted workspace; use the protected
-publication and reception methods above for workspace traffic. For protected
-live reception, call `poll_protected`. It stages the incoming message and
-returns a `ProtectedReceptionCandidate` containing the workspace and exact
-snapshot;
-the payload remains unavailable until `adopt_protected_reception`. For a
-durable workspace, save that exact snapshot with `save_candidate` before
-adoption. The resulting `ReceivedProtectedPublication` contains the
-authenticated sender, topic, record ID, sequence, and payload.
+`protected_publish` is a single-member local example. Its empty recipient report
+is not proof of delivery. `protected_receive` uses two direct Clients and one
+protected peer exchange. The language flow tests also exercise retained recovery
+and the inbox decision.
 
-Run `cargo run --example protected_publish` for a non-durable, single-member
-example of workspace-derived policy and protected staging/adoption. It has no
-receiving peer, so its delivery report is not evidence of network delivery.
-Its fixed endpoint credential is for the local demo only.
+## Restore and recover
 
-Run `cargo run --example protected_receive` for a two-client direct-network
-example. It passes invitation/admission material in memory, sends one
-protected publication over the peer connection, and adopts it on the receiver.
-Its fixed credentials are for this local demo only. It uses non-durable
-workspaces and does not demonstrate persisted recovery or the separate
-object-delivery workflow.
+Reopen the Client with the same endpoint key, storage directory and storage root.
+Call `restore_workspace(workspace, expected_anchor)`. The result identifies active,
+joining or removed state. Restoring a removal returns its tombstone and closes
+the session. When the host stores an external freshness anchor,
+supply it to detect rollback. Reapply the service profile for service endpoints.
+A service profile changes the member profile; it does not grant membership.
 
-## Restore durable state
+Use range recovery for retained publications, direct recovery for an authenticated
+peer range, and current-view recovery for replaceable current data. Stage and adopt
+the returned recovery candidate. Deliver each recovered object through the same
+pending inbox and application decision as a live object. Handle awaiting-application
+and missing-count results explicitly.
 
-Call `enable_record_storage` with a caller-managed 32-byte root key and store
-path. Keep that key separate from the endpoint credential. After restart, open
-the client, call `restore_record_storage` with the same root key and workspace
-ID, then call `use_service_profile` again for service endpoints. A service
-profile marks the signed profile as a service; it does not grant membership or
-publication rights.
+Use resource publication and fetch operations for retained bytes. Authorization,
+verified content hashes and publication identity stay in Core. The application
+chooses its payload format, retention policy and presentation.
 
-## Other client operations
+## Close
 
-- Session control: `workspace_state`, `cancel`, `wait_for_work`, `drive_join`,
-  `poll_control`, `network_change`, and `close`.
-- Membership and diagnostics: `member_roster`, `connectivity`, and `metrics`.
-- Topic routing: `add_address_hint`, `set_interest`, and `poll_interest`.
-- Protected messaging: `stage_protected_publication`,
-  `stage_protected_publication_with_current`,
-  `adopt_protected_publication`, `poll_protected`, and
-  `adopt_protected_reception`.
-- Current-value inbox: `enable_object_delivery`.
-- Basic transport: `publish` and `poll`; these do not provide MLS protection.
-- Recovery: `fetch_recovery_range`, `poll_recovery_range`,
-  `cancel_recovery_range`, `stage_recovery_range`, `adopt_recovery`, and
-  `poll_recovered_publication`.
+`wake` releases a parked wait. `close` drains within the configured close deadline,
+ends the session and releases waiters. Generated Kotlin names this method
+`shutdown`; its separate `close()` releases the foreign object handle.

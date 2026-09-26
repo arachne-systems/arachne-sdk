@@ -6,4 +6,5 @@
 -keep class * extends com.sun.jna.** { *; }
 # The generated UniFFI binding: its JNA library interface (UniffiLib) and
 # Structure subclasses are bound by name at run time.
--keep class org.arachne.sdk.generated.** { *; }
+-keep class org.arachne.core.api.** { *; }
+-keep class org.arachne.core.runtime.** { *; }

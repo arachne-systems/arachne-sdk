@@ -11,5 +11,5 @@ name = "uniffi-bindgen"
 path = "src/main.rs"
 
 [dependencies]
-# Must equal the `uniffi` pin in crates/arachne-sdk/Cargo.toml.
+# Must equal Core's optional `uniffi` dependency.
 uniffi = { version = "=0.31.2", features = ["cli"] }

@@ -8,7 +8,8 @@ import (
 	"testing"
 	"time"
 
-	sdk "github.com/arachne-systems/arachne-sdk/generated/go/arachne_sdk"
+	api "github.com/arachne-systems/arachne-sdk/generated/go/arachne_api"
+	sdk "github.com/arachne-systems/arachne-sdk/generated/go/arachne_runtime"
 )
 
 const flowTopic = "streams/uniffi"
@@ -48,32 +49,39 @@ func noErr(err error) {
 	}
 }
 
-func openClient(t *testing.T, seed byte) *sdk.Client {
+func openClient(t *testing.T, context *sdk.Context, seed byte) *sdk.Client {
+	t.Helper()
 	secret := bytes.Repeat([]byte{seed}, 32)
-	return must(sdk.ClientOpen(sdk.ClientConfig{Network: sdk.NetworkDirect, Secret: &secret}))
+	config := clientConfig(api.NetworkDirect, &secret)
+	storage := must(sdk.StorageConfigOpenSqlite(t.TempDir(), bytes.Repeat([]byte{seed + 1}, 32)))
+	defer storage.Destroy()
+	config.Storage = &storage
+	return must(sdk.ClientOpenIn(context, config))
 }
 
 func TestFlow(t *testing.T) {
-	owner := openClient(t, 0x91)
+	context := must(sdk.ContextOwned(api.DefaultLimits(), api.PowerProfileNormal, 2))
+	defer context.Destroy()
+	owner := openClient(t, context, 0x91)
 	defer owner.Destroy()
-	reader := openClient(t, 0x92)
+	reader := openClient(t, context, 0x92)
 	defer reader.Destroy()
 	name := "Go flow"
 	created := must(owner.CreateWorkspace("Owner", &name))
 
 	// Invitations (and candidate misuse).
-	staged := must(owner.StageInvitation(0, sdk.InvitationKindReusable))
-	other := openClient(t, 0x93)
+	staged := must(owner.StageInvitationOf(0, sdk.InvitationKindReusable))
+	other := openClient(t, context, 0x93)
 	_, err := other.AdoptInvitation(staged)
-	var apiErr *sdk.ApiError
-	if !errors.As(err, &apiErr) || sdk.ApiErrorCode(apiErr) != sdk.ErrorCodeWrongState {
+	var apiErr *api.ApiError
+	if !errors.As(err, &apiErr) || api.ApiErrorCode(apiErr) != api.ErrorCodeWrongState {
 		t.Fatalf("adopt on another client: %v", err)
 	}
-	t.Logf("ok: candidate bound to its client: code %d", sdk.ApiErrorCode(apiErr).Number())
+	t.Logf("ok: candidate bound to its client: code %d", api.ApiErrorCode(apiErr))
 	other.Close()
 	other.Destroy()
 	invitation := must(owner.AdoptInvitation(staged))
-	if _, err := owner.AdoptInvitation(staged); !errors.As(err, &apiErr) || sdk.ApiErrorCode(apiErr) != sdk.ErrorCodeWrongState {
+	if _, err := owner.AdoptInvitation(staged); !errors.As(err, &apiErr) || api.ApiErrorCode(apiErr) != api.ErrorCodeCandidateStale {
 		t.Fatalf("second adopt: %v", err)
 	}
 	t.Logf("ok: candidate single use")
@@ -84,7 +92,7 @@ func TestFlow(t *testing.T) {
 
 	// Join and admission.
 	noErr(reader.AddAddressHint(invitation.Peer, local(invitation.Address)))
-	join := must(reader.BeginJoin(invitation.Invitation, invitation.Checkpoint, "Reader", nil))
+	join := must(reader.BeginJoin(invitation.Invitation, invitation.Checkpoint, "Reader"))
 	ownerView := must(owner.AdoptAdmission(must(owner.StageAdmission(join.Endpoint, join.AdmissionRequest))))
 	reply := must(owner.RetainedAdmission(join.Endpoint, join.AdmissionRequest))
 	readerView := must(reader.AdoptJoin(must(reader.StageJoin(reply.Welcome,
@@ -93,27 +101,27 @@ func TestFlow(t *testing.T) {
 		t.Fatalf("join: %+v %+v", ownerView, readerView)
 	}
 	t.Logf("ok: joined at epoch %d with %d members", readerView.Epoch, readerView.MemberCount)
-	me := must(reader.Describe())
-	noErr(owner.AddAddressHint(me.EndpointId, local(me.BoundAddress)))
+	me := must(reader.Endpoint())
+	noErr(owner.AddAddressHint(me.EndpointKey, local(me.BoundAddress)))
 
 	// Publication the reader is not subscribed to, then recovery.
 	revision := ownerView.Epoch + 1
 	noErr(owner.InstallWorkspacePolicy(revision))
 	noErr(reader.InstallWorkspacePolicy(revision))
 	must(owner.AdoptProtectedPublication(must(owner.StageProtectedPublication(
-		created.Workspace, revision, flowTopic, strings.Repeat("01", 16), []byte("first"), nil))))
-	var author sdk.MemberId
+		created.Workspace, revision, flowTopic, strings.Repeat("01", 16), []byte("first")))))
+	var author api.MemberId
 	for _, m := range must(owner.MemberRoster()).Members {
 		if m.SelfMember {
 			author = m.Id
 		}
 	}
-	ownerEndpoint := must(owner.Describe()).EndpointId
+	ownerEndpoint := must(owner.Endpoint()).EndpointKey
 	after, through := uint64(0), uint64(1)
 	must(reader.FetchRecoveryRange(sdk.RecoveryRangeRequest{
 		Peer: &ownerEndpoint, Author: &author, Revision: revision,
 		Topics: []string{flowTopic}, After: &after, Through: &through,
-	}, nil))
+	}))
 	ready := until(t, "recovery range", func() (*sdk.RecoveryRangeStatus, error) {
 		if _, err := owner.PollControl(); err != nil {
 			return nil, err
@@ -121,15 +129,15 @@ func TestFlow(t *testing.T) {
 		return reader.PollRecoveryRange()
 	})
 	r, ok := (*ready).(sdk.RecoveryRangeStatusReady)
-	if !ok || r.Range.PacketCount != 1 {
+	if !ok || r.Field0.PacketCount != 1 {
 		t.Fatalf("range: %#v", *ready)
 	}
-	t.Logf("ok: recovery range ready: %d packet(s)", r.Range.PacketCount)
+	t.Logf("ok: recovery range ready: %d packet(s)", r.Field0.PacketCount)
 	stage, ok := must(reader.StageRecoveryRange(0)).(sdk.RecoveryStageCandidate)
 	if !ok {
 		t.Fatal("no recovery candidate")
 	}
-	adoption := must(reader.AdoptRecovery(stage.Candidate))
+	adoption := must(reader.AdoptRecovery(stage.Field0))
 	if adoption.RecoveredPublications != 1 {
 		t.Fatalf("adoption %+v", adoption)
 	}
@@ -150,7 +158,7 @@ func TestFlow(t *testing.T) {
 		t.Fatal("interest not subscribed")
 	}
 	report := must(owner.AdoptProtectedPublication(must(owner.StageProtectedPublication(
-		created.Workspace, revision, flowTopic, strings.Repeat("02", 16), []byte("second"), nil))))
+		created.Workspace, revision, flowTopic, strings.Repeat("02", 16), []byte("second")))))
 	if len(report.Failed) != 0 {
 		t.Fatalf("send failed: %+v", report.Failed)
 	}
@@ -174,14 +182,14 @@ func TestFlow(t *testing.T) {
 	if must(reader.Metrics()).Workspace != created.Workspace {
 		t.Fatal("metrics workspace")
 	}
-	deadline := uint64(5000)
+	deadline := 5 * time.Second
 	reader.SetDeadline(&deadline)
-	noErr(sdk.Suspend())
-	if !must(sdk.IsSuspended()) {
+	noErr(context.Suspend())
+	if !context.IsSuspended() {
 		t.Fatal("not suspended")
 	}
-	noErr(sdk.Resume())
-	if must(sdk.IsSuspended()) {
+	noErr(context.Resume())
+	if context.IsSuspended() {
 		t.Fatal("still suspended")
 	}
 	noErr(reader.Close())

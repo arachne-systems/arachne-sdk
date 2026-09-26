@@ -1,14 +1,12 @@
-// Single-member, non-durable send-path example; it has no receiving peer.
+mod support;
+
+// Single-member send-path example with in-memory records; it has no receiving peer.
 // The fixed credential is demo-only; applications should use a private random credential.
-use arachne_sdk::{Client, ClientConfig, Network, Result, TransportOptions};
+use arachne_sdk::Result;
 
 fn main() -> Result<()> {
-    let client = Client::open(ClientConfig {
-        network: Network::Direct,
-        secret: Some([0x11; 32]),
-        transport: TransportOptions::default(),
-    })?;
-    let workspace = client.create_workspace("Publisher", Some("SDK example"))?;
+    let client = support::open(0x11)?;
+    let workspace = client.create_workspace("Publisher", Some("SDK example".into()))?;
     let revision = workspace.epoch + 1;
     let topic = "feeds/example";
 
@@ -18,10 +16,10 @@ fn main() -> Result<()> {
         workspace.workspace,
         revision,
         topic,
-        [1; 16],
+        [1; 16].into(),
         br#"{"status":"demo"}"#.to_vec(),
     )?;
-    let delivery = client.adopt_protected_publication(&candidate.snapshot)?;
+    let delivery = client.adopt_protected_publication(&candidate)?;
     println!("admitted recipients: {}", delivery.admitted.len());
     client.close()
 }

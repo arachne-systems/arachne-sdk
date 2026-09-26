@@ -21,6 +21,7 @@ case "$(uname -s)" in
     *) LIB="$TARGET_DIR/debug/libarachne_sdk.so" ;;
 esac
 BINDGEN="$TARGET_DIR/debug/uniffi-bindgen"
+CONFIG="$ROOT/crates/arachne-sdk/uniffi.toml"
 
 cd "$ROOT"
 if [[ "${NO_BUILD:-0}" != 1 ]]; then
@@ -34,28 +35,33 @@ gen() {
     "$BINDGEN" generate --library "$LIB" --no-format --language "$1" --out-dir "$2"
 }
 
-# Kotlin: one file in package org.arachne.sdk.generated (uniffi.toml).
+# Kotlin: Core's API and runtime packages, in one SDK library.
 gen kotlin "$OUT/kotlin"
 
-# Swift: ArachneGenerated.swift plus the C header and module map of the
-# ArachneGeneratedFFI module.
+# Swift: one SwiftPM module contains both components, with separate C modules.
 gen swift "$OUT/swift"
+for component in ArachneApi ArachneRuntime; do
+    mkdir -p "$OUT/swift/$component" "$OUT/swift/${component}FFI"
+    mv "$OUT/swift/$component.swift" "$OUT/swift/$component/"
+    mv "$OUT/swift/${component}FFI.h" "$OUT/swift/${component}FFI/"
+    mv "$OUT/swift/${component}FFI.modulemap" "$OUT/swift/${component}FFI/module.modulemap"
+done
 
-# Python: the generated module uses relative imports, so it lives in a
-# package. `arachne_generated` does not shadow the hand package `arachne_sdk`.
+# Python: both generated components share one package for relative imports.
 gen python "$OUT/python/arachne_generated"
 cat > "$OUT/python/arachne_generated/__init__.py" <<'EOF'
 """Generated UniFFI bindings for the Arachne SDK. Do not edit.
 
 Regenerate with scripts/generate-bindings.sh. The native library
-(libarachne_sdk.so / .dylib) must sit next to arachne_sdk.py.
+(libarachne_sdk.so / .dylib) must sit next to these generated modules.
 """
 
-from .arachne_sdk import *  # noqa: F401,F403
+from .arachne_api import *  # noqa: F401,F403
+from .arachne_runtime import *  # noqa: F401,F403
 EOF
 
-# Go: package arachne_sdk at github.com/arachne-systems/arachne-sdk/generated/go/arachne_sdk.
-"$BINDGEN_GO" "$LIB" --out-dir "$OUT/go"
+# Go: separate API and runtime packages under the SDK module.
+"$BINDGEN_GO" "$LIB" --config "$CONFIG" --out-dir "$OUT/go"
 gofmt -w "$OUT/go"
 
 echo "generated into $OUT:"

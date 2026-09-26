@@ -1,4 +1,6 @@
-use arachne_sdk::{Client, ClientConfig, JoinAdmissionStep, Network, TransportOptions};
+mod support;
+
+use arachne_sdk::JoinAdmissionStep;
 use std::{
     thread,
     time::{Duration, Instant},
@@ -7,22 +9,14 @@ use std::{
 // Fixed credentials keep the local example reproducible; applications should use
 // private, unique random credentials and store them securely.
 fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
-    let owner = Client::open(ClientConfig {
-        network: Network::Direct,
-        secret: Some([0x11; 32]),
-        transport: TransportOptions::default(),
-    })?;
-    let receiver = Client::open(ClientConfig {
-        network: Network::Direct,
-        secret: Some([0x22; 32]),
-        transport: TransportOptions::default(),
-    })?;
+    let owner = support::open(0x11)?;
+    let receiver = support::open(0x22)?;
 
-    let workspace = owner.create_workspace("Owner", Some("SDK protected receive"))?;
+    let workspace = owner.create_workspace("Owner", Some("SDK protected receive".into()))?;
     // Register a reusable invitation link (no expiry), then adopt it to get
-    // the bearer link. A durable owner saves the candidate before adopting.
+    // the bearer link. Core commits the candidate before adoption succeeds.
     let staged = owner.stage_invitation(0)?;
-    let invitation = owner.adopt_invitation(&staged.snapshot)?;
+    let invitation = owner.adopt_invitation(&staged)?;
     receiver.add_address_hint(
         invitation.peer,
         &invitation.address.replace("0.0.0.0:", "127.0.0.1:"),
@@ -30,7 +24,7 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
 
     let join = receiver.begin_join(&invitation.invitation, &invitation.checkpoint, "Receiver")?;
     let candidate = owner.stage_admission(join.endpoint, &join.admission_request)?;
-    let admitted_owner = owner.adopt_admission(&candidate.snapshot)?;
+    let admitted_owner = owner.adopt_admission(&candidate)?;
     let reply = owner.retained_admission(join.endpoint, &join.admission_request)?;
     let candidate = receiver.stage_join(
         &reply.welcome,
@@ -39,7 +33,7 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
             authorization: reply.authorization,
         }],
     )?;
-    let admitted_receiver = receiver.adopt_join(&candidate.snapshot)?;
+    let admitted_receiver = receiver.adopt_join(&candidate)?;
     if admitted_owner.epoch != admitted_receiver.epoch {
         return Err("members adopted different workspace epochs".into());
     }
@@ -81,10 +75,10 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
         workspace.workspace,
         revision,
         topic,
-        [1; 16],
+        [1; 16].into(),
         payload.clone(),
     )?;
-    let delivery = owner.adopt_protected_publication(&candidate.snapshot)?;
+    let delivery = owner.adopt_protected_publication(&candidate)?;
     if !delivery.failed.is_empty() {
         return Err(format!("protected send failed: {:?}", delivery.failed).into());
     }
@@ -99,11 +93,8 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
         }
         thread::sleep(Duration::from_millis(10));
     };
-    if receiver.workspace_state()?.durable {
-        receiver.save_candidate(&candidate.snapshot)?;
-    }
     // Adoption moves the object into the durable inbox; read it from there.
-    receiver.adopt_protected_reception(&candidate.snapshot)?;
+    receiver.adopt_protected_reception(&candidate)?;
     let received = receiver
         .poll_pending_object()?
         .ok_or("adopted publication is not in the inbox")?;
@@ -115,7 +106,7 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
 
     // Acknowledge the object so it is not delivered again.
     let acknowledged = receiver.stage_object_acknowledgement(&received)?;
-    receiver.adopt_protected_reception(&acknowledged.snapshot)?;
+    receiver.adopt_protected_reception(&acknowledged)?;
     if receiver.poll_pending_object()?.is_some() {
         return Err("acknowledged object is still pending".into());
     }

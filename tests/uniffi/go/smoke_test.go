@@ -8,70 +8,79 @@ import (
 	"testing"
 	"time"
 
-	sdk "github.com/arachne-systems/arachne-sdk/generated/go/arachne_sdk"
+	api "github.com/arachne-systems/arachne-sdk/generated/go/arachne_api"
+	sdk "github.com/arachne-systems/arachne-sdk/generated/go/arachne_runtime"
 )
 
-func asAPI(t *testing.T, err error) *sdk.ApiError {
+func asAPI(t *testing.T, err error) *api.ApiError {
 	t.Helper()
-	var e *sdk.ApiError
+	var e *api.ApiError
 	if !errors.As(err, &e) {
 		t.Fatalf("not an *ApiError: %T %v", err, err)
 	}
 	return e
 }
 
+func clientConfig(network api.Network, secret *[]byte) sdk.ClientConfig {
+	config := sdk.DefaultClientConfig(network)
+	config.Secret = secret
+	return config
+}
+
 func TestSmoke(t *testing.T) {
-	if v := sdk.ApiVersion(); v < 5 {
+	if v := api.ApiVersion(); v < 6 {
 		t.Fatalf("api_version = %d", v)
 	}
 
 	// 1. Errors cross with their numeric code.
 	short := []byte{1, 2, 3}
-	_, err := sdk.ClientOpen(sdk.ClientConfig{Network: sdk.NetworkDirect, Secret: &short})
-	if !errors.Is(err, sdk.ErrApiErrorInvalidInput) {
+	_, err := sdk.ClientOpen(clientConfig(api.NetworkDirect, &short))
+	if !errors.Is(err, api.ErrApiErrorInvalidInput) {
 		t.Fatalf("short secret: want InvalidInput, got %v", err)
 	}
-	code := sdk.ApiErrorCode(asAPI(t, err))
+	code := api.ApiErrorCode(asAPI(t, err))
 	// uniffi-bindgen-go v0.7.1 reads enums with explicit discriminants by
 	// variant index; patches/uniffi-bindgen-go-enum-discr.patch fixes it.
-	if code.Number() != 100 || uint32(code) != 100 || code != sdk.ErrorCodeInvalidInput {
-		t.Fatalf("short secret code: Number()=%d Go value=%d, want 100", code.Number(), uint32(code))
+	if uint32(code) != 100 || code != api.ErrorCodeInvalidInput {
+		t.Fatalf("short secret code: numeric code=%d Go value=%d, want 100", code, uint32(code))
 	}
-	t.Logf("ok: short secret error code = %d (Go value %d)", code.Number(), uint32(code))
+	t.Logf("ok: short secret error code = %d (Go value %d)", code, uint32(code))
 
 	secret := []byte(strings.Repeat("\x07", 32))
-	_, err = sdk.ClientOpen(sdk.ClientConfig{Network: sdk.NetworkTor, Secret: &secret})
-	if code := sdk.ApiErrorCode(asAPI(t, err)); code != sdk.ErrorCodeUnsupported || code.Number() != 103 {
-		t.Fatalf("Tor code = %d (Go value %d), want 103", code.Number(), uint32(code))
+	_, err = sdk.ClientOpen(clientConfig(api.NetworkTor, &secret))
+	if code := api.ApiErrorCode(asAPI(t, err)); code != api.ErrorCodeUnsupported || uint32(code) != 103 {
+		t.Fatalf("Tor code = %d (Go value %d), want 103", code, uint32(code))
 	}
 	t.Logf("ok: Tor error code = 103")
 
-	_, err = sdk.ClientOpen(sdk.ClientConfig{Network: sdk.NetworkLan})
-	if n := sdk.ApiErrorCode(asAPI(t, err)).Number(); n != 100 {
+	_, err = sdk.ClientOpen(clientConfig(api.NetworkLan, nil))
+	if n := api.ApiErrorCode(asAPI(t, err)); n != 100 {
 		t.Fatalf("LAN without secret code = %d, want 100 (%v)", n, err)
 	}
 	t.Logf("ok: core error code = 100 (%v)", err)
 
 	// 2. open -> describe -> state.
-	client, err := sdk.ClientOpen(sdk.ClientConfig{Network: sdk.NetworkDirect})
+	client, err := sdk.ClientOpen(clientConfig(api.NetworkDirect, nil))
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer client.Destroy()
-	endpoint, err := client.Describe()
-	if err != nil || len(endpoint.EndpointId) != 64 {
+	endpoint, err := client.Endpoint()
+	if err != nil || len(endpoint.EndpointKey) != 64 {
 		t.Fatalf("describe: %+v %v", endpoint, err)
 	}
-	t.Logf("ok: describe endpoint_id = %s", endpoint.EndpointId)
-	state, err := client.State()
-	if err != nil || state.Phase != sdk.WorkspacePhaseEmpty || state.Workspace != nil {
+	t.Logf("ok: describe endpoint_id = %s", endpoint.EndpointKey)
+	state, err := client.WorkspaceState()
+	if err != nil || state.Phase != sdk.PhaseEmpty || state.Workspace != nil {
 		t.Fatalf("state: %+v %v", state, err)
 	}
 	t.Logf("ok: state phase = Empty")
 
 	// 3. NextEvent with a timeout returns nil after about the timeout.
 	t0 := time.Now()
-	ev, err := client.NextEvent(200)
+	shortWait := 200 * time.Millisecond
+	parkWait := 30 * time.Second
+	ev, err := client.NextEvent(&shortWait)
 	waited := time.Since(t0)
 	if err != nil || ev != nil || waited < 150*time.Millisecond || waited > 5*time.Second {
 		t.Fatalf("NextEvent(200): %v %v after %v", ev, err, waited)
@@ -79,8 +88,8 @@ func TestSmoke(t *testing.T) {
 	t.Logf("ok: NextEvent(200) returned nil after %d ms", waited.Milliseconds())
 
 	// 4. Wake() releases a parked NextEvent.
-	woke := make(chan *sdk.Event, 1)
-	go func() { ev, _ := client.NextEvent(30_000); woke <- ev }()
+	woke := make(chan *api.Event, 1)
+	go func() { ev, _ := client.NextEvent(&parkWait); woke <- ev }()
 	time.Sleep(200 * time.Millisecond)
 	if err := client.Wake(); err != nil {
 		t.Fatal(err)
@@ -97,14 +106,14 @@ func TestSmoke(t *testing.T) {
 
 	// 5. Close() from another goroutine releases a parked NextEvent.
 	type result struct {
-		ev      *sdk.Event
+		ev      *api.Event
 		err     error
 		elapsed time.Duration
 	}
 	done := make(chan result, 1)
 	go func() {
 		start := time.Now()
-		ev, err := client.NextEvent(30_000)
+		ev, err := client.NextEvent(&parkWait)
 		done <- result{ev, err, time.Since(start)}
 	}()
 	time.Sleep(200 * time.Millisecond)
@@ -128,8 +137,8 @@ func TestSmoke(t *testing.T) {
 	}
 
 	// 6. After close, calls fail with Closed (code 1).
-	_, err = client.Describe()
-	if !errors.Is(err, sdk.ErrApiErrorClosed) || sdk.ApiErrorCode(asAPI(t, err)).Number() != 1 {
+	_, err = client.Endpoint()
+	if !errors.Is(err, api.ErrApiErrorClosed) || api.ApiErrorCode(asAPI(t, err)) != 1 {
 		t.Fatalf("after close: %v", err)
 	}
 	t.Logf("ok: after close error code = 1")
