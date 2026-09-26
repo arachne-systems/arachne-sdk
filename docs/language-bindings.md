@@ -29,8 +29,11 @@ The Core crates `arachne-api` and `arachne-runtime` define the UniFFI records,
 enums and objects behind their `uniffi` feature. The SDK enables that feature and
 links their scaffolding. It has no copied Client implementation or candidate map.
 The old JSON C ABI, C header and hand Go, Python and Swift clients are removed.
-The separate live Kotlin branch is an owner merge decision; this work does not
-edit it.
+The generated UniFFI implementation is also the selected Kotlin line. The
+historical handwritten Kotlin branch was reconciled without importing its copied
+client, models, native bridge or Rust FFI. The Android AAR compiles the generated
+Kotlin sources directly. See the
+[reconciliation record](reviews/2026-09-26-kotlin-line-reconciliation.md).
 
 ## Client contract
 
@@ -147,8 +150,8 @@ owner-authorized device check. No device reset is part of a local SDK build.
 
 ## Release limits
 
-The SDK remains pre-release. The owner decides the SDK line, merge order with the
-live Kotlin branch, publication and remote CI. Local Core commit pins cannot be
-fetched by remote CI until the owner publishes those commits. See the
-[H5 handoff](reviews/2026-09-26-h5-sdk-completion.md) for the exact source pins,
-checks and remaining work.
+The SDK remains pre-release. Publication, remote CI and ATAK host qualification
+remain release decisions. Local Core commit pins cannot be fetched by remote CI
+until the owner publishes those commits. See the
+[H5 handoff](reviews/2026-09-26-h5-sdk-completion.md) for the exact source pins
+and prior checks.
