@@ -11,6 +11,11 @@ if [[ -z "${JAVA_HOME:-}" && -x /usr/lib/jvm/java-17-openjdk-amd64/bin/javac ]];
     export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 fi
 
+worker_args=(--max-workers=4)
+for argument in "$@"; do
+    case "$argument" in --max-workers | --max-workers=*) worker_args=(); break ;; esac
+done
+
 exec flock "/tmp/arachne-sdk-gradle-lane-$LANE.lock" nice -n 10 \
     "$ROOT/android/gradlew" --project-dir "$ROOT/android" --console=plain \
-    --project-cache-dir "$ROOT/android/.gradle-$LANE" --max-workers=4 "$@"
+    --project-cache-dir "$ROOT/android/.gradle-$LANE" "${worker_args[@]}" "$@"
