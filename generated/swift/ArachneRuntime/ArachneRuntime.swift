@@ -7413,15 +7413,39 @@ public struct StreamMetrics: Equatable, Hashable {
     public var sessionsActive: UInt64
     public var packetsSent: UInt64
     public var packetsReceived: UInt64
+    /**
+     * Groups returned by the subscriber, across all peers.
+     */
+    public var groupsReceived: UInt64
+    /**
+     * First frames returned by their group readers.
+     */
+    public var framesReceived: UInt64
+    /**
+     * Groups whose second read confirmed the expected clean end.
+     */
+    public var groupsCompleted: UInt64
     public var rejectedSessions: UInt64
 
     // Default memberwise initializers are never public by default, so we
     // declare one manually.
-    public init(sessionsTotal: UInt64, sessionsActive: UInt64, packetsSent: UInt64, packetsReceived: UInt64, rejectedSessions: UInt64) {
+    public init(sessionsTotal: UInt64, sessionsActive: UInt64, packetsSent: UInt64, packetsReceived: UInt64, 
+        /**
+         * Groups returned by the subscriber, across all peers.
+         */groupsReceived: UInt64, 
+        /**
+         * First frames returned by their group readers.
+         */framesReceived: UInt64, 
+        /**
+         * Groups whose second read confirmed the expected clean end.
+         */groupsCompleted: UInt64, rejectedSessions: UInt64) {
         self.sessionsTotal = sessionsTotal
         self.sessionsActive = sessionsActive
         self.packetsSent = packetsSent
         self.packetsReceived = packetsReceived
+        self.groupsReceived = groupsReceived
+        self.framesReceived = framesReceived
+        self.groupsCompleted = groupsCompleted
         self.rejectedSessions = rejectedSessions
     }
 
@@ -7445,6 +7469,9 @@ public struct FfiConverterTypeStreamMetrics: FfiConverterRustBuffer {
                 sessionsActive: FfiConverterUInt64.read(from: &buf), 
                 packetsSent: FfiConverterUInt64.read(from: &buf), 
                 packetsReceived: FfiConverterUInt64.read(from: &buf), 
+                groupsReceived: FfiConverterUInt64.read(from: &buf), 
+                framesReceived: FfiConverterUInt64.read(from: &buf), 
+                groupsCompleted: FfiConverterUInt64.read(from: &buf), 
                 rejectedSessions: FfiConverterUInt64.read(from: &buf)
         )
     }
@@ -7454,6 +7481,9 @@ public struct FfiConverterTypeStreamMetrics: FfiConverterRustBuffer {
         FfiConverterUInt64.write(value.sessionsActive, into: &buf)
         FfiConverterUInt64.write(value.packetsSent, into: &buf)
         FfiConverterUInt64.write(value.packetsReceived, into: &buf)
+        FfiConverterUInt64.write(value.groupsReceived, into: &buf)
+        FfiConverterUInt64.write(value.framesReceived, into: &buf)
+        FfiConverterUInt64.write(value.groupsCompleted, into: &buf)
         FfiConverterUInt64.write(value.rejectedSessions, into: &buf)
     }
 }

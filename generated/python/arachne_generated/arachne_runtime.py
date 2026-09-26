@@ -6686,18 +6686,21 @@ class StreamMetrics:
     """
     Counters of the stream transport. Queued data is not a remote receipt.
 """
-    def __init__(self, *, sessions_total:int, sessions_active:int, packets_sent:int, packets_received:int, rejected_sessions:int):
+    def __init__(self, *, sessions_total:int, sessions_active:int, packets_sent:int, packets_received:int, groups_received:int, frames_received:int, groups_completed:int, rejected_sessions:int):
         self.sessions_total = sessions_total
         self.sessions_active = sessions_active
         self.packets_sent = packets_sent
         self.packets_received = packets_received
+        self.groups_received = groups_received
+        self.frames_received = frames_received
+        self.groups_completed = groups_completed
         self.rejected_sessions = rejected_sessions
         
         
 
     
     def __str__(self):
-        return "StreamMetrics(sessions_total={}, sessions_active={}, packets_sent={}, packets_received={}, rejected_sessions={})".format(self.sessions_total, self.sessions_active, self.packets_sent, self.packets_received, self.rejected_sessions)
+        return "StreamMetrics(sessions_total={}, sessions_active={}, packets_sent={}, packets_received={}, groups_received={}, frames_received={}, groups_completed={}, rejected_sessions={})".format(self.sessions_total, self.sessions_active, self.packets_sent, self.packets_received, self.groups_received, self.frames_received, self.groups_completed, self.rejected_sessions)
     def __eq__(self, other):
         if self.sessions_total != other.sessions_total:
             return False
@@ -6706,6 +6709,12 @@ class StreamMetrics:
         if self.packets_sent != other.packets_sent:
             return False
         if self.packets_received != other.packets_received:
+            return False
+        if self.groups_received != other.groups_received:
+            return False
+        if self.frames_received != other.frames_received:
+            return False
+        if self.groups_completed != other.groups_completed:
             return False
         if self.rejected_sessions != other.rejected_sessions:
             return False
@@ -6719,6 +6728,9 @@ class _UniffiFfiConverterTypeStreamMetrics(_UniffiConverterRustBuffer):
             sessions_active=_UniffiFfiConverterUInt64.read(buf),
             packets_sent=_UniffiFfiConverterUInt64.read(buf),
             packets_received=_UniffiFfiConverterUInt64.read(buf),
+            groups_received=_UniffiFfiConverterUInt64.read(buf),
+            frames_received=_UniffiFfiConverterUInt64.read(buf),
+            groups_completed=_UniffiFfiConverterUInt64.read(buf),
             rejected_sessions=_UniffiFfiConverterUInt64.read(buf),
         )
 
@@ -6728,6 +6740,9 @@ class _UniffiFfiConverterTypeStreamMetrics(_UniffiConverterRustBuffer):
         _UniffiFfiConverterUInt64.check_lower(value.sessions_active)
         _UniffiFfiConverterUInt64.check_lower(value.packets_sent)
         _UniffiFfiConverterUInt64.check_lower(value.packets_received)
+        _UniffiFfiConverterUInt64.check_lower(value.groups_received)
+        _UniffiFfiConverterUInt64.check_lower(value.frames_received)
+        _UniffiFfiConverterUInt64.check_lower(value.groups_completed)
         _UniffiFfiConverterUInt64.check_lower(value.rejected_sessions)
 
     @staticmethod
@@ -6736,6 +6751,9 @@ class _UniffiFfiConverterTypeStreamMetrics(_UniffiConverterRustBuffer):
         _UniffiFfiConverterUInt64.write(value.sessions_active, buf)
         _UniffiFfiConverterUInt64.write(value.packets_sent, buf)
         _UniffiFfiConverterUInt64.write(value.packets_received, buf)
+        _UniffiFfiConverterUInt64.write(value.groups_received, buf)
+        _UniffiFfiConverterUInt64.write(value.frames_received, buf)
+        _UniffiFfiConverterUInt64.write(value.groups_completed, buf)
         _UniffiFfiConverterUInt64.write(value.rejected_sessions, buf)
 
 @dataclass

@@ -7811,10 +7811,16 @@ func (_ FfiDestroyerRouteHint) Destroy(value RouteHint) {
 
 // Counters of the stream transport. Queued data is not a remote receipt.
 type StreamMetrics struct {
-	SessionsTotal    uint64
-	SessionsActive   uint64
-	PacketsSent      uint64
-	PacketsReceived  uint64
+	SessionsTotal   uint64
+	SessionsActive  uint64
+	PacketsSent     uint64
+	PacketsReceived uint64
+	// Groups returned by the subscriber, across all peers.
+	GroupsReceived uint64
+	// First frames returned by their group readers.
+	FramesReceived uint64
+	// Groups whose second read confirmed the expected clean end.
+	GroupsCompleted  uint64
 	RejectedSessions uint64
 }
 
@@ -7823,6 +7829,9 @@ func (r *StreamMetrics) Destroy() {
 	FfiDestroyerUint64{}.Destroy(r.SessionsActive)
 	FfiDestroyerUint64{}.Destroy(r.PacketsSent)
 	FfiDestroyerUint64{}.Destroy(r.PacketsReceived)
+	FfiDestroyerUint64{}.Destroy(r.GroupsReceived)
+	FfiDestroyerUint64{}.Destroy(r.FramesReceived)
+	FfiDestroyerUint64{}.Destroy(r.GroupsCompleted)
 	FfiDestroyerUint64{}.Destroy(r.RejectedSessions)
 }
 
@@ -7836,6 +7845,9 @@ func (c FfiConverterStreamMetrics) Lift(rb RustBufferI) StreamMetrics {
 
 func (c FfiConverterStreamMetrics) Read(reader io.Reader) StreamMetrics {
 	return StreamMetrics{
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
 		FfiConverterUint64INSTANCE.Read(reader),
 		FfiConverterUint64INSTANCE.Read(reader),
 		FfiConverterUint64INSTANCE.Read(reader),
@@ -7857,6 +7869,9 @@ func (c FfiConverterStreamMetrics) Write(writer io.Writer, value StreamMetrics) 
 	FfiConverterUint64INSTANCE.Write(writer, value.SessionsActive)
 	FfiConverterUint64INSTANCE.Write(writer, value.PacketsSent)
 	FfiConverterUint64INSTANCE.Write(writer, value.PacketsReceived)
+	FfiConverterUint64INSTANCE.Write(writer, value.GroupsReceived)
+	FfiConverterUint64INSTANCE.Write(writer, value.FramesReceived)
+	FfiConverterUint64INSTANCE.Write(writer, value.GroupsCompleted)
 	FfiConverterUint64INSTANCE.Write(writer, value.RejectedSessions)
 }
 

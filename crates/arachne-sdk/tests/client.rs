@@ -122,6 +122,9 @@ fn moq_build_feature_controls_general_stream_metrics() {
         assert_eq!(metrics.sessions_active, 0);
         assert_eq!(metrics.packets_sent, 0);
         assert_eq!(metrics.packets_received, 0);
+        assert_eq!(metrics.groups_received, 0);
+        assert_eq!(metrics.frames_received, 0);
+        assert_eq!(metrics.groups_completed, 0);
         assert_eq!(metrics.rejected_sessions, 0);
     }
     client.close().unwrap();

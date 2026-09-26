@@ -10617,6 +10617,21 @@ data class StreamMetrics (
     , 
     var `packetsReceived`: kotlin.ULong
     , 
+    /**
+     * Groups returned by the subscriber, across all peers.
+     */
+    var `groupsReceived`: kotlin.ULong
+    , 
+    /**
+     * First frames returned by their group readers.
+     */
+    var `framesReceived`: kotlin.ULong
+    , 
+    /**
+     * Groups whose second read confirmed the expected clean end.
+     */
+    var `groupsCompleted`: kotlin.ULong
+    , 
     var `rejectedSessions`: kotlin.ULong
     
 ){
@@ -10639,6 +10654,9 @@ public object FfiConverterTypeStreamMetrics: FfiConverterRustBuffer<StreamMetric
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
             FfiConverterULong.read(buf),
+            FfiConverterULong.read(buf),
+            FfiConverterULong.read(buf),
+            FfiConverterULong.read(buf),
         )
     }
 
@@ -10647,6 +10665,9 @@ public object FfiConverterTypeStreamMetrics: FfiConverterRustBuffer<StreamMetric
             FfiConverterULong.allocationSize(value.`sessionsActive`) +
             FfiConverterULong.allocationSize(value.`packetsSent`) +
             FfiConverterULong.allocationSize(value.`packetsReceived`) +
+            FfiConverterULong.allocationSize(value.`groupsReceived`) +
+            FfiConverterULong.allocationSize(value.`framesReceived`) +
+            FfiConverterULong.allocationSize(value.`groupsCompleted`) +
             FfiConverterULong.allocationSize(value.`rejectedSessions`)
     )
 
@@ -10655,6 +10676,9 @@ public object FfiConverterTypeStreamMetrics: FfiConverterRustBuffer<StreamMetric
             FfiConverterULong.write(value.`sessionsActive`, buf)
             FfiConverterULong.write(value.`packetsSent`, buf)
             FfiConverterULong.write(value.`packetsReceived`, buf)
+            FfiConverterULong.write(value.`groupsReceived`, buf)
+            FfiConverterULong.write(value.`framesReceived`, buf)
+            FfiConverterULong.write(value.`groupsCompleted`, buf)
             FfiConverterULong.write(value.`rejectedSessions`, buf)
     }
 }
