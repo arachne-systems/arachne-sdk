@@ -22,6 +22,10 @@ let options = defaultPublicationOptions()
 check(options.recipients.isEmpty && options.mode == .critical,
       "Core publication defaults are group Critical")
 
+let secretConfig = clientConfig(.direct, Data([1, 2, 3]))
+check(String(describing: secretConfig).contains("[REDACTED]") && !String(describing: secretConfig).contains("01 02 03"),
+      "ClientConfig debug output redacts the secret")
+
 // 1. Errors cross with their numeric code.
 do {
     _ = try Client.open(config: clientConfig(.direct, Data([1, 2, 3])))

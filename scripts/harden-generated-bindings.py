@@ -53,6 +53,43 @@ func (r ClientConfig) GoString() string {
 )
 replace_once(
     root / "kotlin/org/arachne/core/runtime/arachne_runtime.kt",
+    """    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeClientConfig:""",
+    """    override fun toString(): String =
+        "ClientConfig(network=${`network`}, secret=${if (`secret` == null) null else "[REDACTED]"}, transport=${`transport`}, storage=${`storage`})"
+
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeClientConfig:""",
+)
+replace_once(
+    root / "swift/ArachneRuntime/ArachneRuntime.swift",
+    r"""#if compiler(>=6)
+extension ClientConfig: Sendable {}
+#endif
+""",
+    r"""extension ClientConfig: CustomStringConvertible {
+    public var description: String {
+        "ClientConfig(network: \(network), secret: \(secret == nil ? "nil" : "[REDACTED]"), transport: \(transport), storage: \(String(describing: storage)))"
+    }
+}
+
+#if compiler(>=6)
+extension ClientConfig: Sendable {}
+#endif
+""",
+)
+replace_once(
+    root / "kotlin/org/arachne/core/runtime/arachne_runtime.kt",
     "    var `commitDigest`: Key32\n    , \n    /**\n     * Freshness anchor",
     "    var `commitDigest`: Key32\n    ,\n    /**\n     * Freshness anchor",
 )
