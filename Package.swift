@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 import PackageDescription
 
 let package = Package(
@@ -8,19 +8,25 @@ let package = Package(
     ],
     targets: [
         .systemLibrary(
-            name: "CArachneSDK",
-            path: "bindings/swift/Sources/CArachneSDK"
+            name: "ArachneApiFFI",
+            path: "generated/swift/ArachneApiFFI"
+        ),
+        .systemLibrary(
+            name: "ArachneRuntimeFFI",
+            path: "generated/swift/ArachneRuntimeFFI"
         ),
         .target(
             name: "ArachneSDK",
-            dependencies: ["CArachneSDK"],
-            path: "bindings/swift/Sources/ArachneSDK",
+            dependencies: ["ArachneApiFFI", "ArachneRuntimeFFI"],
+            path: "generated/swift",
+            exclude: ["ArachneApiFFI", "ArachneRuntimeFFI"],
+            sources: ["ArachneApi/ArachneApi.swift", "ArachneRuntime/ArachneRuntime.swift"],
             linkerSettings: [.linkedLibrary("arachne_sdk")]
         ),
-        .testTarget(
-            name: "ArachneSDKTests",
+        .executableTarget(
+            name: "ArachneSmoke",
             dependencies: ["ArachneSDK"],
-            path: "bindings/swift/Tests/ArachneSDKTests"
+            path: "tests/uniffi/swift"
         ),
     ]
 )

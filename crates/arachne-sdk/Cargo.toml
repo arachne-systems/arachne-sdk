@@ -7,8 +7,13 @@ description = "Typed Rust client for Arachne's secure peer-to-peer workspaces"
 repository = "https://github.com/arachne-systems/arachne-sdk"
 publish = false
 
+[features]
+default = []
+moq = ["arachne-runtime/moq"]
+
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-arachne-runtime = { path = "../../core/crates/arachne-runtime" }
+arachne-runtime = { path = "../../core/crates/arachne-runtime", features = ["uniffi"] }
+arachne-api = { path = "../../core/crates/arachne-api", features = ["uniffi"] }

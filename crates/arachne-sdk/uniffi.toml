@@ -1,0 +1,5 @@
+# SDK Go packaging. Other language configs come from the Core crates.
+# Library mode supplies the shared library name.
+
+[bindings.go]
+go_mod = "github.com/arachne-systems/arachne-sdk/generated/go"

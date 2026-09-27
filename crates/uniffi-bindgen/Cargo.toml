@@ -1,0 +1,15 @@
+[package]
+name = "uniffi-bindgen"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+description = "UniFFI generator for Kotlin, Swift and Python at the exact scaffolding version"
+publish = false
+
+[[bin]]
+name = "uniffi-bindgen"
+path = "src/main.rs"
+
+[dependencies]
+# Must equal Core's optional `uniffi` dependency.
+uniffi = { version = "=0.31.2", features = ["cli"] }

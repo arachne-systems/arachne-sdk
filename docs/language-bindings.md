@@ -1,215 +1,157 @@
-# Go, Python, and Swift SDKs
+# Language bindings
 
-Go, Python, and Swift expose typed clients over the Rust runtime. Each package
-uses the same small C ABI and requires a native library built for the host
-operating system and architecture. Linux x86_64 is the qualified target today;
-the repository does not distribute prebuilt libraries. The SDK pins the public
-Core source revision it builds against. The package commands below use the
-repository root as the Go module and Swift package, with Python installed from
-its local package directory.
+## BLUF
 
-## Build the native library
+The SDK packages Core's typed API in one native library. UniFFI generates Kotlin,
+Swift, Python and Go from the Core metadata. Core owns persistence, candidate
+checks and protocol behavior. The SDK owns generation, language packages and the
+Android AAR.
 
-Clone with the Core submodule, then build from the repository root:
+## API and runtime modules
 
-```sh
-cargo +1.98.0 build --locked -p arachne-sdk
-```
+| Language | API types and errors | Client, context and storage |
+| --- | --- | --- |
+| Kotlin | `org.arachne.core.api` | `org.arachne.core.runtime` |
+| Swift | `ArachneSDK` | `ArachneSDK` |
+| Python | `arachne_generated.arachne_api` | `arachne_generated.arachne_runtime` |
+| Go | `generated/go/arachne_api` | `generated/go/arachne_runtime` |
 
-The library is in `target/debug`. Use a build for the same platform and
-architecture as the application. The Go package uses cgo; Python uses ctypes;
-Swift uses SwiftPM and a C system module.
+Python also exports both modules from `arachne_generated`. The Go import prefix is
+`github.com/arachne-systems/arachne-sdk/`. The SwiftPM product is `ArachneSDK`.
+These modules all use the SDK's `libarachne_sdk` library. An application does not
+build or load a second Core library.
 
-## Go
+The Swift package compiles both generated components into the `ArachneSDK` module.
+Each component has a separate C FFI module. This lets the runtime component use
+Core API types without a copied record or an extra import in generated code.
 
-```go
-package main
+The Core crates `arachne-api` and `arachne-runtime` define the UniFFI records,
+enums and objects behind their `uniffi` feature. The SDK enables that feature and
+links their scaffolding. It has no copied Client implementation or candidate map.
+The old JSON C ABI, C header and hand Go, Python and Swift clients are removed.
+The generated UniFFI implementation is also the selected Kotlin line. The
+historical handwritten Kotlin branch was reconciled without importing its copied
+client, models, native bridge or Rust FFI. The Android AAR compiles the generated
+Kotlin sources directly. See the
+[reconciliation record](reviews/2026-09-26-kotlin-line-reconciliation.md).
 
-import (
-	"crypto/rand"
-	"fmt"
+## Client contract
 
-	arachne "github.com/arachne-systems/arachne-sdk/bindings/go"
-)
+Use `default_client_config(network)`, `default_transport_options()` and
+`default_limits()` to obtain Core's defaults. Set the endpoint secret and storage
+before creating, joining or restoring a workspace. `StorageConfig.open_sqlite`
+takes a host-private directory and a separate 32-byte storage root. Create the
+directory before opening storage.
 
-func main() {
-	if err := run(); err != nil { panic(err) }
-}
+Core zeroizes its native copies of the endpoint secret after opening. The host
+runtime still owns the bytes placed in `ClientConfig`: keep that buffer
+short-lived and clear mutable Go, Kotlin and Swift buffers after `open`. Python
+bytes are immutable, so load them just before `open` and release references
+immediately afterward. Generated diagnostic strings redact the secret.
 
-func run() error {
-	var secret [32]byte
-	if _, err := rand.Read(secret[:]); err != nil { return err }
-	client, err := arachne.Open(arachne.Direct, secret[:])
-	if err != nil { return err }
-	defer client.Close()
+Use `Context.owned(limits, power, workers)` when the host needs independent limits
+or lifecycle control. Open the client with `Client.open_in(context, config)`.
+`Client.open(config)` uses the process default context. Suspending an owned context
+does not suspend other contexts.
 
-	workspace, err := client.CreateWorkspace("Feed owner", nil)
-	if err != nil { return err }
-	if err := client.InstallWorkspacePolicy(workspace.Epoch + 1); err != nil { return err }
-	var id arachne.RecordID
-	if _, err := rand.Read(id[:]); err != nil { return err }
-	candidate, err := client.StageProtectedPublication(
-		workspace.Workspace, workspace.Epoch+1, "feeds/catalog/v1", id, []byte(`{"version":1}`),
-	)
-	if err != nil { return err }
-	report, err := client.AdoptProtectedPublication(candidate.Snapshot)
-	if err != nil { return err }
-	fmt.Println("queued:", report.Queued)
-	return nil
-}
-```
+| Group | Operations |
+| --- | --- |
+| Lifecycle | Endpoint description, workspace state, event wait, wake, deadline, network change and close |
+| Storage | Open SQLite storage; restore active, joining or removed state; freshness anchors; reset |
+| Membership | Invitations, admission, join and workspace drivers; management, self-update, leave and removal |
+| Publication | Workspace or member policy, interests, protected publications and current values |
+| Inbox | Stage and adopt reception; read pending objects; acknowledge or reject |
+| Recovery | Range, direct and current-view recovery; cutoff notices; stage and adopt |
+| Resources | Protected resource publication, tickets, fetch and status |
+| Discovery | Nearby advertisement and scan; address hints; presence and connectivity |
 
-The root Go module exposes
-`github.com/arachne-systems/arachne-sdk/bindings/go`. Add it to an application
-with:
+Candidates are opaque objects. The matching adopt operation accepts a candidate
+only from its own client, for the correct operation and at most once. Core writes
+and reads back the durable state before it adopts the change. A caller does not
+save or reconstruct candidate bytes. A caller can discard a candidate without
+adopting it.
 
-```sh
-go get github.com/arachne-systems/arachne-sdk/bindings/go@main
-```
+IDs use lowercase hex strings in the generated languages. Counts use fixed-width
+integers. A freshness anchor uses Core's stable 40-byte encoding. Errors are Core
+`ApiError` variants. Use `api_error_code(error)` to branch on the stable error code.
+A malformed foreign ID fails binding conversion before a Core operation starts.
+Keep a default branch for future enum variants and check `api_version()`.
 
-The module requires cgo. Build the native library from a recursive SDK checkout,
-then point cgo and the dynamic loader at it. On Linux:
+All Client calls block. Call them on a worker thread. `wake`, `close`, `next_event`
+and `wait_for_work` can run on separate threads. Close releases a parked waiter.
+Core's Kotlin configuration names the session close operation `shutdown`; the generated
+`AutoCloseable.close()` releases the foreign object handle. Call `shutdown()`
+before `close()` or before the end of `use { }`.
 
-```sh
-export CGO_LDFLAGS="-L$ARACHNE_SDK_DIR/target/debug"
-export LD_LIBRARY_PATH="$ARACHNE_SDK_DIR/target/debug${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-```
+## Generate and check
 
-Set `ARACHNE_SDK_DIR` to the root of the SDK checkout first.
-
-Use `DYLD_LIBRARY_PATH` on macOS. To run the binding tests inside the checkout:
-
-```sh
-cd bindings/go
-go build ./...
-```
-
-## Python
-
-Install the package from the checkout and point it at the native library:
-
-```sh
-python3 -m pip install ./bindings/python
-export ARACHNE_SDK_LIBRARY="$PWD/target/debug/libarachne_sdk.so"
-export LD_LIBRARY_PATH="$PWD/target/debug${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-```
-
-Use `libarachne_sdk.dylib` and `DYLD_LIBRARY_PATH` on macOS. `ARACHNE_SDK_LIBRARY`
-selects the library explicitly on all supported platforms.
-
-```python
-import secrets
-
-from arachne_sdk import Client, ClientConfig, Network, RecordID
-
-with Client.open(ClientConfig(Network.DIRECT, secrets.token_bytes(32))) as client:
-    workspace = client.create_workspace("Feed owner", "Field feeds")
-    client.install_workspace_policy(workspace.epoch + 1)
-    candidate = client.stage_protected_publication(
-        workspace.workspace,
-        workspace.epoch + 1,
-        "feeds/catalog/v1",
-        RecordID(secrets.token_bytes(16)),
-        b'{"version":1}',
-    )
-    report = client.adopt_protected_publication(candidate.snapshot)
-    print("queued:", report.queued)
-```
-
-## Swift
-
-```swift
-import ArachneSDK
-import Foundation
-
-var random = SystemRandomNumberGenerator()
-let secret = Data((0..<32).map { _ in UInt8.random(in: .min ... .max, using: &random) })
-let client = try Client.open(config: ClientConfig(network: .direct, secret: secret))
-defer { try? client.close() }
-
-let workspace = try client.createWorkspace(displayName: "Feed owner", workspaceName: "Field feeds")
-try client.installWorkspacePolicy(revision: workspace.epoch + 1)
-let recordID = Data((0..<16).map { _ in UInt8.random(in: .min ... .max, using: &random) })
-let candidate = try client.stageProtectedPublication(
-    workspace: workspace.workspace,
-    revision: workspace.epoch + 1,
-    topic: "feeds/catalog/v1",
-    id: recordID,
-    payload: Data(#"{"version":1}"#.utf8)
-)
-let report = try client.adoptProtectedPublication(snapshot: candidate.snapshot)
-print("queued:", report.queued)
-```
-
-The repository root is the SwiftPM package, so it can be used as a remote
-dependency. Add it to an application's `Package.swift` with
-`.package(url: "https://github.com/arachne-systems/arachne-sdk.git", branch: "main")`
-and depend on the `ArachneSDK` product:
-
-```swift
-.product(name: "ArachneSDK", package: "arachne-sdk")
-```
-
-Build the native library from a recursive SDK checkout, then set `LIBRARY_PATH`
-and the runtime library path to that checkout's `target/debug` directory. To run
-the package tests:
+All generators use UniFFI `=0.31.2`. The Go generator is pinned and patched for
+explicit enum discriminants; see [patch provenance](../patches/README.md).
 
 ```sh
-LIBRARY_PATH="$PWD/target/debug" \
-LD_LIBRARY_PATH="$PWD/target/debug" swift test
+scripts/build-uniffi-bindgen-go.sh
+scripts/generate-bindings.sh
+JNA_JAR=/path/to/jna-5.17.0.jar scripts/uniffi-smoke.sh
 ```
 
-On macOS use `DYLD_LIBRARY_PATH` for runtime lookup.
+The smoke script checks Kotlin, Swift, Python and Go. The language flows cover
+invitation, join, publication, recovery, inbox acknowledgement and rejection,
+candidate misuse, and lifecycle control. The Python storage check also covers
+owned context isolation, durable reopen, typed workspace progress, management,
+candidate discard, nearby results and a restored removal. Each run has a
+120-second limit.
 
-## Typed client coverage
+Generated files are committed. CI generates them again and rejects drift. Do not
+edit generated code. `scripts/generate-bindings.sh` reads the per-crate Core
+configuration for Kotlin, Swift and Python. The SDK configuration sets the Go
+module prefix. Python package metadata is in the root `pyproject.toml`. Go uses
+the root `go.mod`.
 
-Each language provides typed methods and models for endpoint and workspace
-state; workspace creation and invitations; join and admission staging/adoption;
-encrypted record storage; roster, policy, and service profiles; protected
-publication and reception; topic interest and basic unprotected pub/sub;
-connectivity and metrics; and recovery-range workflows. See the
-[workflow guide](workflows.md) for ordering and security details.
+For local native builds, keep Cargo caches bounded:
 
-Protected reception follows the same save-before-adopt rule as protected
-publication. `poll_protected` returns an opaque candidate, and the authenticated
-plaintext is released only by `adopt_protected_reception`. If record storage is
-enabled, save the exact returned snapshot with `save_candidate` before
-adoption. Do not edit, serialize, or reconstruct candidate snapshot bytes.
-
-The receive methods have matching typed names in all three languages:
-
-```go
-candidate, err := client.PollProtected()
-if err != nil { return err }
-if candidate != nil {
-	state, err := client.WorkspaceState()
-	if err != nil { return err }
-	if state.Durable {
-		if err := client.SaveCandidate(candidate.Snapshot); err != nil { return err }
-	}
-	message, err := client.AdoptProtectedReception(candidate.Snapshot)
-	if err != nil { return err }
-	_ = message // authenticated payload, topic, sender, and record ID
-}
+```sh
+CARGO_INCREMENTAL=0 CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0 \
+  cargo +1.98.0 build --locked -p arachne-sdk
 ```
 
-Python uses `poll_protected()`, `save_candidate(...)`, and
-`adopt_protected_reception(...)`; Swift uses `pollProtected()`,
-`saveCandidate(...)`, and `adoptProtectedReception(snapshot:)`.
+The native library must match the host OS and architecture. Python's generated
+loader loads it from beside the generated modules. The source package contains
+Python code; install the matching native library in that directory separately:
 
-Go, Python, and Swift `enable_object_delivery` complete the inbox-enable
-transition and save its exact snapshot first when record storage is enabled.
-These bindings can publish current values, but do not expose pending-object
-polling or acknowledgement/rejection methods yet.
+```sh
+uv pip install --target target/python .
+cp target/debug/libarachne_sdk.so target/python/arachne_generated/
+PYTHONPATH=target/python python3 -c 'from arachne_generated import api_version; print(api_version())'
+```
 
-The generic dispatcher remains available for less common runtime operations:
-`RawCall` / `RawCallStored` in Go, `raw_call` / `raw_call_stored` in Python, and
-`rawCall` / `rawCallStored` in Swift. Byte-vector fields use arrays of unsigned
-integers at the C boundary; the language adapters map these to Go byte slices,
-Python `bytes`, and Swift `Data`.
+Use `.dylib` on macOS. Go uses cgo. Swift links `arachne_sdk` from the host's library
+search path. Native wheels and prebuilt release libraries need a separate release
+package decision.
 
-Client calls block and are serialized per client. Call them from a blocking
-worker instead of an async executor or UI thread. Use a unique 32-byte endpoint
-secret for a persistent identity. Only the Direct profile accepts an empty
-secret for an ephemeral endpoint. The record-storage root is separate from the
-endpoint secret and remains under application control.
+## Android AAR
+
+The AAR contains generated Kotlin and `libarachne_sdk.so` for `arm64-v8a` and
+`x86_64`, with API 26 as the minimum. `scripts/build-android-libs.sh` uses cargo-ndk
+and NDK 27.1.12297006. It checks 16 KB LOAD alignment in both native libraries.
+
+```sh
+GRADLE_LANE=local scripts/gradle.sh --no-daemon \
+  :sdk:publishReleasePublicationToLocalRepository :smoke:assembleRelease
+ANDROID_HOME=~/Android/Sdk scripts/check-android-r8.sh
+```
+
+The smoke app consumes the local Maven publication and uses R8. The AAR ships the
+Core package and JNA keep rules. JNA 5.17.0 is a POM dependency; it is not embedded
+in the AAR. The APK must contain one copy of `libjnidispatch.so` for each ABI.
+
+The CI Android job uses a 16 KB API 35 emulator. Local AAR or R8 checks do not prove
+that emulator run. The ATAK host and its JNA classloader still need a separate
+owner-authorized device check. No device reset is part of a local SDK build.
+
+## Release limits
+
+The SDK remains pre-release. Publication, remote CI and ATAK host qualification
+remain release decisions. Local Core commit pins cannot be fetched by remote CI
+until the owner publishes those commits. See the
+[H5 handoff](reviews/2026-09-26-h5-sdk-completion.md) for the exact source pins
+and prior checks.
