@@ -840,6 +840,11 @@ public protocol ClientProtocol: AnyObject, Sendable {
      */
     func fetchRecoveryRangeAt(request: RecoveryRangeRequest, epoch: UInt64?) throws  -> RecoveryRangeStatus
     
+    /**
+     * Read the latest MLS-authenticated PTT floor snapshots from Iroh Docs.
+     */
+    func floorState() throws  -> [FloorStateRecord]
+    
     func inspectInvitation(invitation: Data, checkpoint: Data) throws  -> InvitationDetails
     
     /**
@@ -1527,6 +1532,17 @@ open func fetchRecoveryRangeAt(request: RecoveryRangeRequest, epoch: UInt64?)thr
             self.uniffiCloneHandle(),
         FfiConverterTypeRecoveryRangeRequest_lower(request),
         FfiConverterOptionUInt64.lower(epoch),$0
+    )
+})
+}
+    
+    /**
+     * Read the latest MLS-authenticated PTT floor snapshots from Iroh Docs.
+     */
+open func floorState()throws  -> [FloorStateRecord]  {
+    return try  FfiConverterSequenceTypeFloorStateRecord.lift(try rustCallWithError(FfiConverterTypeApiError_lift) {
+    uniffi_arachne_runtime_fn_method_client_floor_state(
+            self.uniffiCloneHandle(),$0
     )
 })
 }
@@ -5367,6 +5383,67 @@ public func FfiConverterTypeEndpointInfo_lower(_ value: EndpointInfo) -> RustBuf
 }
 
 
+/**
+ * One MLS-authenticated PTT floor snapshot read from the replicated document.
+ */
+public struct FloorStateRecord: Equatable, Hashable {
+    public var member: MemberId
+    public var endpoint: EndpointId
+    public var payload: Data
+
+    // Default memberwise initializers are never public by default, so we
+    // declare one manually.
+    public init(member: MemberId, endpoint: EndpointId, payload: Data) {
+        self.member = member
+        self.endpoint = endpoint
+        self.payload = payload
+    }
+
+    
+
+    
+}
+
+#if compiler(>=6)
+extension FloorStateRecord: Sendable {}
+#endif
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public struct FfiConverterTypeFloorStateRecord: FfiConverterRustBuffer {
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> FloorStateRecord {
+        return
+            try FloorStateRecord(
+                member: FfiConverterTypeMemberId.read(from: &buf), 
+                endpoint: FfiConverterTypeEndpointId.read(from: &buf), 
+                payload: FfiConverterData.read(from: &buf)
+        )
+    }
+
+    public static func write(_ value: FloorStateRecord, into buf: inout [UInt8]) {
+        FfiConverterTypeMemberId.write(value.member, into: &buf)
+        FfiConverterTypeEndpointId.write(value.endpoint, into: &buf)
+        FfiConverterData.write(value.payload, into: &buf)
+    }
+}
+
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeFloorStateRecord_lift(_ buf: RustBuffer) throws -> FloorStateRecord {
+    return try FfiConverterTypeFloorStateRecord.lift(buf)
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
+public func FfiConverterTypeFloorStateRecord_lower(_ value: FloorStateRecord) -> RustBuffer {
+    return FfiConverterTypeFloorStateRecord.lower(value)
+}
+
+
 public struct InterestObservation: Equatable, Hashable {
     public var workspace: WorkspaceId
     public var revision: UInt64
@@ -7624,6 +7701,10 @@ public struct TransportOptions: Equatable, Hashable {
      */
     public var timeouts: TransportTimeouts?
     /**
+     * Persistent Iroh Docs and blob storage. `None` uses in-memory stores.
+     */
+    public var documentsPath: String?
+    /**
      * Per-op deadline for this client's blocking ops, and for its bind.
      * At the deadline an op fails with `DeadlineExceeded` and the session
      * stays usable. `Client::set_deadline` changes it later.
@@ -7644,6 +7725,9 @@ public struct TransportOptions: Equatable, Hashable {
          * Deadlines for a slow or constrained link.
          */timeouts: TransportTimeouts?, 
         /**
+         * Persistent Iroh Docs and blob storage. `None` uses in-memory stores.
+         */documentsPath: String? = nil, 
+        /**
          * Per-op deadline for this client's blocking ops, and for its bind.
          * At the deadline an op fails with `DeadlineExceeded` and the session
          * stays usable. `Client::set_deadline` changes it later.
@@ -7651,6 +7735,7 @@ public struct TransportOptions: Equatable, Hashable {
         self.relay = relay
         self.publicLookup = publicLookup
         self.timeouts = timeouts
+        self.documentsPath = documentsPath
         self.deadline = deadline
     }
 
@@ -7673,6 +7758,7 @@ public struct FfiConverterTypeTransportOptions: FfiConverterRustBuffer {
                 relay: FfiConverterOptionTypeOperatorRelay.read(from: &buf), 
                 publicLookup: FfiConverterOptionBool.read(from: &buf), 
                 timeouts: FfiConverterOptionTypeTransportTimeouts.read(from: &buf), 
+                documentsPath: FfiConverterOptionString.read(from: &buf), 
                 deadline: FfiConverterOptionDuration.read(from: &buf)
         )
     }
@@ -7681,6 +7767,7 @@ public struct FfiConverterTypeTransportOptions: FfiConverterRustBuffer {
         FfiConverterOptionTypeOperatorRelay.write(value.relay, into: &buf)
         FfiConverterOptionBool.write(value.publicLookup, into: &buf)
         FfiConverterOptionTypeTransportTimeouts.write(value.timeouts, into: &buf)
+        FfiConverterOptionString.write(value.documentsPath, into: &buf)
         FfiConverterOptionDuration.write(value.deadline, into: &buf)
     }
 }
@@ -11180,6 +11267,31 @@ fileprivate struct FfiConverterSequenceTypeDeliveryFailure: FfiConverterRustBuff
 #if swift(>=5.8)
 @_documentation(visibility: private)
 #endif
+fileprivate struct FfiConverterSequenceTypeFloorStateRecord: FfiConverterRustBuffer {
+    typealias SwiftType = [FloorStateRecord]
+
+    public static func write(_ value: [FloorStateRecord], into buf: inout [UInt8]) {
+        let len = Int32(value.count)
+        writeInt(&buf, len)
+        for item in value {
+            FfiConverterTypeFloorStateRecord.write(item, into: &buf)
+        }
+    }
+
+    public static func read(from buf: inout (data: Data, offset: Data.Index)) throws -> [FloorStateRecord] {
+        let len: Int32 = try readInt(&buf)
+        var seq = [FloorStateRecord]()
+        seq.reserveCapacity(Int(len))
+        for _ in 0 ..< len {
+            seq.append(try FfiConverterTypeFloorStateRecord.read(from: &buf))
+        }
+        return seq
+    }
+}
+
+#if swift(>=5.8)
+@_documentation(visibility: private)
+#endif
 fileprivate struct FfiConverterSequenceTypeInvitationControl: FfiConverterRustBuffer {
     typealias SwiftType = [InvitationControl]
 
@@ -11577,6 +11689,9 @@ private let initializationResult: InitializationResult = {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_arachne_runtime_checksum_method_client_fetch_recovery_range_at() != 21605) {
+        return InitializationResult.apiChecksumMismatch
+    }
+    if (uniffi_arachne_runtime_checksum_method_client_floor_state() != 45533) {
         return InitializationResult.apiChecksumMismatch
     }
     if (uniffi_arachne_runtime_checksum_method_client_inspect_invitation() != 47596) {

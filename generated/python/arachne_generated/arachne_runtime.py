@@ -563,6 +563,8 @@ def _uniffi_check_api_checksums(lib):
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_runtime_checksum_method_client_fetch_recovery_range_at() != 21605:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_arachne_runtime_checksum_method_client_floor_state() != 45533:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_runtime_checksum_method_client_inspect_invitation() != 47596:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_arachne_runtime_checksum_method_client_install_member_policy() != 3881:
@@ -1387,6 +1389,11 @@ _UniffiLib.uniffi_arachne_runtime_fn_method_client_fetch_recovery_range_at.argty
     ctypes.POINTER(_UniffiRustCallStatus),
 )
 _UniffiLib.uniffi_arachne_runtime_fn_method_client_fetch_recovery_range_at.restype = _UniffiRustBuffer
+_UniffiLib.uniffi_arachne_runtime_fn_method_client_floor_state.argtypes = (
+    ctypes.c_uint64,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_arachne_runtime_fn_method_client_floor_state.restype = _UniffiRustBuffer
 _UniffiLib.uniffi_arachne_runtime_fn_method_client_inspect_invitation.argtypes = (
     ctypes.c_uint64,
     _UniffiRustBuffer,
@@ -2033,6 +2040,9 @@ _UniffiLib.uniffi_arachne_runtime_checksum_method_client_fetch_recovery_range.re
 _UniffiLib.uniffi_arachne_runtime_checksum_method_client_fetch_recovery_range_at.argtypes = (
 )
 _UniffiLib.uniffi_arachne_runtime_checksum_method_client_fetch_recovery_range_at.restype = ctypes.c_uint16
+_UniffiLib.uniffi_arachne_runtime_checksum_method_client_floor_state.argtypes = (
+)
+_UniffiLib.uniffi_arachne_runtime_checksum_method_client_floor_state.restype = ctypes.c_uint16
 _UniffiLib.uniffi_arachne_runtime_checksum_method_client_inspect_invitation.argtypes = (
 )
 _UniffiLib.uniffi_arachne_runtime_checksum_method_client_inspect_invitation.restype = ctypes.c_uint16
@@ -3486,23 +3496,29 @@ class TransportOptions:
     Transport overrides on top of a `Network` profile. Every field left
     `None` keeps the profile default.
 """
-    def __init__(self, *, relay:typing.Optional[OperatorRelay], public_lookup:typing.Optional[bool], timeouts:typing.Optional[TransportTimeouts], deadline:typing.Optional[Duration]):
+    def __init__(self, *, relay:typing.Optional[OperatorRelay], public_lookup:typing.Optional[bool], timeouts:typing.Optional[TransportTimeouts], documents_path:typing.Optional[str] = _DEFAULT, deadline:typing.Optional[Duration]):
         self.relay = relay
         self.public_lookup = public_lookup
         self.timeouts = timeouts
+        if documents_path is _DEFAULT:
+            self.documents_path = None
+        else:
+            self.documents_path = documents_path
         self.deadline = deadline
         
         
 
     
     def __str__(self):
-        return "TransportOptions(relay={}, public_lookup={}, timeouts={}, deadline={})".format(self.relay, self.public_lookup, self.timeouts, self.deadline)
+        return "TransportOptions(relay={}, public_lookup={}, timeouts={}, documents_path={}, deadline={})".format(self.relay, self.public_lookup, self.timeouts, self.documents_path, self.deadline)
     def __eq__(self, other):
         if self.relay != other.relay:
             return False
         if self.public_lookup != other.public_lookup:
             return False
         if self.timeouts != other.timeouts:
+            return False
+        if self.documents_path != other.documents_path:
             return False
         if self.deadline != other.deadline:
             return False
@@ -3515,6 +3531,7 @@ class _UniffiFfiConverterTypeTransportOptions(_UniffiConverterRustBuffer):
             relay=_UniffiFfiConverterOptionalTypeOperatorRelay.read(buf),
             public_lookup=_UniffiFfiConverterOptionalBoolean.read(buf),
             timeouts=_UniffiFfiConverterOptionalTypeTransportTimeouts.read(buf),
+            documents_path=_UniffiFfiConverterOptionalString.read(buf),
             deadline=_UniffiFfiConverterOptionalDuration.read(buf),
         )
 
@@ -3523,6 +3540,7 @@ class _UniffiFfiConverterTypeTransportOptions(_UniffiConverterRustBuffer):
         _UniffiFfiConverterOptionalTypeOperatorRelay.check_lower(value.relay)
         _UniffiFfiConverterOptionalBoolean.check_lower(value.public_lookup)
         _UniffiFfiConverterOptionalTypeTransportTimeouts.check_lower(value.timeouts)
+        _UniffiFfiConverterOptionalString.check_lower(value.documents_path)
         _UniffiFfiConverterOptionalDuration.check_lower(value.deadline)
 
     @staticmethod
@@ -3530,6 +3548,7 @@ class _UniffiFfiConverterTypeTransportOptions(_UniffiConverterRustBuffer):
         _UniffiFfiConverterOptionalTypeOperatorRelay.write(value.relay, buf)
         _UniffiFfiConverterOptionalBoolean.write(value.public_lookup, buf)
         _UniffiFfiConverterOptionalTypeTransportTimeouts.write(value.timeouts, buf)
+        _UniffiFfiConverterOptionalString.write(value.documents_path, buf)
         _UniffiFfiConverterOptionalDuration.write(value.deadline, buf)
 
 
@@ -4690,6 +4709,51 @@ class _UniffiFfiConverterTypeEndpointInfo(_UniffiConverterRustBuffer):
         _UniffiFfiConverterString.write(value.bound_address, buf)
         _UniffiFfiConverterBoolean.write(value.workspace_ready, buf)
         _UniffiFfiConverterTypeTransportInfo.write(value.transport, buf)
+
+@dataclass
+class FloorStateRecord:
+    """
+    One MLS-authenticated PTT floor snapshot read from the replicated document.
+"""
+    def __init__(self, *, member:arachne_api.MemberId, endpoint:arachne_api.EndpointId, payload:bytes):
+        self.member = member
+        self.endpoint = endpoint
+        self.payload = payload
+        
+        
+
+    
+    def __str__(self):
+        return "FloorStateRecord(member={}, endpoint={}, payload={})".format(self.member, self.endpoint, self.payload)
+    def __eq__(self, other):
+        if self.member != other.member:
+            return False
+        if self.endpoint != other.endpoint:
+            return False
+        if self.payload != other.payload:
+            return False
+        return True
+
+class _UniffiFfiConverterTypeFloorStateRecord(_UniffiConverterRustBuffer):
+    @staticmethod
+    def read(buf):
+        return FloorStateRecord(
+            member=arachne_api._UniffiFfiConverterTypeMemberId.read(buf),
+            endpoint=arachne_api._UniffiFfiConverterTypeEndpointId.read(buf),
+            payload=_UniffiFfiConverterBytes.read(buf),
+        )
+
+    @staticmethod
+    def check_lower(value):
+        arachne_api._UniffiFfiConverterTypeMemberId.check_lower(value.member)
+        arachne_api._UniffiFfiConverterTypeEndpointId.check_lower(value.endpoint)
+        _UniffiFfiConverterBytes.check_lower(value.payload)
+
+    @staticmethod
+    def write(value, buf):
+        arachne_api._UniffiFfiConverterTypeMemberId.write(value.member, buf)
+        arachne_api._UniffiFfiConverterTypeEndpointId.write(value.endpoint, buf)
+        _UniffiFfiConverterBytes.write(value.payload, buf)
 
 @dataclass
 class InterestObservation:
@@ -11728,6 +11792,29 @@ class _UniffiFfiConverterTypeProtectedReceptionCandidate:
 
 
 
+class _UniffiFfiConverterSequenceTypeFloorStateRecord(_UniffiConverterRustBuffer):
+    @classmethod
+    def check_lower(cls, value):
+        for item in value:
+            _UniffiFfiConverterTypeFloorStateRecord.check_lower(item)
+
+    @classmethod
+    def write(cls, value, buf):
+        items = len(value)
+        buf.write_i32(items)
+        for item in value:
+            _UniffiFfiConverterTypeFloorStateRecord.write(item, buf)
+
+    @classmethod
+    def read(cls, buf):
+        count = buf.read_i32()
+        if count < 0:
+            raise InternalError("Unexpected negative sequence length")
+
+        return [
+            _UniffiFfiConverterTypeFloorStateRecord.read(buf) for i in range(count)
+        ]
+
 class _UniffiFfiConverterSequenceTypeInvitationControl(_UniffiConverterRustBuffer):
     @classmethod
     def check_lower(cls, value):
@@ -12391,6 +12478,11 @@ class ClientProtocol(typing.Protocol):
         """
         `fetch_recovery_range` for an earlier author epoch that is still in
         the receive window (A3f). `None` is the current epoch.
+"""
+        raise NotImplementedError
+    def floor_state(self, ) -> typing.List[FloorStateRecord]:
+        """
+        Read the latest MLS-authenticated PTT floor snapshots from Iroh Docs.
 """
         raise NotImplementedError
     def inspect_invitation(self, invitation: bytes,checkpoint: bytes) -> InvitationDetails:
@@ -13344,6 +13436,21 @@ class Client(ClientProtocol):
         _uniffi_ffi_result = _uniffi_rust_call_with_error(
             _uniffi_error_converter,
             _UniffiLib.uniffi_arachne_runtime_fn_method_client_fetch_recovery_range_at,
+            *_uniffi_lowered_args,
+        )
+        return _uniffi_lift_return(_uniffi_ffi_result)
+    def floor_state(self, ) -> typing.List[FloorStateRecord]:
+        """
+        Read the latest MLS-authenticated PTT floor snapshots from Iroh Docs.
+"""
+        _uniffi_lowered_args = (
+            self._uniffi_clone_handle(),
+        )
+        _uniffi_lift_return = _UniffiFfiConverterSequenceTypeFloorStateRecord.lift
+        _uniffi_error_converter = arachne_api._UniffiFfiConverterTypeApiError
+        _uniffi_ffi_result = _uniffi_rust_call_with_error(
+            _uniffi_error_converter,
+            _UniffiLib.uniffi_arachne_runtime_fn_method_client_floor_state,
             *_uniffi_lowered_args,
         )
         return _uniffi_lift_return(_uniffi_ffi_result)
@@ -14769,6 +14876,7 @@ __all__ = [
     "DirectRecoveryRequest",
     "TransportInfo",
     "EndpointInfo",
+    "FloorStateRecord",
     "InterestObservation",
     "InvitationCheckpoint",
     "InvitationControl",
