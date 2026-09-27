@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/arachne-sdk", "crates/uniffi-bindgen"]
+members = ["crates/arachne-sdk", "crates/arachne-ptt-media", "crates/uniffi-bindgen"]
 exclude = ["core"]
 resolver = "3"
 
