@@ -730,6 +730,8 @@ external fun uniffi_arachne_runtime_checksum_method_client_fetch_recovery_range(
 ): Int
 external fun uniffi_arachne_runtime_checksum_method_client_fetch_recovery_range_at(
 ): Int
+external fun uniffi_arachne_runtime_checksum_method_client_floor_state(
+): Int
 external fun uniffi_arachne_runtime_checksum_method_client_inspect_invitation(
 ): Int
 external fun uniffi_arachne_runtime_checksum_method_client_install_member_policy(
@@ -1016,6 +1018,8 @@ external fun uniffi_arachne_runtime_fn_method_client_fetch_membership_update(`pt
 external fun uniffi_arachne_runtime_fn_method_client_fetch_recovery_range(`ptr`: Long,`request`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
 external fun uniffi_arachne_runtime_fn_method_client_fetch_recovery_range_at(`ptr`: Long,`request`: RustBuffer.ByValue,`epoch`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+): RustBuffer.ByValue
+external fun uniffi_arachne_runtime_fn_method_client_floor_state(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
 external fun uniffi_arachne_runtime_fn_method_client_inspect_invitation(`ptr`: Long,`invitation`: RustBuffer.ByValue,`checkpoint`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
 ): RustBuffer.ByValue
@@ -1479,6 +1483,9 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_arachne_runtime_checksum_method_client_fetch_recovery_range_at() != 21605) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if (lib.uniffi_arachne_runtime_checksum_method_client_floor_state() != 45533) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if (lib.uniffi_arachne_runtime_checksum_method_client_inspect_invitation() != 47596) {
@@ -2649,6 +2656,11 @@ public interface ClientInterface {
      */
     fun `fetchRecoveryRangeAt`(`request`: RecoveryRangeRequest, `epoch`: kotlin.ULong?): RecoveryRangeStatus
     
+    /**
+     * Read the latest MLS-authenticated PTT floor snapshots from Iroh Docs.
+     */
+    fun `floorState`(): List<FloorStateRecord>
+    
     fun `inspectInvitation`(`invitation`: kotlin.ByteArray, `checkpoint`: kotlin.ByteArray): InvitationDetails
     
     /**
@@ -3474,6 +3486,23 @@ open class Client: Disposable, AutoCloseable, ClientInterface
     UniffiLib.uniffi_arachne_runtime_fn_method_client_fetch_recovery_range_at(
         it,
         FfiConverterTypeRecoveryRangeRequest.lower(`request`),FfiConverterOptionalULong.lower(`epoch`),_status)
+}
+    }
+    )
+    }
+    
+
+    
+    /**
+     * Read the latest MLS-authenticated PTT floor snapshots from Iroh Docs.
+     */
+    @Throws(ApiException::class)override fun `floorState`(): List<FloorStateRecord> {
+            return FfiConverterSequenceTypeFloorStateRecord.lift(
+    callWithHandle {
+    uniffiRustCallWithError(ApiExceptionExternalErrorHandler) { _status ->
+    UniffiLib.uniffi_arachne_runtime_fn_method_client_floor_state(
+        it,
+        _status)
 }
     }
     )
@@ -8981,6 +9010,52 @@ public object FfiConverterTypeEndpointInfo: FfiConverterRustBuffer<EndpointInfo>
 
 
 
+/**
+ * One MLS-authenticated PTT floor snapshot read from the replicated document.
+ */
+data class FloorStateRecord (
+    var `member`: MemberId
+    , 
+    var `endpoint`: EndpointId
+    , 
+    var `payload`: kotlin.ByteArray
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeFloorStateRecord: FfiConverterRustBuffer<FloorStateRecord> {
+    override fun read(buf: ByteBuffer): FloorStateRecord {
+        return FloorStateRecord(
+            FfiConverterTypeMemberId.read(buf),
+            FfiConverterTypeEndpointId.read(buf),
+            FfiConverterByteArray.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: FloorStateRecord) = (
+            FfiConverterTypeMemberId.allocationSize(value.`member`) +
+            FfiConverterTypeEndpointId.allocationSize(value.`endpoint`) +
+            FfiConverterByteArray.allocationSize(value.`payload`)
+    )
+
+    override fun write(value: FloorStateRecord, buf: ByteBuffer) {
+            FfiConverterTypeMemberId.write(value.`member`, buf)
+            FfiConverterTypeEndpointId.write(value.`endpoint`, buf)
+            FfiConverterByteArray.write(value.`payload`, buf)
+    }
+}
+
+
+
 data class InterestObservation (
     var `workspace`: WorkspaceId
     , 
@@ -10779,6 +10854,11 @@ data class TransportOptions (
     var `timeouts`: TransportTimeouts?
     , 
     /**
+     * Persistent Iroh Docs and blob storage. `None` uses in-memory stores.
+     */
+    var `documentsPath`: kotlin.String? = null 
+    , 
+    /**
      * Per-op deadline for this client's blocking ops, and for its bind.
      * At the deadline an op fails with `DeadlineExceeded` and the session
      * stays usable. `Client::set_deadline` changes it later.
@@ -10803,6 +10883,7 @@ public object FfiConverterTypeTransportOptions: FfiConverterRustBuffer<Transport
             FfiConverterOptionalTypeOperatorRelay.read(buf),
             FfiConverterOptionalBoolean.read(buf),
             FfiConverterOptionalTypeTransportTimeouts.read(buf),
+            FfiConverterOptionalString.read(buf),
             FfiConverterOptionalDuration.read(buf),
         )
     }
@@ -10811,6 +10892,7 @@ public object FfiConverterTypeTransportOptions: FfiConverterRustBuffer<Transport
             FfiConverterOptionalTypeOperatorRelay.allocationSize(value.`relay`) +
             FfiConverterOptionalBoolean.allocationSize(value.`publicLookup`) +
             FfiConverterOptionalTypeTransportTimeouts.allocationSize(value.`timeouts`) +
+            FfiConverterOptionalString.allocationSize(value.`documentsPath`) +
             FfiConverterOptionalDuration.allocationSize(value.`deadline`)
     )
 
@@ -10818,6 +10900,7 @@ public object FfiConverterTypeTransportOptions: FfiConverterRustBuffer<Transport
             FfiConverterOptionalTypeOperatorRelay.write(value.`relay`, buf)
             FfiConverterOptionalBoolean.write(value.`publicLookup`, buf)
             FfiConverterOptionalTypeTransportTimeouts.write(value.`timeouts`, buf)
+            FfiConverterOptionalString.write(value.`documentsPath`, buf)
             FfiConverterOptionalDuration.write(value.`deadline`, buf)
     }
 }
@@ -14909,6 +14992,34 @@ public object FfiConverterSequenceTypeDeliveryFailure: FfiConverterRustBuffer<Li
         buf.putInt(value.size)
         value.iterator().forEach {
             FfiConverterTypeDeliveryFailure.write(it, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterSequenceTypeFloorStateRecord: FfiConverterRustBuffer<List<FloorStateRecord>> {
+    override fun read(buf: ByteBuffer): List<FloorStateRecord> {
+        val len = buf.getInt()
+        return List<FloorStateRecord>(len) {
+            FfiConverterTypeFloorStateRecord.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<FloorStateRecord>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterTypeFloorStateRecord.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<FloorStateRecord>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterTypeFloorStateRecord.write(it, buf)
         }
     }
 }

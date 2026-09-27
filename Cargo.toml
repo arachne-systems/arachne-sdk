@@ -1,9 +1,11 @@
 [workspace]
-members = ["crates/arachne-sdk", "crates/uniffi-bindgen"]
+members = ["crates/arachne-sdk", "crates/arachne-ptt-media", "crates/uniffi-bindgen"]
 exclude = ["core"]
 resolver = "3"
 
 [patch.crates-io]
 iroh = { path = "core/vendor/iroh" }
+iroh-blobs = { path = "core/vendor/iroh-blobs" }
+iroh-gossip = { path = "core/vendor/iroh-gossip" }
 moq-net = { git = "https://github.com/moq-dev/moq", rev = "6ab7d1a223e1949a5c2e10b68e29db2e8ab9bdd1" }
 moq-tokio = { git = "https://github.com/moq-dev/moq", rev = "6ab7d1a223e1949a5c2e10b68e29db2e8ab9bdd1" }

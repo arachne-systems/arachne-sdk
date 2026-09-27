@@ -110,6 +110,8 @@ owner.add_address_hint(me.endpoint_key, local(me.bound_address))
 revision = owner_view.epoch + 1
 owner.install_workspace_policy(revision)
 reader.install_workspace_policy(revision)
+owner.add_address_hint(me.endpoint_key, local(me.bound_address))
+reader.add_address_hint(invitation.peer, local(invitation.address))
 owner.adopt_protected_publication(
     owner.stage_protected_publication(created.workspace, revision, TOPIC, "01" * 16, b"first")
 )

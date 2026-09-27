@@ -634,6 +634,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_arachne_runtime_checksum_method_client_floor_state()
+		})
+		if checksum != 45533 {
+			// If this happens try cleaning and rebuilding your project
+			panic("arachne_runtime: uniffi_arachne_runtime_checksum_method_client_floor_state: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_arachne_runtime_checksum_method_client_inspect_invitation()
 		})
 		if checksum != 47596 {
@@ -2027,6 +2036,8 @@ type ClientInterface interface {
 	// `fetch_recovery_range` for an earlier author epoch that is still in
 	// the receive window (A3f). `None` is the current epoch.
 	FetchRecoveryRangeAt(request RecoveryRangeRequest, epoch *uint64) (RecoveryRangeStatus, error)
+	// Read the latest MLS-authenticated PTT floor snapshots from Iroh Docs.
+	FloorState() ([]FloorStateRecord, error)
 	InspectInvitation(invitation []byte, checkpoint []byte) (InvitationDetails, error)
 	// Route only `topics` between all members at `revision`.
 	InstallMemberPolicy(revision uint64, topics []string) error
@@ -2641,6 +2652,24 @@ func (_self *Client) FetchRecoveryRangeAt(request RecoveryRangeRequest, epoch *u
 		return _uniffiDefaultValue, _uniffiErr
 	} else {
 		return FfiConverterRecoveryRangeStatusINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Read the latest MLS-authenticated PTT floor snapshots from Iroh Docs.
+func (_self *Client) FloorState() ([]FloorStateRecord, error) {
+	_pointer := _self.ffiObject.incrementPointer("*Client")
+	defer _self.ffiObject.decrementPointer()
+	_uniffiRV, _uniffiErr := rustCallWithError[*arachne_api.ApiError](arachne_api.FfiConverterApiError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_arachne_runtime_fn_method_client_floor_state(
+				_pointer, _uniffiStatus),
+		}
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue []FloorStateRecord
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterSequenceFloorStateRecordINSTANCE.Lift(_uniffiRV), nil
 	}
 }
 
@@ -6159,6 +6188,55 @@ func (_ FfiDestroyerEndpointInfo) Destroy(value EndpointInfo) {
 	value.Destroy()
 }
 
+// One MLS-authenticated PTT floor snapshot read from the replicated document.
+type FloorStateRecord struct {
+	Member   arachne_api.MemberId
+	Endpoint arachne_api.EndpointId
+	Payload  []byte
+}
+
+func (r *FloorStateRecord) Destroy() {
+	arachne_api.FfiDestroyerTypeMemberId{}.Destroy(r.Member)
+	arachne_api.FfiDestroyerTypeEndpointId{}.Destroy(r.Endpoint)
+	FfiDestroyerBytes{}.Destroy(r.Payload)
+}
+
+type FfiConverterFloorStateRecord struct{}
+
+var FfiConverterFloorStateRecordINSTANCE = FfiConverterFloorStateRecord{}
+
+func (c FfiConverterFloorStateRecord) Lift(rb RustBufferI) FloorStateRecord {
+	return LiftFromRustBuffer[FloorStateRecord](c, rb)
+}
+
+func (c FfiConverterFloorStateRecord) Read(reader io.Reader) FloorStateRecord {
+	return FloorStateRecord{
+		arachne_api.FfiConverterTypeMemberIdINSTANCE.Read(reader),
+		arachne_api.FfiConverterTypeEndpointIdINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterFloorStateRecord) Lower(value FloorStateRecord) C.RustBuffer {
+	return LowerIntoRustBuffer[FloorStateRecord](c, value)
+}
+
+func (c FfiConverterFloorStateRecord) LowerExternal(value FloorStateRecord) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FloorStateRecord](c, value))
+}
+
+func (c FfiConverterFloorStateRecord) Write(writer io.Writer, value FloorStateRecord) {
+	arachne_api.FfiConverterTypeMemberIdINSTANCE.Write(writer, value.Member)
+	arachne_api.FfiConverterTypeEndpointIdINSTANCE.Write(writer, value.Endpoint)
+	FfiConverterBytesINSTANCE.Write(writer, value.Payload)
+}
+
+type FfiDestroyerFloorStateRecord struct{}
+
+func (_ FfiDestroyerFloorStateRecord) Destroy(value FloorStateRecord) {
+	value.Destroy()
+}
+
 type InterestObservation struct {
 	Workspace  arachne_api.WorkspaceId
 	Revision   uint64
@@ -7965,6 +8043,8 @@ type TransportOptions struct {
 	PublicLookup *bool
 	// Deadlines for a slow or constrained link.
 	Timeouts *TransportTimeouts
+	// Persistent Iroh Docs and blob storage. `None` uses in-memory stores.
+	DocumentsPath *string
 	// Per-op deadline for this client's blocking ops, and for its bind.
 	// At the deadline an op fails with `DeadlineExceeded` and the session
 	// stays usable. `Client::set_deadline` changes it later.
@@ -7975,6 +8055,7 @@ func (r *TransportOptions) Destroy() {
 	FfiDestroyerOptionalOperatorRelay{}.Destroy(r.Relay)
 	FfiDestroyerOptionalBool{}.Destroy(r.PublicLookup)
 	FfiDestroyerOptionalTransportTimeouts{}.Destroy(r.Timeouts)
+	FfiDestroyerOptionalString{}.Destroy(r.DocumentsPath)
 	FfiDestroyerOptionalDuration{}.Destroy(r.Deadline)
 }
 
@@ -7991,6 +8072,7 @@ func (c FfiConverterTransportOptions) Read(reader io.Reader) TransportOptions {
 		FfiConverterOptionalOperatorRelayINSTANCE.Read(reader),
 		FfiConverterOptionalBoolINSTANCE.Read(reader),
 		FfiConverterOptionalTransportTimeoutsINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalDurationINSTANCE.Read(reader),
 	}
 }
@@ -8007,6 +8089,7 @@ func (c FfiConverterTransportOptions) Write(writer io.Writer, value TransportOpt
 	FfiConverterOptionalOperatorRelayINSTANCE.Write(writer, value.Relay)
 	FfiConverterOptionalBoolINSTANCE.Write(writer, value.PublicLookup)
 	FfiConverterOptionalTransportTimeoutsINSTANCE.Write(writer, value.Timeouts)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.DocumentsPath)
 	FfiConverterOptionalDurationINSTANCE.Write(writer, value.Deadline)
 }
 
@@ -11812,6 +11895,53 @@ type FfiDestroyerSequenceDeliveryFailure struct{}
 func (FfiDestroyerSequenceDeliveryFailure) Destroy(sequence []DeliveryFailure) {
 	for _, value := range sequence {
 		FfiDestroyerDeliveryFailure{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceFloorStateRecord struct{}
+
+var FfiConverterSequenceFloorStateRecordINSTANCE = FfiConverterSequenceFloorStateRecord{}
+
+func (c FfiConverterSequenceFloorStateRecord) Lift(rb RustBufferI) []FloorStateRecord {
+	return LiftFromRustBuffer[[]FloorStateRecord](c, rb)
+}
+
+func (c FfiConverterSequenceFloorStateRecord) Read(reader io.Reader) []FloorStateRecord {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]FloorStateRecord, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterFloorStateRecordINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceFloorStateRecord) Lower(value []FloorStateRecord) C.RustBuffer {
+	return LowerIntoRustBuffer[[]FloorStateRecord](c, value)
+}
+
+func (c FfiConverterSequenceFloorStateRecord) LowerExternal(value []FloorStateRecord) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]FloorStateRecord](c, value))
+}
+
+func (c FfiConverterSequenceFloorStateRecord) Write(writer io.Writer, value []FloorStateRecord) {
+	if len(value) > math.MaxInt32 {
+		panic("[]FloorStateRecord is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterFloorStateRecordINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceFloorStateRecord struct{}
+
+func (FfiDestroyerSequenceFloorStateRecord) Destroy(sequence []FloorStateRecord) {
+	for _, value := range sequence {
+		FfiDestroyerFloorStateRecord{}.Destroy(value)
 	}
 }
 
