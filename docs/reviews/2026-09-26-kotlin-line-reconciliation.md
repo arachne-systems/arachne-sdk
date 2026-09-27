@@ -2,7 +2,8 @@
 
 ## Decision
 
-The generated UniFFI SDK at `1a9f6cf` is the selected Kotlin and Android line.
+The generated UniFFI SDK at `41dbe97` is the selected Kotlin and Android line,
+with Arachne Core pinned to the integrated security baseline `afad1ea`.
 The historical `feat/kotlin-sdk` tip `996806f` is recorded as reconciled ancestry
 without importing its files.
 
