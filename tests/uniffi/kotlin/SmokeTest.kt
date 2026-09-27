@@ -17,6 +17,10 @@ fun main() {
     check(options.recipients.isEmpty() && options.mode == PublicationMode.Critical,
         "Core publication defaults are group Critical")
 
+    val secretConfig = defaultClientConfig(Network.DIRECT).copy(secret = byteArrayOf(1, 2, 3))
+    check("[REDACTED]" in secretConfig.toString() && "1, 2, 3" !in secretConfig.toString(),
+        "ClientConfig debug output redacts the secret")
+
     // 1. Errors cross with their numeric code.
     try {
         Client.open(defaultClientConfig(Network.DIRECT).copy(secret = byteArrayOf(1, 2, 3)))
@@ -85,6 +89,13 @@ fun main() {
         check(apiErrorCode(e).value == 1u, "after close error code = ${apiErrorCode(e).value}")
     }
     client.close() // AutoCloseable: frees the native handle
+    try {
+        client.endpoint()
+        check(false, "freed native handle must reject calls")
+    } catch (e: IllegalStateException) {
+        check(true, "freed native handle rejects calls")
+    }
+    client.close()
     println("KOTLIN PASS")
 
     runFlow()

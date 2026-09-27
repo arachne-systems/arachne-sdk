@@ -4612,6 +4612,12 @@ public struct ClientConfig {
     
 }
 
+extension ClientConfig: CustomStringConvertible {
+    public var description: String {
+        "ClientConfig(network: \(network), secret: \(secret == nil ? "nil" : "[REDACTED]"), transport: \(transport), storage: \(String(describing: storage)))"
+    }
+}
+
 #if compiler(>=6)
 extension ClientConfig: Sendable {}
 #endif

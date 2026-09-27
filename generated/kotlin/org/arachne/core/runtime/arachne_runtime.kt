@@ -8391,6 +8391,9 @@ data class ClientConfig (
     )
     }
     
+    override fun toString(): String =
+        "ClientConfig(network=${`network`}, secret=${if (`secret` == null) null else "[REDACTED]"}, transport=${`transport`}, storage=${`storage`})"
+
     companion object
 }
 
